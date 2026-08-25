@@ -189,6 +189,7 @@ a { color: inherit; }
 .row { display:flex; justify-content:space-between; gap: 10px; padding: 10px 12px; background: var(--bg); border: 1px solid var(--line); border-radius: 8px; font-size: 12px; }
 .row .k { color: var(--dim); }
 .row .v { font-family: var(--font-mono); font-weight: 600; font-size: 11px; }
+.row.miss { border-color: rgba(245,158,11,0.45); background: #fff7ed; }
 .warn-box, .ok-box, .fin-box {
   padding: 12px; border-radius: 10px; font-size: 12px; line-height: 1.5;
 }
@@ -204,14 +205,79 @@ a { color: inherit; }
 .qtable td { padding: 8px; border-bottom: 1px solid var(--line); }
 .qtable tr.pick td { background: rgba(32,163,182,0.08); }
 
-.claims-grid { display:grid; grid-template-columns: 1fr 1fr; gap: 16px; padding: 20px; }
-@media (max-width: 800px) { .claims-grid { grid-template-columns: 1fr; } }
-.fnol {
-  background: var(--bg); border: 1px dashed var(--line); border-radius: 14px; padding: 22px; text-align:center; cursor:pointer; transition: 0.2s;
+#claims .frame { scroll-margin-top: 78px; }
+.claims-body { padding: 20px; display:flex; flex-direction:column; gap: 16px; }
+.pack-row { display:grid; grid-template-columns: 1fr 1fr 1fr; gap: 12px; }
+@media (max-width: 800px) { .pack-row { grid-template-columns: 1fr; } }
+.shot {
+  display:block; width:100%; text-align:left; padding:0; border: 1px solid var(--line);
+  border-radius: 12px; overflow:hidden; background: var(--surface); cursor:pointer;
+  font-family: inherit; color: inherit; transition: 0.15s;
 }
-.fnol:hover { border-color: var(--teal); }
-.fnol.on { border-color: var(--teal-bright); border-style: solid; }
-.fnol .ic { font-size: 28px; margin-bottom: 8px; }
+.shot:hover { border-color: var(--teal); }
+.shot.on { border-color: var(--teal); box-shadow: 0 0 0 2px rgba(26,143,161,0.22); }
+.shot-canvas { position:relative; height: 158px; overflow:hidden; }
+.shot-meta { padding: 8px 10px; border-top: 1px solid var(--line); background: var(--card); }
+.shot-meta strong { display:block; font-size: 12px; }
+.shot-meta span { font-size: 11px; color: var(--dim); }
+.photo-canvas {
+  background: linear-gradient(180deg, #6b7580 0%, #3e464d 42%, #2a3036 100%);
+}
+.photo-sky { position:absolute; inset:0 0 46% 0; background: linear-gradient(180deg, #8a97a3, #5c6770); }
+.photo-road { position:absolute; left:0; right:0; bottom:0; height:48%; background:#3a4148; }
+.photo-road::before {
+  content:''; position:absolute; left:50%; top:8px; bottom:0; width:4px; margin-left:-2px;
+  background: repeating-linear-gradient(180deg, #d9c27a 0 10px, transparent 10px 18px); opacity:0.7;
+}
+.photo-car { position:absolute; left:22%; bottom:18%; width:58%; height:44%; }
+.photo-stamp {
+  position:absolute; left:8px; top:8px; font-family: var(--font-mono); font-size: 9px;
+  color: #d7f0f4; background: rgba(18,32,42,0.55); padding: 3px 6px; border-radius: 4px; letter-spacing: 0.3px;
+}
+.lic-canvas { background: linear-gradient(135deg, #d7e8e1, #eef5f2); padding: 8px; }
+.lic-bar {
+  background: #1a6b54; color: #fff; font-size: 8px; font-weight: 700; letter-spacing: 0.7px;
+  text-transform: uppercase; padding: 4px 6px; border-radius: 4px;
+}
+.lic-body { display:flex; gap:8px; margin-top:8px; }
+.lic-photo {
+  width: 44px; height: 54px; border-radius: 4px; background: #7d8b86;
+  color:#fff; font-size:11px; font-weight:700; display:flex; align-items:center; justify-content:center;
+}
+.lic-fields { font-size: 9px; color: #1e3a32; line-height: 1.45; }
+.lic-fields b { display:block; font-size: 11px; letter-spacing: 0.4px; }
+.quote-canvas { background:#fff; padding: 10px 12px; color:#12202a; }
+.quote-canvas .qh { font-size: 10px; font-weight: 750; letter-spacing: 0.4px; text-transform: uppercase; color:#1a6b54; }
+.quote-canvas .ql { font-size: 9px; color:#5c6d78; margin-bottom: 8px; }
+.quote-canvas .qi { display:flex; justify-content:space-between; font-size: 10px; margin-bottom: 3px; }
+.quote-canvas .qt { display:flex; justify-content:space-between; font-size: 12px; font-weight: 750; margin-top: 8px; border-top: 1px solid #d5dee4; padding-top: 6px; }
+.bbox {
+  position:absolute; border: 1.5px solid #2dd4c2; border-radius: 3px; opacity:0;
+  pointer-events:none; transition: opacity 0.2s; box-shadow: 0 0 0 1px rgba(18,32,42,0.2);
+}
+.bbox.on { opacity:1; }
+.bbox.warn { border-color: #f59e0b; }
+.bbox span {
+  position:absolute; left:0; top:-15px; font-size:9px; font-weight:700; letter-spacing:0.3px;
+  text-transform:uppercase; color:#fff; background: var(--teal); padding:1px 5px; border-radius:3px; white-space:nowrap;
+}
+.bbox.warn span { background: var(--amber); color:#fff; }
+.trace {
+  font-family: var(--font-mono); font-size: 11px; line-height: 1.45;
+  background: var(--bg); border: 1px solid var(--line); border-radius: 10px;
+  padding: 10px 12px; min-height: 200px; max-height: 340px; overflow-y: auto;
+}
+.trace-line { display:flex; gap:8px; margin-bottom: 6px; color: var(--muted); }
+.trace-line:last-child { margin-bottom: 0; }
+.trace-line .ts { color: var(--dim); flex: 0 0 58px; }
+.trace-line.k-ok .tm { color: var(--green); }
+.trace-line.k-warn .tm { color: var(--amber); }
+.trace-line.k-bad .tm { color: var(--red); }
+.trace-line.k-dim { color: var(--dim); }
+.conf { font-size: 9px; color: var(--dim); font-weight: 650; margin-left: 6px; letter-spacing: 0.2px; }
+.conf.warn { color: var(--amber); }
+.claims-lower { display:grid; grid-template-columns: 1.1fr 0.9fr; gap: 16px; }
+@media (max-width: 800px) { .claims-lower { grid-template-columns: 1fr; } }
 .pipeline { display:flex; gap: 6px; margin-top: 14px; }
 .pipe { flex:1; text-align:center; padding: 8px 4px; background: var(--card); border: 1px solid var(--line); border-radius: 8px; font-size: 10px; font-weight: 650; color: var(--dim); }
 .pipe.on { border-color: var(--teal); color: var(--teal-bright); background: rgba(32,163,182,0.1); }
@@ -255,9 +321,18 @@ a { color: inherit; }
 .kpi-l { font-size: 10px; color: var(--dim); text-transform: uppercase; letter-spacing: 0.4px; margin-top: 2px; }
 .note { font-size: 12px; color: var(--dim); margin-top: 14px; }
 
-.inbox { display:grid; grid-template-columns: 300px 1fr; min-height: 540px; }
+.inbox { display:grid; grid-template-columns: 280px 1fr 250px; min-height: 540px; }
+@media (max-width: 1100px) {
+  .inbox { grid-template-columns: 280px 1fr; }
+  .mail-trace-col { grid-column: 1 / -1; border-left: none; border-top: 1px solid var(--line); max-height: 220px; }
+}
 @media (max-width: 900px) { .inbox { grid-template-columns: 1fr; } }
 .mail-list { border-right: 1px solid var(--line); background: #f8fafb; max-height: 640px; overflow-y: auto; }
+.mail-trace-col {
+  background: #f8fafb; border-left: 1px solid var(--line); padding: 14px;
+  max-height: 640px; overflow-y: auto;
+}
+.mail-trace-col .panel-kicker { margin-bottom: 8px; }
 .mail-filters { display:flex; gap:6px; padding: 10px 12px; border-bottom: 1px solid var(--line); flex-wrap:wrap; background: var(--surface); position: sticky; top: 0; z-index: 1; }
 .mail-item {
   display:block; width:100%; text-align:left; padding: 12px 14px; cursor:pointer;
@@ -340,7 +415,7 @@ a { color: inherit; }
       <div>
         <div class="badge"><span class="dot"></span> Alongside Websure · not a replacement</div>
         <h1>From admin<br>to <em>advantage.</em></h1>
-        <p class="hero-lead">A working layer on top of Websure that takes chasing, status, and first-draft endorsements off the broker and off the floor — with traces the insurer can supervise.</p>
+        <p class="hero-lead">A working layer on top of Websure that takes chasing, status, FNOL reading, and first-draft endorsements off the broker and off the floor — with traces the insurer can supervise.</p>
         <p class="hero-quote">“Insurance administration done right — through people, technology, and partnerships.”<br><strong>Olebogeng Mogale, CEO · 2030 Strategy</strong></p>
         <div class="hero-actions">
           <a href="#inbox" class="btn btn-primary">Open the broker inbox →</a>
@@ -357,7 +432,7 @@ a { color: inherit; }
             <div class="stat"><div class="stat-val">1</div><div class="stat-lbl">Cross-book refusal</div></div>
           </div>
           <div class="act"><span>Broker desk inbox · 2 auto-sent · 1 confirm · 1 refuse</span><span class="tag tag-read">read</span></div>
-          <div class="act"><span>Specified item draft · confirm before Websure</span><span class="tag tag-write">write</span></div>
+          <div class="act"><span>FNOL pack read · licence expired · chase parked</span><span class="tag tag-write">write</span></div>
           <div class="act"><span>Hollard agent queried a Santam policy</span><span class="tag tag-refuse">refused</span></div>
         </div>
       </div>
@@ -436,7 +511,7 @@ a { color: inherit; }
     <div class="text-center mb-48">
       <div class="sec-label">Broker desk · the volume is email</div>
       <h2 class="sec-title">A shared mailbox that actually resolves.</h2>
-      <p class="sec-desc">Status and cover auto-send. Endorsements — vehicle, address, specified item, debit date — wait for confirm. Unpaid debit notifies the broker; re-presenting the debit stays financial.</p>
+      <p class="sec-desc">Status and cover auto-send. Endorsements — vehicle, address, specified item, debit date — wait for confirm. Unpaid debit notifies the broker; re-presenting the debit stays financial. The right-hand strip is the glass box: intent, book, isolation.</p>
       <div style="margin-top:22px;display:flex;gap:10px;justify-content:center;flex-wrap:wrap;">
         <button class="btn btn-primary" type="button" onclick="runQueue()">Run the queue →</button>
         <button class="btn btn-outline" type="button" onclick="resetInbox()">Reset inbox</button>
@@ -458,6 +533,10 @@ a { color: inherit; }
         <div class="mail-read" id="mailRead">
           <div class="empty">Select a mail. High-confidence status replies send. Anything that changes a policy waits for confirm. Santam never answers a Hollard thread.</div>
         </div>
+        <div class="mail-trace-col">
+          <div class="panel-kicker">Agent trace · glass box</div>
+          <div class="trace" id="mailTrace" aria-live="polite"><div class="trace-line k-dim"><span class="ts">—</span><span class="tm">Waiting for a mail…</span></div></div>
+        </div>
       </div>
     </div>
   </div>
@@ -467,8 +546,12 @@ a { color: inherit; }
   <div class="container">
     <div class="text-center mb-48">
       <div class="sec-label">Claims cell · people stay on settlement</div>
-      <h2 class="sec-title">FNOL to complete-docs. Not auto-settle.</h2>
-      <p class="sec-desc">Click the FNOL pack. Cover is checked against the Santam motor binder, missing documents are chased on WhatsApp, and settlement stays a financial action for an assessor.</p>
+      <h2 class="sec-title">Read the pack. Reconcile the binder. Do not settle.</h2>
+      <p class="sec-desc">Ingest the FNOL pack. The layer extracts photo, licence, and quote, then checks Websure. An expired licence becomes a chase — not a silent write. Settlement stays with the assessor.</p>
+      <div style="margin-top:22px;display:flex;gap:10px;justify-content:center;flex-wrap:wrap;">
+        <button class="btn btn-primary" type="button" onclick="runFnol()">Ingest FNOL pack →</button>
+        <button class="btn btn-outline" type="button" onclick="resetFnol()">Reset cell</button>
+      </div>
     </div>
     <div class="frame">
       <div class="frame-h">
@@ -476,15 +559,71 @@ a { color: inherit; }
           <span class="dots"><i></i><i></i><i></i></span>
           Claims cell · BH-28491 · J. van der Merwe · Santam motor
         </div>
-        <button class="btn btn-outline btn-sm" type="button" onclick="resetFnol()">Reset cell</button>
+        <div style="display:flex;gap:8px;flex-wrap:wrap;">
+          <button class="btn btn-primary btn-sm" type="button" onclick="runFnol()">Ingest pack</button>
+          <button class="btn btn-outline btn-sm" type="button" onclick="resetFnol()">Reset cell</button>
+        </div>
       </div>
-      <div class="claims-grid">
+      <div class="claims-body">
+        <div class="pack-row">
+          <button type="button" class="shot" id="shotPhoto" onclick="selectShot('photo')">
+            <div class="shot-canvas photo-canvas">
+              <div class="photo-sky"></div>
+              <div class="photo-road"></div>
+              <svg class="photo-car" viewBox="0 0 220 90" aria-hidden="true">
+                <ellipse cx="110" cy="78" rx="88" ry="8" fill="rgba(0,0,0,0.35)"/>
+                <path d="M28 58 L48 38 H168 L196 58 L188 70 H36 Z" fill="#cfd6dc"/>
+                <path d="M62 38 L78 22 H142 L158 38 Z" fill="#9aa7b0"/>
+                <rect x="70" y="44" width="28" height="14" rx="2" fill="#2a333a"/>
+                <rect x="122" y="44" width="28" height="14" rx="2" fill="#2a333a"/>
+                <rect x="168" y="50" width="22" height="10" rx="1" fill="#d97a6a"/>
+                <circle cx="62" cy="70" r="11" fill="#1a1e22" stroke="#88929a" stroke-width="3"/>
+                <circle cx="162" cy="70" r="11" fill="#1a1e22" stroke="#88929a" stroke-width="3"/>
+              </svg>
+              <div class="photo-stamp">24 AUG 2026 · 07:38 · N1 CENTURION</div>
+              <div class="bbox" id="bbLoc" style="left:6%;top:6%;width:62%;height:16%;"><span>time / place</span></div>
+              <div class="bbox" id="bbVeh" style="left:18%;top:40%;width:64%;height:46%;"><span>vehicle</span></div>
+              <div class="bbox warn" id="bbDmg" style="left:68%;top:48%;width:24%;height:22%;"><span>damage</span></div>
+            </div>
+            <div class="shot-meta"><strong>accident.jpg</strong><span>WhatsApp · 2.1 MB</span></div>
+          </button>
+          <button type="button" class="shot" id="shotLicence" onclick="selectShot('licence')">
+            <div class="shot-canvas lic-canvas">
+              <div class="lic-bar">Driving licence · RSA</div>
+              <div class="lic-body">
+                <div class="lic-photo">JVM</div>
+                <div class="lic-fields">
+                  <span>1. Surname</span>
+                  <b>VAN DER MERWE</b>
+                  <span>2. Names · JOHANNES</span>
+                  <span>4a. Issued 12 JAN 2016</span>
+                  <span>4b. Expires <b style="display:inline;color:#b45309;">12 JAN 2026</b></span>
+                  <span>9. Cat B · 800101 5042 083</span>
+                </div>
+              </div>
+              <div class="bbox" id="bbName" style="left:28%;top:28%;width:66%;height:22%;"><span>named driver</span></div>
+              <div class="bbox warn" id="bbExp" style="left:28%;top:62%;width:58%;height:16%;"><span>expiry</span></div>
+            </div>
+            <div class="shot-meta"><strong>licence.jpg</strong><span>Scan · 840 KB</span></div>
+          </button>
+          <button type="button" class="shot" id="shotQuote" onclick="selectShot('quote')">
+            <div class="shot-canvas quote-canvas">
+              <div class="qh">Midway Panelbeaters</div>
+              <div class="ql">Quote Q-8841 · 24 Aug 2026 · Centurion</div>
+              <div class="qi"><span>2019 VW Polo 1.0 TSI</span><span>CA 441-229</span></div>
+              <div class="qi"><span>VIN AHTZZ25G8G0128841</span><span></span></div>
+              <div class="qi"><span>Rear bumper / boot / lamps</span><span>R41,200</span></div>
+              <div class="qi"><span>VAT</span><span>R6,150</span></div>
+              <div class="qt"><span>Total</span><span>R47,350</span></div>
+              <div class="bbox" id="bbVin" style="left:4%;top:38%;width:78%;height:14%;"><span>VIN</span></div>
+              <div class="bbox" id="bbTot" style="left:4%;top:78%;width:90%;height:16%;"><span>estimate</span></div>
+            </div>
+            <div class="shot-meta"><strong>quote.pdf</strong><span>Email · 1 page</span></div>
+          </button>
+        </div>
+
         <div>
-          <div class="fnol" id="fnol" onclick="runFnol()">
-            <div class="ic">▣</div>
-            <div id="fnolT" style="font-size:14px;font-weight:650;">Click to ingest FNOL pack</div>
-            <div style="font-size:12px;color:var(--dim);margin-top:4px;">Accident photos · licence copy missing · 24 Aug 2026</div>
-          </div>
+          <div id="fnolT" style="font-size:13px;font-weight:650;margin-bottom:8px;">Pack on desk · not ingested</div>
           <div class="pipeline" id="pipes">
             <div class="pipe" id="p1">FNOL</div>
             <div class="pipe" id="p2">Cover</div>
@@ -492,37 +631,49 @@ a { color: inherit; }
             <div class="pipe" id="p4">Queue</div>
           </div>
           <div style="display:flex;gap:8px;margin-top:14px;flex-wrap:wrap;">
-            <button class="btn btn-primary btn-sm" type="button" id="chaseBtn" disabled onclick="startChase()">Chase missing docs</button>
+            <button class="btn btn-primary btn-sm" type="button" id="chaseBtn" disabled onclick="startChase()">Chase valid licence</button>
             <button class="btn btn-outline btn-sm" type="button" id="settleBtn" disabled onclick="trySettle()">Authorise settlement</button>
           </div>
           <div id="finNote" class="fin-box hidden" style="margin-top:12px;font-size:12px;color:var(--amber);">
             <span class="tag tag-fin">financial</span> &nbsp; Settlement is a binder function. The assessor authorises. The layer does not.
           </div>
         </div>
-        <div>
-          <div class="panel-kicker" style="margin-bottom:8px;">Extracted file · SLA on complete-docs</div>
-          <div id="claimFields" class="docs">
-            <div class="row"><span class="k">Claim</span><span class="v" id="c1">—</span></div>
-            <div class="row"><span class="k">Insured</span><span class="v" id="c2">—</span></div>
-            <div class="row"><span class="k">Binder / cover</span><span class="v" id="c3">—</span></div>
-            <div class="row"><span class="k">Estimate</span><span class="v" id="c4">—</span></div>
-            <div class="row"><span class="k">Fraud screen</span><span class="v" id="c5">—</span></div>
-            <div class="row"><span class="k">SLA remaining</span><span class="v" id="c6">—</span></div>
-          </div>
-          <div id="docBox" class="hidden" style="margin-top:12px;">
-            <div class="panel-kicker" style="margin-bottom:8px;">Document checklist</div>
-            <div class="doc"><span>Accident photos</span><span class="tag tag-read">on file</span></div>
-            <div class="doc miss"><span>Driver’s licence</span><span class="tag tag-write">missing</span></div>
-            <div class="doc miss"><span>Repair quote</span><span class="tag tag-write">missing</span></div>
-          </div>
-          <div id="confirmBar" class="warn-box hidden" style="margin-top:12px;">
-            Confirm before write to WhatsApp / Websure notes.
-            <div style="margin-top:10px;display:flex;gap:8px;">
-              <button class="btn btn-primary btn-sm" type="button" onclick="confirmChase()">Confirm chase</button>
-              <button class="btn btn-outline btn-sm" type="button" onclick="cancelChase()">Cancel</button>
+
+        <div class="claims-lower">
+          <div>
+            <div class="panel-kicker" style="margin-bottom:8px;">Extracted · reconciled to Websure</div>
+            <div id="claimFields" class="docs">
+              <div class="row"><span class="k">Claim</span><span class="v" id="c1">—</span></div>
+              <div class="row"><span class="k">Insured / driver</span><span class="v" id="c2">—</span></div>
+              <div class="row"><span class="k">Vehicle</span><span class="v" id="c3">—</span></div>
+              <div class="row"><span class="k">VIN</span><span class="v" id="c4">—</span></div>
+              <div class="row" id="rowLic"><span class="k">Licence</span><span class="v" id="c5">—</span></div>
+              <div class="row"><span class="k">Cover</span><span class="v" id="c6">—</span></div>
+              <div class="row"><span class="k">Estimate</span><span class="v" id="c7">—</span></div>
+              <div class="row"><span class="k">Fraud / SLA</span><span class="v" id="c8">—</span></div>
             </div>
+            <div id="reconBox" class="warn-box hidden" style="margin-top:12px;">
+              <span class="tag tag-write">exception</span> &nbsp; Named driver matches. Licence on the pack <b>expired 12 Jan 2026</b>. Photos and quote are complete. Do not assign an assessor until a valid copy is on file.
+            </div>
+            <div id="docBox" class="hidden" style="margin-top:12px;">
+              <div class="panel-kicker" style="margin-bottom:8px;">Document checklist</div>
+              <div class="doc"><span>Accident photos</span><span class="tag tag-read">extracted</span></div>
+              <div class="doc miss"><span>Driver’s licence</span><span class="tag tag-write">expired</span></div>
+              <div class="doc"><span>Repair quote</span><span class="tag tag-read">VIN match</span></div>
+            </div>
+            <div id="confirmBar" class="warn-box hidden" style="margin-top:12px;">
+              Confirm before write to WhatsApp / Websure notes.
+              <div style="margin-top:10px;display:flex;gap:8px;">
+                <button class="btn btn-primary btn-sm" type="button" onclick="confirmChase()">Confirm chase</button>
+                <button class="btn btn-outline btn-sm" type="button" onclick="cancelChase()">Cancel</button>
+              </div>
+            </div>
+            <div id="chaseOk" class="ok-box hidden" style="margin-top:12px;">WhatsApp sent to Nadia Petersen: “The licence on BH-28491 expired 12 Jan 2026. Please send a valid copy — photos and the quote are already on file.” Trace written. Assessor not yet involved.</div>
           </div>
-          <div id="chaseOk" class="ok-box hidden" style="margin-top:12px;">WhatsApp sent to Nadia Petersen: “We still need the driver’s licence and a repair quote on BH-28491.” Trace written. Assessor not yet involved.</div>
+          <div>
+            <div class="panel-kicker" style="margin-bottom:8px;">Agent trace · glass box</div>
+            <div class="trace" id="fnolTrace" aria-live="polite"><div class="trace-line k-dim"><span class="ts">—</span><span class="tm">Waiting for ingest…</span></div></div>
+          </div>
         </div>
       </div>
     </div>
@@ -676,12 +827,12 @@ a { color: inherit; }
           <tr>
             <td>0:08</td>
             <td>Email desk</td>
-            <td>Go to <a href="#inbox">#inbox</a>. “This is where your volume already sits.” Click <b>Run the queue</b>. Pause on auto-send vs confirm vs escalate vs refuse.</td>
+            <td>Go to <a href="#inbox">#inbox</a>. “This is where your volume already sits.” Click <b>Run the queue</b>. Pause on the <b>agent trace</b> — intent, book, isolation — then auto-send vs confirm vs escalate vs refuse.</td>
           </tr>
           <tr>
             <td>0:25</td>
             <td>Confirm-before-write</td>
-            <td>Open the specified-item, vehicle, address, or debit-date mail. Hold, then confirm. Then the unpaid-debit mail: notify the broker; <b>Re-present debit</b> must stay blocked. Then <a href="#claims">claims cell</a>: ingest FNOL, chase docs, hit <b>Authorise settlement</b> — it must fail.</td>
+            <td>Open the specified-item, vehicle, address, or debit-date mail. Hold, then confirm. Then the unpaid-debit mail: notify the broker; <b>Re-present debit</b> must stay blocked. Then <a href="#claims">claims cell</a>: ingest the pack, watch the licence-expiry exception on the trace, chase, hit <b>Authorise settlement</b> — it must fail.</td>
           </tr>
           <tr>
             <td>0:40</td>
@@ -705,7 +856,7 @@ a { color: inherit; }
     <div class="comp-grid" style="margin-bottom:16px; text-align:left;">
       <div class="card">
         <div class="panel-kicker" style="margin-bottom:10px;">Talk track — open</div>
-        <p style="font-size:14px; color:var(--muted); line-height:1.65;">Admin is the product. If we take chasing, status, and first-draft endorsements off the broker and off the floor — with traces the insurer can supervise — Brolink becomes the platform of the broker of tomorrow. We sit on Websure. We do not rebuild it.</p>
+        <p style="font-size:14px; color:var(--muted); line-height:1.65;">Admin is the product. If we take chasing, status, FNOL reading, and first-draft endorsements off the broker and off the floor — with traces the insurer can supervise — Brolink becomes the platform of the broker of tomorrow. We sit on Websure. We do not rebuild it.</p>
       </div>
       <div class="card">
         <div class="panel-kicker" style="margin-bottom:10px;">Do not say</div>
@@ -797,14 +948,14 @@ function play(kind) {
 function playClaim() {
   setQuick('q1');
   addMsg('broker', 'Where is claim BH-28491 for van der Merwe? Client is on the phone.', '08:14');
-  panel('BH-28491 · Santam motor', 'Read-only lookup on the Santam workspace. Cover is in force. Docs are incomplete — that is the delay, not assessment.', '<div class="timeline">'
+  panel('BH-28491 · Santam motor', 'Read-only lookup on the Santam workspace. Cover is in force. The licence on the FNOL pack expired — that is the delay, not assessment.', '<div class="timeline">'
     + '<div class="tl"><div class="tl-n done"></div><div class="tl-b"><strong>Registered</strong><span>FNOL 24 Aug 07:41 · broker WhatsApp</span></div></div>'
     + '<div class="tl"><div class="tl-n done"></div><div class="tl-b"><strong>Cover checked</strong><span>Santam motor binder · in force · excess R2,500</span></div></div>'
-    + '<div class="tl"><div class="tl-n wait"></div><div class="tl-b"><strong>Documents incomplete</strong><span>Driver’s licence outstanding · SLA 4h 12m</span></div></div>'
-    + '<div class="tl"><div class="tl-n"></div><div class="tl-b"><strong>Assessor</strong><span>Not assigned until docs complete</span></div></div>'
+    + '<div class="tl"><div class="tl-n wait"></div><div class="tl-b"><strong>Licence expired</strong><span>Copy on file expired 12 Jan 2026 · SLA 4h 12m</span></div></div>'
+    + '<div class="tl"><div class="tl-n"></div><div class="tl-b"><strong>Assessor</strong><span>Not assigned until a valid licence is on file</span></div></div>'
     + '</div><div class="ok-box" style="margin-top:12px;"><span class="tag tag-read">read</span> &nbsp; No write. Status returned to Nadia in-thread.</div>');
   later(900, function() {
-    addMsg('agent', 'BH-28491 is <b>cover-confirmed</b> on the Santam motor binder. Photos are on file. We are waiting on the <b>driver’s licence</b>. I can chase it now — that is a write to WhatsApp and the claim notes.', '08:14');
+    addMsg('agent', 'BH-28491 is <b>cover-confirmed</b> on the Santam motor binder. Photos and the quote are on file. The licence on the pack <b>expired 12 Jan 2026</b> — that is the delay, not assessment. I can chase a valid copy — that is a write to WhatsApp and the claim notes.', '08:14');
   });
 }
 
@@ -850,57 +1001,142 @@ function playQuote() {
   });
 }
 
-var fnolDone = false, chaseArmed = false, fnolGen = 0;
+var fnolDone = false, chaseArmed = false, fnolGen = 0, extractAt = 0;
+var bboxIds = ['bbLoc','bbVeh','bbDmg','bbName','bbExp','bbVin','bbTot'];
+function appendTrace(box, line) {
+  var d = document.createElement('div');
+  d.className = 'trace-line' + (line.k ? ' k-' + line.k : '');
+  d.innerHTML = '<span class="ts">' + line.t + '</span><span class="tm">' + line.m + '</span>';
+  box.appendChild(d);
+  box.scrollTop = box.scrollHeight;
+}
+function renderTrace(id, lines, instant, gen, genFn) {
+  var box = el(id);
+  if (!box) return;
+  box.innerHTML = '';
+  if (!lines || !lines.length) return;
+  if (instant) {
+    lines.forEach(function(line) { appendTrace(box, line); });
+    return;
+  }
+  appendTrace(box, lines[0]);
+  lines.slice(1).forEach(function(line, i) {
+    later((i + 1) * 200, function() {
+      if (genFn && gen !== genFn()) return;
+      appendTrace(box, line);
+    });
+  });
+}
+function setBoxes(ids) {
+  bboxIds.forEach(function(id) {
+    var n = el(id);
+    if (n) n.classList.toggle('on', ids.indexOf(id) > -1);
+  });
+}
+function selectShot(name) {
+  el('shotPhoto').classList.toggle('on', name === 'photo');
+  el('shotLicence').classList.toggle('on', name === 'licence');
+  el('shotQuote').classList.toggle('on', name === 'quote');
+  if (!fnolDone) {
+    runFnol();
+    return;
+  }
+  if (name === 'photo' && extractAt >= 1) setBoxes(['bbLoc','bbVeh','bbDmg']);
+  if (name === 'licence' && extractAt >= 2) setBoxes(['bbName','bbExp']);
+  if (name === 'quote' && extractAt >= 3) setBoxes(['bbVin','bbTot']);
+  if (window.innerWidth < 800) {
+    var node = el(name === 'photo' ? 'shotPhoto' : name === 'licence' ? 'shotLicence' : 'shotQuote');
+    if (node) node.scrollIntoView({ behavior: 'smooth', block: 'center' });
+  }
+}
 function resetFnol() {
   fnolGen += 1;
   fnolDone = false;
   chaseArmed = false;
-  el('fnol').classList.remove('on');
-  el('fnolT').textContent = 'Click to ingest FNOL pack';
+  extractAt = 0;
+  el('fnolT').textContent = 'Pack on desk · not ingested';
   ['p1','p2','p3','p4'].forEach(function(id) { el(id).className = 'pipe'; });
-  ['c1','c2','c3','c4','c5','c6'].forEach(function(id) { el(id).textContent = '—'; });
+  ['c1','c2','c3','c4','c5','c6','c7','c8'].forEach(function(id) { el(id).textContent = '—'; });
+  el('rowLic').classList.remove('miss');
+  ['shotPhoto','shotLicence','shotQuote'].forEach(function(id) { el(id).classList.remove('on'); });
+  setBoxes([]);
   el('docBox').classList.add('hidden');
+  el('reconBox').classList.add('hidden');
   el('confirmBar').classList.add('hidden');
   el('chaseOk').classList.add('hidden');
   el('finNote').classList.add('hidden');
   el('chaseBtn').disabled = true;
   el('settleBtn').disabled = true;
+  el('fnolTrace').innerHTML = '<div class="trace-line k-dim"><span class="ts">—</span><span class="tm">Waiting for ingest…</span></div>';
 }
 function runFnol() {
   if (fnolDone) return;
   fnolDone = true;
   var gen = fnolGen;
-  el('fnol').classList.add('on');
-  el('fnolT').textContent = 'Ingesting FNOL…';
-  var steps = ['p1','p2','p3','p4'];
-  steps.forEach(function(id, i) {
-    later(i * 550, function() {
-      if (gen !== fnolGen) return;
-      el(id).classList.add('on');
-      if (i) el(steps[i-1]).classList.remove('on');
-      if (i) el(steps[i-1]).classList.add('done');
-      if (i === steps.length - 1) {
-        later(400, function() {
-          if (gen !== fnolGen) return;
-          el(id).classList.remove('on');
-          el(id).classList.add('done');
-        });
-      }
-    });
-  });
-  var fields = [
-    ['c1','BH-28491'],['c2','J. van der Merwe'],['c3','In force · Santam motor binder'],
-    ['c4','R47,350 estimate'],['c5','2.3% · low'],['c6','4h 12m to complete-docs']
+  function live() { return fnolGen; }
+  var frame = el('shotPhoto').closest('.frame');
+  if (frame) frame.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  el('fnolT').textContent = 'Reading pack…';
+  selectShot('photo');
+  var traces = [
+    { t: '07:41:02', m: 'ingest · FNOL pack · 3 files · broker WhatsApp', k: '' },
+    { t: '07:41:03', m: 'vision · accident.jpg · Polo · rear impact · N1 Centurion', k: 'ok' },
+    { t: '07:41:04', m: 'vision · licence.jpg · J. van der Merwe · code B', k: 'ok' },
+    { t: '07:41:05', m: 'exception · licence expired 12 Jan 2026', k: 'warn' },
+    { t: '07:41:06', m: 'vision · quote.pdf · R47,350 · VIN match schedule', k: 'ok' },
+    { t: '07:41:07', m: 'read · get_claim BH-28491 · santam.workspace ALLOW', k: 'ok' },
+    { t: '07:41:08', m: 'cover · in force · excess R2,500 · named driver match', k: 'ok' },
+    { t: '07:41:09', m: 'write · chase valid licence · confirm required', k: 'warn' },
+    { t: '07:41:10', m: 'financial · settlement · blocked for assessor', k: 'bad' }
   ];
-  fields.forEach(function(f, i) {
-    later(700 + i * 160, function() { if (gen !== fnolGen) return; el(f[0]).textContent = f[1]; });
-  });
-  later(2200, function() {
+  renderTrace('fnolTrace', traces, false, gen, live);
+  later(80, function() {
     if (gen !== fnolGen) return;
-    el('fnolT').textContent = 'Cover confirmed · docs incomplete';
+    el('p1').classList.add('on');
+    extractAt = 1;
+    setBoxes(['bbLoc','bbVeh','bbDmg']);
+    el('c1').textContent = 'BH-28491';
+    el('c3').textContent = '2019 VW Polo · rear impact';
+  });
+  later(900, function() {
+    if (gen !== fnolGen) return;
+    el('p1').classList.remove('on'); el('p1').classList.add('done');
+    el('p2').classList.add('on');
+    selectShot('licence');
+    extractAt = 2;
+    setBoxes(['bbName','bbExp']);
+    el('c2').textContent = 'J. van der Merwe · match';
+    el('c5').innerHTML = 'expired 12 Jan 2026 <span class="conf warn">92%</span>';
+    el('rowLic').classList.add('miss');
+  });
+  later(1700, function() {
+    if (gen !== fnolGen) return;
+    selectShot('quote');
+    extractAt = 3;
+    setBoxes(['bbVin','bbTot']);
+    el('c4').textContent = 'AHTZZ25G8G0128841 · match';
+    el('c7').textContent = 'R47,350 · quote.pdf';
+  });
+  later(2400, function() {
+    if (gen !== fnolGen) return;
+    el('p2').classList.remove('on'); el('p2').classList.add('done');
+    el('p3').classList.add('on');
+    el('c6').textContent = 'In force · Santam motor · excess R2,500';
+    el('c8').textContent = '2.3% low · 4h 12m to complete-docs';
+    el('reconBox').classList.remove('hidden');
     el('docBox').classList.remove('hidden');
+    el('fnolT').textContent = 'Cover confirmed · licence expired';
+  });
+  later(3000, function() {
+    if (gen !== fnolGen) return;
+    el('p3').classList.remove('on'); el('p3').classList.add('done');
+    el('p4').classList.add('on');
     el('chaseBtn').disabled = false;
     el('settleBtn').disabled = false;
+  });
+  later(3400, function() {
+    if (gen !== fnolGen) return;
+    el('p4').classList.remove('on'); el('p4').classList.add('done');
   });
 }
 function startChase() {
@@ -932,8 +1168,15 @@ var mails = [
     sub: 'RE: van der Merwe / BH-28491 — client on the phone',
     pre: 'Please advise current status. Client is waiting.',
     book: 'Santam', intent: 'Claim status', cls: 'read', conf: '96%', action: 'auto',
+    trace: [
+      { t: '08:14:02', m: 'classified · claim_status · 96%', k: 'ok' },
+      { t: '08:14:03', m: 'entity · BH-28491 · J. van der Merwe', k: '' },
+      { t: '08:14:03', m: 'isolation · santam.workspace · ALLOW', k: 'ok' },
+      { t: '08:14:04', m: 'tool · get_claim · class=read', k: '' },
+      { t: '08:14:04', m: 'draft · licence expired · auto-send allowed', k: 'ok' }
+    ],
     letter: 'Hi team,<br><br>Please advise current status on claim <b>BH-28491</b> for J. van der Merwe. The client is on the phone.<br><br>Kind regards<br>Nadia Petersen<br>Petersen Brokers',
-    draft: 'Hi Nadia,<br><br>BH-28491 is cover-confirmed on the Santam motor binder. Accident photos are on file. We are waiting on the driver’s licence — that is the delay, not assessment.<br><br>I have not assigned an assessor yet. Reply on this thread if you can send the licence today.<br><br>Broker Desk · Brolink'
+    draft: 'Hi Nadia,<br><br>BH-28491 is cover-confirmed on the Santam motor binder. Accident photos and the repair quote are on file. The licence on the FNOL pack expired 12 Jan 2026 — that is the delay, not assessment.<br><br>I have not assigned an assessor yet. Reply on this thread if you can send a valid licence today.<br><br>Broker Desk · Brolink'
   },
   {
     id: 'cover', group: 'desk',
@@ -941,6 +1184,13 @@ var mails = [
     sub: 'Cover confirmation — ST-88211 Hollard commercial',
     pre: 'Landlord needs confirmation of cover in force as at today.',
     book: 'Hollard', intent: 'Cover confirmation', cls: 'read', conf: '94%', action: 'auto',
+    trace: [
+      { t: '08:16:11', m: 'classified · cover_confirmation · 94%', k: 'ok' },
+      { t: '08:16:12', m: 'entity · ST-88211 · Hollard commercial', k: '' },
+      { t: '08:16:12', m: 'isolation · hollard.workspace · ALLOW', k: 'ok' },
+      { t: '08:16:13', m: 'tool · get_policy · class=read', k: '' },
+      { t: '08:16:13', m: 'draft · in-force letter · not a COI', k: 'ok' }
+    ],
     letter: 'Good morning,<br><br>Please confirm cover in force on <b>ST-88211</b> (Hollard commercial / fleet) as at today. The client’s landlord has requested written confirmation.<br><br>Thabo Mokoena<br>KM Insure',
     draft: 'Hi Thabo,<br><br>Confirmed: ST-88211 is in force on the Hollard commercial binder as at 25 Aug 2026. This is a cover confirmation only — it is not a certificate of insurance for third parties, and it does not vary the policy.<br><br>Broker Desk · Brolink'
   },
@@ -950,6 +1200,13 @@ var mails = [
     sub: 'Specified item — ST-449201 Santam',
     pre: 'Please add Rolex Datejust, serial 2G4R881, R128,000.',
     book: 'Santam', intent: 'Endorsement / specified item', cls: 'write', conf: '91%', action: 'confirm',
+    trace: [
+      { t: '08:21:04', m: 'classified · endorsement.specified_item · 91%', k: 'ok' },
+      { t: '08:21:05', m: 'extract · Rolex Datejust · 2G4R881 · R128,000', k: '' },
+      { t: '08:21:05', m: 'isolation · santam.workspace · ALLOW', k: 'ok' },
+      { t: '08:21:06', m: 'tool · draft_endorsement · class=write', k: 'warn' },
+      { t: '08:21:06', m: 'hold · confirm required before Websure', k: 'warn' }
+    ],
     letter: 'Please add a specified item on Santam policy <b>ST-449201</b>:<br>Rolex Datejust · serial 2G4R881 · R128,000.<br><br>Invoice attached. Kindly confirm premium delta before binding.',
     draft: 'Hi Nadia,<br><br>Draft endorsement ready on ST-449201. Premium delta <b>+R186.40 / month</b>, specified-item excess R1,000 (illustrative).<br><br>I will not write this to Websure until you confirm on this thread — it is a policy variation, not a status lookup.<br><br>Broker Desk · Brolink'
   },
@@ -959,6 +1216,13 @@ var mails = [
     sub: 'Add vehicle — ST-88211 Hollard fleet',
     pre: 'Please add 2022 Toyota Hilux, CA 829-441, retail R489,000.',
     book: 'Hollard', intent: 'Endorsement / add vehicle', cls: 'write', conf: '90%', action: 'confirm',
+    trace: [
+      { t: '08:24:18', m: 'classified · endorsement.add_vehicle · 90%', k: 'ok' },
+      { t: '08:24:19', m: 'extract · Hilux 2.8 · CA 829-441 · R489,000', k: '' },
+      { t: '08:24:19', m: 'isolation · hollard.workspace · ALLOW', k: 'ok' },
+      { t: '08:24:20', m: 'tool · draft_endorsement · class=write', k: 'warn' },
+      { t: '08:24:20', m: 'hold · confirm required before Websure', k: 'warn' }
+    ],
     letter: 'Please add a vehicle to <b>ST-88211</b>:<br>2022 Toyota Hilux 2.8 GD-6 · CA 829-441 · retail R489,000 · regular driver Thabo Mokoena.<br><br>Licence disc attached. Need cover from tomorrow.',
     draft: 'Hi Thabo,<br><br>Draft vehicle endorsement on ST-88211 (Hollard fleet). Cover start tomorrow 00:01, pending confirm. Premium delta <b>+R1,240 / month</b> (illustrative). Tracking and overnight-risk still as per existing fleet warranty.<br><br>I will not write to Websure until you confirm. This is a policy variation on the Hollard book only.<br><br>Broker Desk · Brolink'
   },
@@ -968,6 +1232,13 @@ var mails = [
     sub: 'Change risk address — ST-449201',
     pre: 'Client moving from Lyttelton to Waterkloof Ridge on 1 Sep.',
     book: 'Santam', intent: 'Endorsement / risk address', cls: 'write', conf: '89%', action: 'confirm',
+    trace: [
+      { t: '08:27:41', m: 'classified · endorsement.risk_address · 89%', k: 'ok' },
+      { t: '08:27:42', m: 'extract · 8 Berg Road · Waterkloof Ridge · 1 Sep', k: '' },
+      { t: '08:27:42', m: 'isolation · santam.workspace · ALLOW', k: 'ok' },
+      { t: '08:27:43', m: 'tool · draft_endorsement · class=write', k: 'warn' },
+      { t: '08:27:43', m: 'note · crime-risk band change · confirm required', k: 'warn' }
+    ],
     letter: 'Please change the risk address on <b>ST-449201</b> from 14 Kruger Street, Lyttelton to 8 Berg Road, Waterkloof Ridge, effective 1 September. Contents sum insured unchanged. Alarm and armed response remain in force.',
     draft: 'Hi Nadia,<br><br>Draft address endorsement on ST-449201. Effective 1 Sep. Waterkloof Ridge is a different crime-risk band — premium delta <b>+R62 / month</b> (illustrative). Alarm warranty carried across.<br><br>Confirm and I will write to Websure. No cover gap if we commit before 1 Sep.<br><br>Broker Desk · Brolink'
   },
@@ -977,6 +1248,13 @@ var mails = [
     sub: 'Move debit order date — ST-110882 Santam',
     pre: 'Please move the debit from the 1st to the 25th.',
     book: 'Santam', intent: 'Endorsement / debit-order date', cls: 'write', conf: '93%', action: 'confirm',
+    trace: [
+      { t: '08:31:08', m: 'classified · endorsement.debit_date · 93%', k: 'ok' },
+      { t: '08:31:09', m: 'extract · ST-110882 · 1st → 25th · Sep', k: '' },
+      { t: '08:31:09', m: 'not · new mandate · not a collection retry', k: '' },
+      { t: '08:31:10', m: 'tool · draft_endorsement · class=write', k: 'warn' },
+      { t: '08:31:10', m: 'hold · confirm required before Websure', k: 'warn' }
+    ],
     letter: 'Client salary date changed. Please move the debit order on <b>ST-110882</b> from the 1st to the 25th of each month, effective September. Banking details unchanged.',
     draft: 'Hi Lindiwe,<br><br>Draft debit-date change on ST-110882: 1st → 25th from September. Banking details unchanged — this is not a new debit mandate and it is not a collection retry.<br><br>Confirm and I will write the date to Websure. Premium amount is unchanged.<br><br>Broker Desk · Brolink'
   },
@@ -986,6 +1264,13 @@ var mails = [
     sub: 'Unpaid debit — ST-110882 · R2,140.40',
     pre: 'Code 22 insufficient funds. Do not re-present until the broker agrees a date.',
     book: 'Santam', intent: 'Collections / unpaid debit', cls: 'write', conf: '95%', action: 'collect',
+    trace: [
+      { t: '08:33:02', m: 'classified · collections.unpaid_debit · 95%', k: 'ok' },
+      { t: '08:33:03', m: 'extract · ST-110882 · R2,140.40 · code 22', k: '' },
+      { t: '08:33:03', m: 'tool · notify_broker · class=write', k: 'warn' },
+      { t: '08:33:04', m: 'tool · re-present_debit · class=financial', k: 'bad' },
+      { t: '08:33:04', m: 'blocked · collections ops owns the retry', k: 'bad' }
+    ],
     letter: 'Exception from premium collections:<br><br>Policy <b>ST-110882</b> · J. van der Merwe · Santam · unpaid debit <b>R2,140.40</b> · code 22 insufficient funds · 25 Aug 06:12.<br><br>Do not re-present. Notify the placing broker and wait for a new date.',
     draft: 'Hi Lindiwe,<br><br>The September debit on ST-110882 (van der Merwe) returned unpaid — insufficient funds, R2,140.40. Cover is still in force pending the collections rule on this binder.<br><br>Please confirm a new debit date with the client. I will <b>not</b> re-present the debit from this desk — that is a financial action for collections ops.<br><br>Broker Desk · Brolink'
   },
@@ -995,6 +1280,12 @@ var mails = [
     sub: 'August commission statement not received',
     pre: 'We have not received the pack. Please advise urgently.',
     book: 'Multi', intent: 'Commission / finance', cls: 'read', conf: '88%', action: 'escalate',
+    trace: [
+      { t: '08:36:14', m: 'classified · commission_statement · 88%', k: 'ok' },
+      { t: '08:36:15', m: 'not · binder desk · route to commission ops', k: 'warn' },
+      { t: '08:36:15', m: 'tool · escalate · no payment ref invented', k: '' },
+      { t: '08:36:16', m: 'write · none · policy and claim untouched', k: 'ok' }
+    ],
     letter: 'Morning,<br><br>We have not received the August commission pack or the single payment advice. Please advise — this affects cash flow for the brokerage.<br><br>Lindiwe Dlamini<br>Summit Risk',
     draft: 'Hi Lindiwe,<br><br>This sits with commission ops, not the binder desk. I have escalated to the commission pack queue and asked them to reply on this thread with the statement and payment reference.<br><br>I have not changed any policy or claim record.<br><br>Broker Desk · Brolink'
   },
@@ -1004,6 +1295,12 @@ var mails = [
     sub: 'Assessor report — BH-28491',
     pre: 'Please send the assessor report on this claim.',
     book: 'Hollard workspace', intent: 'Claim file request', cls: 'refuse', conf: '99%', action: 'refuse',
+    trace: [
+      { t: '08:41:09', m: 'classified · claim_file_request · 99%', k: 'ok' },
+      { t: '08:41:10', m: 'entity · BH-28491 · book=Santam', k: '' },
+      { t: '08:41:10', m: 'workspace · hollard · no right on that file', k: 'bad' },
+      { t: '08:41:11', m: 'result · CROSS_TENANT_REFUSE · no payload', k: 'bad' }
+    ],
     letter: 'Please send the assessor report for BH-28491. We need it for the client this afternoon.<br><br>Pieter Botha',
     draft: 'Hi Pieter,<br><br>BH-28491 sits on the <b>Santam</b> book. This mailbox is operating in the Hollard workspace and has no read, write, or financial right on that file. No payload is attached.<br><br>Please send the request from the Santam-book thread, or ask the placing broker on that binder.<br><br>Broker Desk · Brolink'
   }
@@ -1083,6 +1380,14 @@ function openMail(id) {
     + '<div class="draft"><h4>Draft reply</h4>' + m.draft + '</div>'
     + (btns ? '<div style="display:flex;gap:8px;flex-wrap:wrap;">' + btns + '</div>' : '')
     + result;
+  showMailTrace(m);
+}
+var mailQueueFast = false;
+var mailTraceGen = 0;
+function showMailTrace(m) {
+  mailTraceGen += 1;
+  var gen = mailTraceGen;
+  renderTrace('mailTrace', m.trace || [], mailQueueFast, gen, function() { return mailTraceGen; });
 }
 function mailAct(id, st) {
   mailState[id] = st;
@@ -1094,13 +1399,17 @@ function resetInbox() {
   mailState = {};
   mailFilter = 'all';
   mailOpen = '';
+  mailQueueFast = false;
+  mailTraceGen += 1;
   el('qCol').textContent = '12';
   renderMailList('');
   el('mailRead').innerHTML = '<div class="empty">Select a mail. Status and cover can auto-send. Endorsements wait for confirm. Unpaid debit notifies the broker — re-presenting it is financial.</div>';
+  el('mailTrace').innerHTML = '<div class="trace-line k-dim"><span class="ts">—</span><span class="tm">Waiting for a mail…</span></div>';
 }
 function runQueue() {
   clearLater();
   mailFilter = 'all';
+  mailQueueFast = true;
   var box = document.getElementById('inbox');
   if (box) box.scrollIntoView({ behavior: 'smooth', block: 'start' });
   var order = [
@@ -1120,6 +1429,7 @@ function runQueue() {
       openMail(step[0]);
     });
   });
+  later(order.length * 380, function() { mailQueueFast = false; });
 }
 
 var books = {
@@ -1162,7 +1472,7 @@ function isoSearch() {
     return;
   }
   if (ws === 'santam' && lookingSantam) {
-    el('isoResult').innerHTML = '<div class="ok-box"><span class="tag tag-read">read</span><div style="margin-top:8px;color:var(--ink);"><b>BH-28491</b> · J. van der Merwe · Santam motor · cover in force · docs incomplete.</div></div>';
+    el('isoResult').innerHTML = '<div class="ok-box"><span class="tag tag-read">read</span><div style="margin-top:8px;color:var(--ink);"><b>BH-28491</b> · J. van der Merwe · Santam motor · cover in force · licence on file expired 12 Jan 2026.</div></div>';
     el('audit').textContent = ts + '\nactor=santam.workspace\naction=READ\nresource=claim:BH-28491\nresult=ALLOW';
     return;
   }
@@ -1189,7 +1499,7 @@ var archCopy = {
   financial: ['financial — people stay on the mandate', 'Premium, settlement, debit-order, recoveries. The assessor or finance owner authorises. The layer never holds this tool in auto. That is why Authorise settlement is blocked in the claims cell.'],
   mail: ['Shared mailbox first', 'Not a personal inbox. Microsoft Graph or IMAP on the broker-desk box. Classify intent and insurer book, look up Websure, then send / hold / escalate / refuse. Live value before any Websure write is approved.'],
   wa: ['WhatsApp is a channel, not a product', 'Same agent, same action classes, same isolation. Only after email is trusted. Do not lead the 90 days with WhatsApp Business procurement.'],
-  agent: ['Glass-box traces', 'Every decision carries intent, book, action class, and confirm/refuse. The insurer’s supervision duty under the binder is the point — a black box is unusable here.'],
+  agent: ['Glass-box traces', 'Every decision carries intent, book, action class, and confirm/refuse. On FNOL the same strip shows vision extract, binder reconcile, and the financial wall. The insurer’s supervision duty under the binder is the point — a black box is unusable here.'],
   iso: ['Isolation is in the connector', 'Santam tools cannot resolve a Hollard id. CROSS_TENANT_REFUSE is a hard fail with an audit line and no payload. Prompt instructions are not the control.'],
   websure: ['Websure API — wrap, do not embed', 'Their site already claims internet-facing APIs. We ask IT for auth, read endpoints, and the writes we are allowed. Each endpoint becomes a named tool: get_claim, draft_endorsement. The agent never sees a raw URL.'],
   other: ['Same catalogue, other systems', 'Astute Short Term Switch for insurer data sharing we do not re-implement. Collections and commission escalate until an API exists. Bordereaux via SFTP. RPA only if a single Websure action has no API — never as the architecture.']

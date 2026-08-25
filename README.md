@@ -8,9 +8,9 @@ This is a **layer alongside Websure**, not a replacement. It does not settle cla
 
 ## What the room walks through
 
-1. **Email desk** — status and cover auto-send; vehicle / address / specified item / debit-date endorsements confirm-before-write; unpaid debit notifies the broker (re-present stays financial); commission escalate; cross-book refuse.
+1. **Email desk** — status and cover auto-send; vehicle / address / specified item / debit-date endorsements confirm-before-write; unpaid debit notifies the broker (re-present stays financial); commission escalate; cross-book refuse. Agent trace shows intent, book, and isolation.
 2. **Broker morning** — Nadia Petersen on WhatsApp: claim status, specified-item confirm-before-write, multi-quote as advice support.
-3. **Claims cell** — FNOL → cover check → missing-docs chase. Settlement stays with the assessor.
+3. **Claims cell** — FNOL pack is read (photo, licence, quote), reconciled to the Santam binder, expired licence chased. Settlement stays with the assessor. Agent trace is visible.
 4. **Binder supervision** — per-insurer bordereaux, TCF, DSARs, collections exceptions.
 5. **Isolation** — Hollard workspace searching a Santam claim is refused with an audit line.
 6. **Connect** — mailbox → classified actions → Websure / Astute. Read, write, financial.
