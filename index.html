@@ -42,10 +42,14 @@ a { color: inherit; }
 .nav .container { display:flex; align-items:center; justify-content:space-between; gap:16px; }
 .nav-logo { display:flex; align-items:center; gap:8px; font-weight:700; font-size:16px; text-decoration:none; }
 .nav-logo em { font-style:normal; color: var(--teal-bright); }
-.nav-links { display:flex; gap:18px; flex-wrap:wrap; }
+.nav-links { display:flex; gap:18px; flex-wrap:wrap; justify-content:flex-end; }
 .nav-links a { color: var(--muted); text-decoration:none; font-size:13px; font-weight:500; }
 .nav-links a:hover { color: var(--ink); }
-@media (max-width: 860px) { .nav-links { display:none; } }
+@media (max-width: 860px) {
+  .nav .container { flex-wrap: wrap; }
+  .nav-links { width: 100%; gap: 10px 14px; justify-content: flex-start; }
+  .nav-links a { font-size: 12px; }
+}
 
 .btn {
   display:inline-flex; align-items:center; gap:8px; padding:12px 22px;
@@ -388,7 +392,11 @@ a { color: inherit; }
     <div class="text-center mb-48">
       <div class="sec-label">Broker desk · the volume is email</div>
       <h2 class="sec-title">A shared mailbox that actually resolves.</h2>
-      <p class="sec-desc">Click a mail. The layer classifies intent and insurer book, looks up Websure, and either auto-sends a read-only status, drafts a write for confirm, escalates, or refuses a cross-book request.</p>
+      <p class="sec-desc">Click a mail, or run the whole queue: auto-send status, hold endorsements for confirm, escalate commission, refuse a cross-book request.</p>
+      <div style="margin-top:22px;display:flex;gap:10px;justify-content:center;flex-wrap:wrap;">
+        <button class="btn btn-primary" type="button" onclick="runQueue()">Run the queue →</button>
+        <button class="btn btn-outline" type="button" onclick="resetInbox()">Reset inbox</button>
+      </div>
     </div>
     <div class="frame">
       <div class="frame-h">
@@ -882,6 +890,8 @@ function resetInbox() {
 }
 function runQueue() {
   clearLater();
+  var box = document.getElementById('inbox');
+  if (box) box.scrollIntoView({ behavior: 'smooth', block: 'start' });
   var order = [
     ['status', 'sent'],
     ['cover', 'sent'],
