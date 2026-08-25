@@ -280,6 +280,34 @@ a { color: inherit; }
 }
 .draft h4 { font-size: 11px; letter-spacing: 0.8px; text-transform: uppercase; color: var(--dim); margin-bottom: 8px; }
 
+.flow { display:grid; grid-template-columns: repeat(4, 1fr); gap: 12px; }
+@media (max-width: 900px) { .flow { grid-template-columns: 1fr 1fr; } }
+@media (max-width: 560px) { .flow { grid-template-columns: 1fr; } }
+.flow-col { background: var(--surface); border: 1px solid var(--line); border-radius: 16px; padding: 16px; box-shadow: var(--shadow); }
+.flow-col h3 { font-size: 12px; letter-spacing: 0.8px; text-transform: uppercase; color: var(--teal); margin-bottom: 10px; }
+.flow-chip {
+  display:block; width:100%; text-align:left; margin-bottom: 8px; padding: 10px 12px;
+  background: var(--bg); border: 1px solid var(--line); border-radius: 10px;
+  font-size: 13px; font-weight: 600; color: var(--ink); cursor: pointer; font-family: inherit;
+}
+.flow-chip:last-child { margin-bottom: 0; }
+.flow-chip:hover, .flow-chip.on { border-color: var(--teal); background: #e7f4f6; }
+.flow-chip span { display:block; font-size: 11px; font-weight: 500; color: var(--dim); margin-top: 2px; }
+.arch-detail { margin-top: 16px; }
+
+.agenda { width:100%; border-collapse: collapse; font-size: 14px; }
+.agenda th { text-align:left; font-size: 11px; letter-spacing: 0.6px; text-transform: uppercase; color: var(--dim); padding: 8px 10px; border-bottom: 1px solid var(--line); }
+.agenda td { padding: 12px 10px; border-bottom: 1px solid var(--line); vertical-align: top; }
+.agenda td:first-child { font-family: var(--font-mono); font-size: 12px; font-weight: 700; color: var(--teal); white-space: nowrap; width: 110px; }
+.ask { margin: 0 0 10px; padding-left: 18px; color: var(--muted); }
+.ask li { margin-bottom: 6px; }
+
+@media print {
+  .nav, .hero, .pillars, #inbox, #journey, #claims, #compliance, #isolation, #scorecard, .footer, .theme-chip { display:none !important; }
+  .section { padding: 24px 0; }
+  .contact { background: #fff; }
+}
+
 .contact { background: var(--surface); text-align:center; }
 .footer { padding: 28px 24px; border-top: 1px solid var(--line); text-align:center; font-size: 12px; color: var(--dim); }
 .hidden { display: none !important; }
@@ -299,7 +327,8 @@ a { color: inherit; }
       <a href="#claims">Claims cell</a>
       <a href="#compliance">Binder</a>
       <a href="#isolation">Isolation</a>
-      <a href="#scorecard">2030</a>
+      <a href="#architecture">Connect</a>
+      <a href="#session">Session</a>
     </div>
   </div>
 </nav>
@@ -314,7 +343,7 @@ a { color: inherit; }
         <p class="hero-quote">“Insurance administration done right — through people, technology, and partnerships.”<br><strong>Olebogeng Mogale, CEO · 2030 Strategy</strong></p>
         <div class="hero-actions">
           <a href="#inbox" class="btn btn-primary">Open the broker inbox →</a>
-          <a href="#isolation" class="btn btn-outline">Prove book isolation</a>
+          <a href="#architecture" class="btn btn-outline">How we connect</a>
         </div>
       </div>
       <div class="hero-visual">
@@ -555,6 +584,40 @@ a { color: inherit; }
   </div>
 </section>
 
+<section class="section" id="architecture">
+  <div class="container">
+    <div class="text-center mb-48">
+      <div class="sec-label">Alongside Websure · not inside it</div>
+      <h2 class="sec-title">How we connect — without touching the core.</h2>
+      <p class="sec-desc">Internet-facing Websure APIs where they exist. Shared mailbox first. Every tool is classified. Santam tools cannot resolve a Hollard id. Click a layer to see what it is allowed to do.</p>
+    </div>
+    <div class="flow">
+      <div class="flow-col">
+        <h3>01 · Channels</h3>
+        <button type="button" class="flow-chip" onclick="showArch('mail', this)">Shared mailbox<span>Microsoft Graph / IMAP · broker desk, not a personal inbox</span></button>
+        <button type="button" class="flow-chip" onclick="showArch('wa', this)">WhatsApp later<span>Same agent, second channel — after email is trusted</span></button>
+      </div>
+      <div class="flow-col">
+        <h3>02 · The layer</h3>
+        <button type="button" class="flow-chip" onclick="showArch('agent', this)">Agent + traces<span>Intent, insurer book, confidence · every decision is visible</span></button>
+        <button type="button" class="flow-chip" onclick="showArch('iso', this)">Book isolation<span>Santam workspace cannot see Hollard. Enforced in the connector, not the prompt</span></button>
+      </div>
+      <div class="flow-col">
+        <h3>03 · Action class</h3>
+        <button type="button" class="flow-chip on" id="archRead" onclick="showArch('read', this)">read<span>Status, cover in force, missing docs — can auto-send</span></button>
+        <button type="button" class="flow-chip" id="archWrite" onclick="showArch('write', this)">write<span>Notes, chase, endorsement draft — confirm first</span></button>
+        <button type="button" class="flow-chip" id="archFin" onclick="showArch('financial', this)">financial<span>Premium, settlement, debit order — assessor only</span></button>
+      </div>
+      <div class="flow-col">
+        <h3>04 · Systems</h3>
+        <button type="button" class="flow-chip" onclick="showArch('websure', this)">Websure API<span>Policy, claim, endorsement · wrap endpoints as named tools</span></button>
+        <button type="button" class="flow-chip" onclick="showArch('other', this)">Astute · collections · files<span>Industry switch, debit-order fails, bordereaux SFTP. RPA last</span></button>
+      </div>
+    </div>
+    <div class="card arch-detail" id="archDetail"></div>
+  </div>
+</section>
+
 <section class="section" id="scorecard">
   <div class="container">
     <div class="text-center mb-48">
@@ -585,13 +648,99 @@ a { color: inherit; }
   </div>
 </section>
 
-<section class="section contact" id="session">
+<section class="section" id="session">
   <div class="container">
-    <div class="sec-label">Next step</div>
-    <h2 class="sec-title" style="margin:10px auto 14px; max-width:720px;">60–90 minutes. Walk two or three of your highest-volume processes.</h2>
-    <p class="sec-desc" style="margin-bottom:12px;">Start with the broker email desk — that is the volume. Then FNOL document chasing and endorsements.</p>
-    <p class="sec-desc" style="margin-bottom:28px;">In the room: operations, claims, whoever owns Websure, and compliance. No obligation — you will know inside the hour.</p>
-    <a class="btn btn-primary" style="padding:16px 32px;font-size:15px;" href="mailto:malcolm@movedigital.africa?subject=Brolink working session — admin to advantage">Request a working session →</a>
+    <div class="text-center mb-48">
+      <div class="sec-label">Working session pack · 90 minutes</div>
+      <h2 class="sec-title">Run the room from this page.</h2>
+      <p class="sec-desc">No obligation. If it is not a fit, you will know inside the hour. One ask only: walk two or three of your highest-volume processes.</p>
+    </div>
+
+    <div class="card" style="margin-bottom:16px; text-align:left;">
+      <div class="panel-kicker" style="margin-bottom:10px;">In the room</div>
+      <p style="font-size:15px; margin-bottom:8px;"><b>Must:</b> operations or broker desk · claims · whoever owns Websure · compliance / risk (Hendrik / Christoph)</p>
+      <p style="font-size:15px; color:var(--muted);">Better if present: Olebogeng (platform story) · Farzana (cost per transaction) · Teresa / Anelle (underwriting mandate — so we do not over-claim).</p>
+    </div>
+
+    <div class="card" style="margin-bottom:16px; text-align:left; overflow-x:auto;">
+      <div class="panel-kicker" style="margin-bottom:10px;">Agenda</div>
+      <table class="agenda">
+        <thead><tr><th>Time</th><th>Beat</th><th>What you say · what you click</th></tr></thead>
+        <tbody>
+          <tr>
+            <td>0:00</td>
+            <td>Open</td>
+            <td>Quote Olebogeng: administration done right through people, technology, partnerships. <b>We do not replace Websure. We do not settle claims. People stay on judgement.</b></td>
+          </tr>
+          <tr>
+            <td>0:08</td>
+            <td>Email desk</td>
+            <td>Go to <a href="#inbox">#inbox</a>. “This is where your volume already sits.” Click <b>Run the queue</b>. Pause on auto-send vs confirm vs escalate vs refuse.</td>
+          </tr>
+          <tr>
+            <td>0:25</td>
+            <td>Confirm-before-write</td>
+            <td>Open the specified-item mail. Hold, then confirm. Then <a href="#claims">claims cell</a>: ingest FNOL, chase docs, hit <b>Authorise settlement</b> — it must fail. That is the binder control.</td>
+          </tr>
+          <tr>
+            <td>0:40</td>
+            <td>Isolation + connect</td>
+            <td><a href="#isolation">Hollard workspace</a> → search BH-28491 → refuse. Then <a href="#architecture">architecture</a>: mailbox → classified actions → Websure API. IT should nod here.</td>
+          </tr>
+          <tr>
+            <td>0:55</td>
+            <td>They talk</td>
+            <td>Stop demoing. Ask them to name the two or three processes that eat FTE. Write them down. Do not sell.</td>
+          </tr>
+          <tr>
+            <td>1:15</td>
+            <td>Discovery close</td>
+            <td>Which mailbox is the real broker desk? What does Websure expose over API? Which insurer book first (one, not all)? Paid scoping next — not a free build.</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="comp-grid" style="margin-bottom:16px; text-align:left;">
+      <div class="card">
+        <div class="panel-kicker" style="margin-bottom:10px;">Talk track — open</div>
+        <p style="font-size:14px; color:var(--muted); line-height:1.65;">Admin is the product. If we take chasing, status, and first-draft endorsements off the broker and off the floor — with traces the insurer can supervise — Brolink becomes the platform of the broker of tomorrow. We sit on Websure. We do not rebuild it.</p>
+      </div>
+      <div class="card">
+        <div class="panel-kicker" style="margin-bottom:10px;">Do not say</div>
+        <ul class="ask">
+          <li>Replace Websure, or “Websure AI v2.4”</li>
+          <li>Fully autonomous settlement or underwriting</li>
+          <li>Headcount takeout (People is pillar 1)</li>
+          <li>Santam-only examples as the whole story</li>
+          <li>Pricing, partnership, or “pilot” in this hour</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="card" style="margin-bottom:16px; text-align:left;">
+      <div class="panel-kicker" style="margin-bottom:10px;">Questions to leave with</div>
+      <ul class="ask">
+        <li>Which mailbox is the live broker desk, and who owns it?</li>
+        <li>What does Websure already expose — API, webhooks, or UI only?</li>
+        <li>Which insurer book would be in scope first, and how is Santam data separated from Hollard today?</li>
+        <li>Where is the backlog worst: email queries, FNOL docs, or endorsements?</li>
+        <li>Is there a Santam group AI / vendor policy, and who clears it?</li>
+        <li>Do you want this as a capability you own, or one we operate?</li>
+      </ul>
+    </div>
+
+    <div class="card" style="margin-bottom:28px; text-align:left;">
+      <div class="panel-kicker" style="margin-bottom:10px;">If they say yes — 90-day discovery (paid)</div>
+      <p style="font-size:14px; color:var(--muted); line-height:1.65;"><b>Weeks 1–2:</b> Websure API walkthrough · shared mailbox · one insurer book only.<br>
+      <b>Weeks 3–6:</b> Email desk on read-only Websure (status, cover, missing docs).<br>
+      <b>Weeks 7–12:</b> One write path with confirm-before-write · isolation tests on a second book. WhatsApp is a channel after that, not a new product.</p>
+    </div>
+
+    <div class="text-center">
+      <p class="sec-desc" style="margin-bottom:20px;">Print this section if you want paper in the room. Demo URL stays one page.</p>
+      <a class="btn btn-primary" style="padding:16px 32px;font-size:15px;" href="mailto:malcolm@movedigital.africa?subject=Brolink working session — admin to advantage">Request a working session →</a>
+    </div>
   </div>
 </section>
 
@@ -982,9 +1131,29 @@ function calc() {
   el('k4').textContent = '100%';
 }
 
+var archCopy = {
+  read: ['read — auto-send allowed', 'Claim status, cover in force, document checklist. High-confidence replies leave the shared mailbox without a human. Trace is still written. No policy record changes.'],
+  write: ['write — confirm before Websure', 'Claim notes, document chase, endorsement drafts. The agent prepares the payload. A human confirms. Then we call the Websure API. This is the FSCA-shaped control.'],
+  financial: ['financial — people stay on the mandate', 'Premium, settlement, debit-order, recoveries. The assessor or finance owner authorises. The layer never holds this tool in auto. That is why Authorise settlement is blocked in the claims cell.'],
+  mail: ['Shared mailbox first', 'Not a personal inbox. Microsoft Graph or IMAP on the broker-desk box. Classify intent and insurer book, look up Websure, then send / hold / escalate / refuse. Live value before any Websure write is approved.'],
+  wa: ['WhatsApp is a channel, not a product', 'Same agent, same action classes, same isolation. Only after email is trusted. Do not lead the 90 days with WhatsApp Business procurement.'],
+  agent: ['Glass-box traces', 'Every decision carries intent, book, action class, and confirm/refuse. The insurer’s supervision duty under the binder is the point — a black box is unusable here.'],
+  iso: ['Isolation is in the connector', 'Santam tools cannot resolve a Hollard id. CROSS_TENANT_REFUSE is a hard fail with an audit line and no payload. Prompt instructions are not the control.'],
+  websure: ['Websure API — wrap, do not embed', 'Their site already claims internet-facing APIs. We ask IT for auth, read endpoints, and the writes we are allowed. Each endpoint becomes a named tool: get_claim, draft_endorsement. The agent never sees a raw URL.'],
+  other: ['Same catalogue, other systems', 'Astute Short Term Switch for insurer data sharing we do not re-implement. Collections and commission escalate until an API exists. Bordereaux via SFTP. RPA only if a single Websure action has no API — never as the architecture.']
+};
+function showArch(kind, btn) {
+  var chips = document.querySelectorAll('.flow-chip');
+  for (var i = 0; i < chips.length; i++) chips[i].classList.remove('on');
+  if (btn) btn.classList.add('on');
+  var row = archCopy[kind] || archCopy.read;
+  el('archDetail').innerHTML = '<div class="panel-kicker" style="margin-bottom:8px;">Selected</div><h3 style="margin-bottom:8px;">' + row[0] + '</h3><p style="color:var(--muted);font-size:15px;max-width:820px;">' + row[1] + '</p>';
+}
+
 showBook('santam');
 calc();
 resetInbox();
+showArch('read', el('archRead'));
 </script>
 </body>
 </html>

@@ -9,14 +9,16 @@ This is a **layer alongside Websure**, not a replacement. It does not settle cla
 ## What the room walks through
 
 1. **Email desk** — shared Broker Desk mailbox. Auto-send read-only status, confirm-before-write on endorsements, escalate commission, refuse cross-book requests.
-2. **Broker morning (Total Experience)** — Nadia Petersen on WhatsApp. Three jobs that actually resolve:
-   - Claim status BH-28491 (read-only, docs incomplete)
-   - Specified-item endorsement (draft → **confirm before write** to Websure)
-   - Multi-quote as **advice support**, not aggregation
-2. **Claims cell** — FNOL → cover check against the Santam motor binder → missing-docs chase. Settlement is a **financial** action and stays with the assessor.
-3. **Binder supervision** — per-insurer bordereaux, TCF, DSARs, collections exceptions. Not a generic POPI pie chart.
-4. **Isolation** — Hollard workspace searching a Santam claim is **refused** with an audit line.
-5. **2030 scorecard** — cost per transaction and hours returned to brokers. Inputs are labelled illustrative.
+2. **Broker morning** — Nadia Petersen on WhatsApp: claim status, specified-item confirm-before-write, multi-quote as advice support.
+3. **Claims cell** — FNOL → cover check → missing-docs chase. Settlement stays with the assessor.
+4. **Binder supervision** — per-insurer bordereaux, TCF, DSARs, collections exceptions.
+5. **Isolation** — Hollard workspace searching a Santam claim is refused with an audit line.
+6. **Connect** — mailbox → classified actions → Websure / Astute. Read, write, financial.
+7. **Working session pack** — 90-minute agenda, talk track, who must be in the room, discovery questions.
+
+## Working session
+
+Open https://malcolmgov.github.io/brolink/#session in the room (print that section if you want paper).
 
 ## Files
 
@@ -30,9 +32,3 @@ git clone https://github.com/MalcolmGov/brolink.git
 cd brolink
 open index.html
 ```
-
-No build step. No dependencies.
-
-## Working session
-
-60–90 minutes. Walk two or three of the highest-volume processes with operations, claims, whoever owns Websure, and compliance in the room.
