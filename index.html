@@ -240,6 +240,31 @@ a { color: inherit; }
 .kpi-l { font-size: 10px; color: var(--dim); text-transform: uppercase; letter-spacing: 0.4px; margin-top: 2px; }
 .note { font-size: 12px; color: var(--dim); margin-top: 14px; }
 
+.inbox { display:grid; grid-template-columns: 300px 1fr; min-height: 540px; }
+@media (max-width: 900px) { .inbox { grid-template-columns: 1fr; } }
+.mail-list { border-right: 1px solid var(--line); background: #0b0e12; }
+.mail-item {
+  display:block; width:100%; text-align:left; padding: 12px 14px; cursor:pointer;
+  background: transparent; border: none; border-bottom: 1px solid var(--line);
+  color: var(--ink); font-family: inherit;
+}
+.mail-item:hover { background: rgba(32,163,182,0.06); }
+.mail-item.on { background: rgba(32,163,182,0.12); box-shadow: inset 3px 0 0 var(--teal); }
+.mail-from { font-size: 12px; font-weight: 650; display:flex; justify-content:space-between; gap:8px; }
+.mail-sub { font-size: 12px; margin-top: 2px; }
+.mail-pre { font-size: 11px; color: var(--dim); margin-top: 2px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.mail-read {
+  padding: 18px; display:flex; flex-direction:column; gap: 12px;
+}
+.mail-letter {
+  background: var(--bg); border: 1px solid var(--line); border-radius: 12px; padding: 14px 16px; font-size: 13px;
+}
+.mail-letter .meta { font-size: 11px; color: var(--dim); margin-bottom: 10px; }
+.draft {
+  background: var(--card); border: 1px solid var(--line); border-radius: 12px; padding: 14px 16px; font-size: 13px;
+}
+.draft h4 { font-size: 11px; letter-spacing: 0.8px; text-transform: uppercase; color: var(--dim); margin-bottom: 8px; }
+
 .contact { background: var(--surface); text-align:center; }
 .footer { padding: 28px 24px; border-top: 1px solid var(--line); text-align:center; font-size: 12px; color: var(--dim); }
 .hidden { display: none !important; }
@@ -251,6 +276,7 @@ a { color: inherit; }
   <div class="container">
     <a href="#" class="nav-logo">Brolink <em>layer</em></a>
     <div class="nav-links">
+      <a href="#inbox">Email desk</a>
       <a href="#journey">Broker morning</a>
       <a href="#claims">Claims cell</a>
       <a href="#compliance">Binder</a>
@@ -269,7 +295,7 @@ a { color: inherit; }
         <p class="hero-lead">A working layer on top of Websure that takes chasing, status, and first-draft endorsements off the broker and off the floor — with traces the insurer can supervise.</p>
         <p class="hero-quote">“Insurance administration done right — through people, technology, and partnerships.”<br><strong>Olebogeng Mogale, CEO · 2030 Strategy</strong></p>
         <div class="hero-actions">
-          <a href="#journey" class="btn btn-primary">Walk a broker morning →</a>
+          <a href="#inbox" class="btn btn-primary">Open the broker inbox →</a>
           <a href="#isolation" class="btn btn-outline">Prove book isolation</a>
         </div>
       </div>
@@ -277,12 +303,12 @@ a { color: inherit; }
         <div class="dash">
           <div class="dash-h">This morning · Centurion floor · illustrative</div>
           <div class="stats">
-            <div class="stat"><div class="stat-val">14</div><div class="stat-lbl">Broker queries closed</div></div>
+            <div class="stat"><div class="stat-val">41</div><div class="stat-lbl">Emails triaged</div></div>
             <div class="stat"><div class="stat-val">3</div><div class="stat-lbl">Endorsements awaiting confirm</div></div>
             <div class="stat"><div class="stat-val">0</div><div class="stat-lbl">Unsupervised writes</div></div>
             <div class="stat"><div class="stat-val">1</div><div class="stat-lbl">Cross-book refusal</div></div>
           </div>
-          <div class="act"><span>BH-28491 · Santam motor · docs chasing</span><span class="tag tag-write">write</span></div>
+          <div class="act"><span>Broker desk inbox · 2 auto-sent · 1 confirm · 1 refuse</span><span class="tag tag-read">read</span></div>
           <div class="act"><span>Specified item draft · confirm before Websure</span><span class="tag tag-write">write</span></div>
           <div class="act"><span>Hollard agent queried a Santam policy</span><span class="tag tag-refuse">refused</span></div>
         </div>
@@ -307,7 +333,7 @@ a { color: inherit; }
       <div class="pillar">
         <div class="n">03 · Total experience</div>
         <h3>The broker of tomorrow</h3>
-        <p>WhatsApp + Websure, one thread that actually resolves — status, docs, first-draft endorsements.</p>
+        <p>Email first (where the volume sits), then WhatsApp. Status, docs, first-draft endorsements — one layer on Websure.</p>
       </div>
     </div>
   </div>
@@ -351,6 +377,34 @@ a { color: inherit; }
           <h3 id="pTitle">Waiting for a broker request</h3>
           <p id="pLead">Pick a WhatsApp job. The right-hand pane shows what the layer does in Websure — read, draft, or confirm-before-write.</p>
           <div id="pBody" class="empty">No live context yet.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="section" id="inbox">
+  <div class="container">
+    <div class="text-center mb-48">
+      <div class="sec-label">Broker desk · the volume is email</div>
+      <h2 class="sec-title">A shared mailbox that actually resolves.</h2>
+      <p class="sec-desc">Click a mail. The layer classifies intent and insurer book, looks up Websure, and either auto-sends a read-only status, drafts a write for confirm, escalates, or refuses a cross-book request.</p>
+    </div>
+    <div class="frame">
+      <div class="frame-h">
+        <div style="display:flex;align-items:center;gap:10px;">
+          <span class="dots"><i></i><i></i><i></i></span>
+          Broker Desk · shared mailbox · alongside Websure
+        </div>
+        <div style="display:flex;gap:8px;flex-wrap:wrap;">
+          <button class="btn btn-primary btn-sm" type="button" onclick="runQueue()">Run the queue</button>
+          <button class="btn btn-outline btn-sm" type="button" onclick="resetInbox()">Reset inbox</button>
+        </div>
+      </div>
+      <div class="inbox">
+        <div class="mail-list" id="mailList"></div>
+        <div class="mail-read" id="mailRead">
+          <div class="empty">Select a mail. High-confidence status replies send. Anything that changes a policy waits for confirm. Santam never answers a Hollard thread.</div>
         </div>
       </div>
     </div>
@@ -489,7 +543,7 @@ a { color: inherit; }
     <div class="card score">
       <div>
         <div class="claims-grid" style="padding:0; gap:12px;">
-          <div class="field"><label>Broker queries / month</label><input type="number" id="bq" value="850" oninput="calc()"></div>
+          <div class="field"><label>Broker desk queries / month (email + WhatsApp)</label><input type="number" id="bq" value="2400" oninput="calc()"></div>
           <div class="field"><label>Minutes per query today</label><input type="number" id="mq" value="18" oninput="calc()"></div>
           <div class="field"><label>FNOL packs / month</label><input type="number" id="fn" value="900" oninput="calc()"></div>
           <div class="field"><label>Cost per query today (R)</label><input type="number" id="cq" value="42" oninput="calc()"></div>
@@ -513,7 +567,7 @@ a { color: inherit; }
   <div class="container">
     <div class="sec-label">Next step</div>
     <h2 class="sec-title" style="margin:10px auto 14px; max-width:720px;">60–90 minutes. Walk two or three of your highest-volume processes.</h2>
-    <p class="sec-desc" style="margin-bottom:12px;">Broker service desk, FNOL document chasing, and endorsements are the obvious start. Your team will know better.</p>
+    <p class="sec-desc" style="margin-bottom:12px;">Start with the broker email desk — that is the volume. Then FNOL document chasing and endorsements.</p>
     <p class="sec-desc" style="margin-bottom:28px;">In the room: operations, claims, whoever owns Websure, and compliance. No obligation — you will know inside the hour.</p>
     <a class="btn btn-primary" style="padding:16px 32px;font-size:15px;" href="mailto:malcolm@movedigital.africa?subject=Brolink working session — admin to advantage">Request a working session →</a>
   </div>
@@ -696,6 +750,153 @@ function trySettle() {
   el('finNote').classList.remove('hidden');
 }
 
+var mailState = {};
+var mails = [
+  {
+    id: 'status',
+    from: 'Nadia Petersen',
+    email: 'nadia@petersenbrokers.co.za',
+    sub: 'RE: van der Merwe / BH-28491 — client on the phone',
+    pre: 'Please advise current status. Client is waiting.',
+    book: 'Santam',
+    intent: 'Claim status',
+    cls: 'read',
+    conf: '96%',
+    letter: 'Hi team,<br><br>Please advise current status on claim <b>BH-28491</b> for J. van der Merwe. The client is on the phone.<br><br>Kind regards<br>Nadia Petersen<br>Petersen Brokers',
+    draft: 'Hi Nadia,<br><br>BH-28491 is cover-confirmed on the Santam motor binder. Accident photos are on file. We are waiting on the driver’s licence — that is the delay, not assessment.<br><br>I have not assigned an assessor yet. Reply on this thread if you can send the licence today.<br><br>Broker Desk · Brolink',
+    action: 'auto'
+  },
+  {
+    id: 'cover',
+    from: 'Thabo Mokoena',
+    email: 'thabo@kminsure.co.za',
+    sub: 'Cover confirmation — ST-88211 Hollard commercial',
+    pre: 'Landlord needs confirmation of cover in force as at today.',
+    book: 'Hollard',
+    intent: 'Cover confirmation',
+    cls: 'read',
+    conf: '94%',
+    letter: 'Good morning,<br><br>Please confirm cover in force on <b>ST-88211</b> (Hollard commercial / fleet) as at today. The client’s landlord has requested written confirmation.<br><br>Thabo Mokoena<br>KM Insure',
+    draft: 'Hi Thabo,<br><br>Confirmed: ST-88211 is in force on the Hollard commercial binder as at 25 Aug 2026. This is a cover confirmation only — it is not a certificate of insurance for third parties, and it does not vary the policy.<br><br>Broker Desk · Brolink',
+    action: 'auto'
+  },
+  {
+    id: 'endorse',
+    from: 'Nadia Petersen',
+    email: 'nadia@petersenbrokers.co.za',
+    sub: 'Specified item — ST-449201 Santam',
+    pre: 'Please add Rolex Datejust, serial 2G4R881, R128,000.',
+    book: 'Santam',
+    intent: 'Endorsement / specified item',
+    cls: 'write',
+    conf: '91%',
+    letter: 'Please add a specified item on Santam policy <b>ST-449201</b>:<br>Rolex Datejust · serial 2G4R881 · R128,000.<br><br>Invoice attached. Kindly confirm premium delta before binding.',
+    draft: 'Hi Nadia,<br><br>Draft endorsement ready on ST-449201. Premium delta <b>+R186.40 / month</b>, specified-item excess R1,000 (illustrative).<br><br>I will not write this to Websure until you confirm on this thread — it is a policy variation, not a status lookup.<br><br>Broker Desk · Brolink',
+    action: 'confirm'
+  },
+  {
+    id: 'comm',
+    from: 'Lindiwe Dlamini',
+    email: 'lindiwe@summitrisk.co.za',
+    sub: 'August commission statement not received',
+    pre: 'We have not received the pack. Please advise urgently.',
+    book: 'Multi',
+    intent: 'Commission / finance',
+    cls: 'read',
+    conf: '88%',
+    letter: 'Morning,<br><br>We have not received the August commission pack or the single payment advice. Please advise — this affects cash flow for the brokerage.<br><br>Lindiwe Dlamini<br>Summit Risk',
+    draft: 'Hi Lindiwe,<br><br>This sits with commission ops, not the binder desk. I have escalated to the commission pack queue and asked them to reply on this thread with the statement and payment reference.<br><br>I have not changed any policy or claim record.<br><br>Broker Desk · Brolink',
+    action: 'escalate'
+  },
+  {
+    id: 'xbook',
+    from: 'Pieter Botha',
+    email: 'pieter@bothaandco.co.za',
+    sub: 'Assessor report — BH-28491',
+    pre: 'Please send the assessor report on this claim.',
+    book: 'Hollard workspace',
+    intent: 'Claim file request',
+    cls: 'refuse',
+    conf: '99%',
+    letter: 'Please send the assessor report for BH-28491. We need it for the client this afternoon.<br><br>Pieter Botha',
+    draft: 'Hi Pieter,<br><br>BH-28491 sits on the <b>Santam</b> book. This mailbox is operating in the Hollard workspace and has no read, write, or financial right on that file. No payload is attached.<br><br>Please send the request from the Santam-book thread, or ask the placing broker on that binder.<br><br>Broker Desk · Brolink',
+    action: 'refuse'
+  }
+];
+
+function mailStatus(id) { return mailState[id] || 'new'; }
+function mailTag(id) {
+  var s = mailStatus(id);
+  if (s === 'sent') return '<span class="tag tag-read">sent</span>';
+  if (s === 'queued') return '<span class="tag tag-write">confirm</span>';
+  if (s === 'escalated') return '<span class="tag tag-fin">escalated</span>';
+  if (s === 'refused') return '<span class="tag tag-refuse">refused</span>';
+  var m = mails.filter(function(x){ return x.id === id; })[0];
+  if (m.action === 'auto') return '<span class="tag tag-read">auto</span>';
+  if (m.action === 'confirm') return '<span class="tag tag-write">write</span>';
+  if (m.action === 'escalate') return '<span class="tag tag-fin">ops</span>';
+  return '<span class="tag tag-refuse">isolation</span>';
+}
+function renderMailList(active) {
+  el('mailList').innerHTML = mails.map(function(m) {
+    return '<button type="button" class="mail-item' + (active === m.id ? ' on' : '') + '" onclick="openMail(\'' + m.id + '\')">'
+      + '<div class="mail-from"><span>' + m.from + '</span>' + mailTag(m.id) + '</div>'
+      + '<div class="mail-sub">' + m.sub + '</div>'
+      + '<div class="mail-pre">' + m.pre + '</div></button>';
+  }).join('');
+}
+function openMail(id) {
+  var m = mails.filter(function(x){ return x.id === id; })[0];
+  renderMailList(id);
+  var st = mailStatus(id);
+  var btns = '';
+  if (st === 'new' && m.action === 'auto') btns = '<button class="btn btn-primary btn-sm" type="button" onclick="mailAct(\'' + id + '\',\'sent\')">Send status reply</button>';
+  if (st === 'new' && m.action === 'confirm') btns = '<button class="btn btn-primary btn-sm" type="button" onclick="mailAct(\'' + id + '\',\'queued\')">Hold for confirm</button> <button class="btn btn-outline btn-sm" type="button" onclick="mailAct(\'' + id + '\',\'sent\')">Confirm and write to Websure</button>';
+  if (st === 'queued') btns = '<button class="btn btn-primary btn-sm" type="button" onclick="mailAct(\'' + id + '\',\'sent\')">Confirm and write to Websure</button>';
+  if (st === 'new' && m.action === 'escalate') btns = '<button class="btn btn-primary btn-sm" type="button" onclick="mailAct(\'' + id + '\',\'escalated\')">Escalate to commission ops</button>';
+  if (st === 'new' && m.action === 'refuse') btns = '<button class="btn btn-primary btn-sm" type="button" onclick="mailAct(\'' + id + '\',\'refused\')">Refuse and write audit</button>';
+  var result = '';
+  if (st === 'sent' && m.action !== 'confirm') result = '<div class="ok-box"><span class="tag tag-read">sent</span> Reply sent. Read-only Websure lookup. Trace written. No policy change.</div>';
+  if (st === 'sent' && m.action === 'confirm') result = '<div class="ok-box"><span class="tag tag-write">write</span> Reply sent. Endorsement committed to Websure via API after confirm. Santam book only.</div>';
+  if (st === 'queued') result = '<div class="warn-box"><span class="tag tag-write">write</span> Draft parked. Will not write to Websure until confirm.</div>';
+  if (st === 'escalated') result = '<div class="warn-box"><span class="tag tag-fin">escalated</span> Routed to commission ops. Desk did not invent a payment reference.</div>';
+  if (st === 'refused') result = '<div class="warn-box"><span class="tag tag-refuse">refused</span> CROSS_TENANT_REFUSE · hollard.workspace · claim:BH-28491 · no payload.</div>';
+  el('mailRead').innerHTML = ''
+    + '<div class="row"><span class="k">Intent</span><span class="v">' + m.intent + '</span></div>'
+    + '<div class="row"><span class="k">Insurer book</span><span class="v">' + m.book + '</span></div>'
+    + '<div class="row"><span class="k">Action class</span><span class="v">' + m.cls.toUpperCase() + ' · ' + m.conf + '</span></div>'
+    + '<div class="mail-letter"><div class="meta">From ' + m.from + ' &lt;' + m.email + '&gt;<br>' + m.sub + '</div>' + m.letter + '</div>'
+    + '<div class="draft"><h4>Draft reply</h4>' + m.draft + '</div>'
+    + (btns ? '<div style="display:flex;gap:8px;flex-wrap:wrap;">' + btns + '</div>' : '')
+    + result;
+}
+function mailAct(id, st) {
+  mailState[id] = st;
+  openMail(id);
+}
+function resetInbox() {
+  clearLater();
+  mailState = {};
+  renderMailList('');
+  el('mailRead').innerHTML = '<div class="empty">Select a mail. High-confidence status replies send. Anything that changes a policy waits for confirm. Santam never answers a Hollard thread.</div>';
+}
+function runQueue() {
+  clearLater();
+  var order = [
+    ['status', 'sent'],
+    ['cover', 'sent'],
+    ['endorse', 'queued'],
+    ['comm', 'escalated'],
+    ['xbook', 'refused']
+  ];
+  order.forEach(function(step, i) {
+    later(i * 450, function() {
+      mailState[step[0]] = step[1];
+      openMail(step[0]);
+    });
+  });
+}
+
 var books = {
   santam: [
     ['Bordereaux pack', 'Due 31 Aug · 94% complete', 'bad'],
@@ -759,6 +960,7 @@ function calc() {
 
 showBook('santam');
 calc();
+resetInbox();
 </script>
 </body>
 </html>

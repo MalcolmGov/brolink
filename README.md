@@ -8,7 +8,8 @@ This is a **layer alongside Websure**, not a replacement. It does not settle cla
 
 ## What the room walks through
 
-1. **Broker morning (Total Experience)** — Nadia Petersen on WhatsApp. Three jobs that actually resolve:
+1. **Email desk** — shared Broker Desk mailbox. Auto-send read-only status, confirm-before-write on endorsements, escalate commission, refuse cross-book requests.
+2. **Broker morning (Total Experience)** — Nadia Petersen on WhatsApp. Three jobs that actually resolve:
    - Claim status BH-28491 (read-only, docs incomplete)
    - Specified-item endorsement (draft → **confirm before write** to Websure)
    - Multi-quote as **advice support**, not aggregation
