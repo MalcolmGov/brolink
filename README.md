@@ -8,7 +8,7 @@ This is a **layer alongside Websure**, not a replacement. It does not settle cla
 
 ## What the room walks through
 
-1. **Email desk** — shared Broker Desk mailbox. Auto-send read-only status, confirm-before-write on endorsements, escalate commission, refuse cross-book requests.
+1. **Email desk** — status and cover auto-send; vehicle / address / specified item / debit-date endorsements confirm-before-write; unpaid debit notifies the broker (re-present stays financial); commission escalate; cross-book refuse.
 2. **Broker morning** — Nadia Petersen on WhatsApp: claim status, specified-item confirm-before-write, multi-quote as advice support.
 3. **Claims cell** — FNOL → cover check → missing-docs chase. Settlement stays with the assessor.
 4. **Binder supervision** — per-insurer bordereaux, TCF, DSARs, collections exceptions.

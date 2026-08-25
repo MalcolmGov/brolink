@@ -257,7 +257,8 @@ a { color: inherit; }
 
 .inbox { display:grid; grid-template-columns: 300px 1fr; min-height: 540px; }
 @media (max-width: 900px) { .inbox { grid-template-columns: 1fr; } }
-.mail-list { border-right: 1px solid var(--line); background: #f8fafb; }
+.mail-list { border-right: 1px solid var(--line); background: #f8fafb; max-height: 640px; overflow-y: auto; }
+.mail-filters { display:flex; gap:6px; padding: 10px 12px; border-bottom: 1px solid var(--line); flex-wrap:wrap; background: var(--surface); position: sticky; top: 0; z-index: 1; }
 .mail-item {
   display:block; width:100%; text-align:left; padding: 12px 14px; cursor:pointer;
   background: transparent; border: none; border-bottom: 1px solid var(--line);
@@ -351,7 +352,7 @@ a { color: inherit; }
           <div class="dash-h">This morning · Centurion floor · illustrative</div>
           <div class="stats">
             <div class="stat"><div class="stat-val">41</div><div class="stat-lbl">Emails triaged</div></div>
-            <div class="stat"><div class="stat-val">3</div><div class="stat-lbl">Endorsements awaiting confirm</div></div>
+            <div class="stat"><div class="stat-val">5</div><div class="stat-lbl">Endorsements awaiting confirm</div></div>
             <div class="stat"><div class="stat-val">0</div><div class="stat-lbl">Unsupervised writes</div></div>
             <div class="stat"><div class="stat-val">1</div><div class="stat-lbl">Cross-book refusal</div></div>
           </div>
@@ -435,7 +436,7 @@ a { color: inherit; }
     <div class="text-center mb-48">
       <div class="sec-label">Broker desk · the volume is email</div>
       <h2 class="sec-title">A shared mailbox that actually resolves.</h2>
-      <p class="sec-desc">Click a mail, or run the whole queue: auto-send status, hold endorsements for confirm, escalate commission, refuse a cross-book request.</p>
+      <p class="sec-desc">Status and cover auto-send. Endorsements — vehicle, address, specified item, debit date — wait for confirm. Unpaid debit notifies the broker; re-presenting the debit stays financial.</p>
       <div style="margin-top:22px;display:flex;gap:10px;justify-content:center;flex-wrap:wrap;">
         <button class="btn btn-primary" type="button" onclick="runQueue()">Run the queue →</button>
         <button class="btn btn-outline" type="button" onclick="resetInbox()">Reset inbox</button>
@@ -680,7 +681,7 @@ a { color: inherit; }
           <tr>
             <td>0:25</td>
             <td>Confirm-before-write</td>
-            <td>Open the specified-item mail. Hold, then confirm. Then <a href="#claims">claims cell</a>: ingest FNOL, chase docs, hit <b>Authorise settlement</b> — it must fail. That is the binder control.</td>
+            <td>Open the specified-item, vehicle, address, or debit-date mail. Hold, then confirm. Then the unpaid-debit mail: notify the broker; <b>Re-present debit</b> must stay blocked. Then <a href="#claims">claims cell</a>: ingest FNOL, chase docs, hit <b>Authorise settlement</b> — it must fail.</td>
           </tr>
           <tr>
             <td>0:40</td>
@@ -922,76 +923,89 @@ function trySettle() {
 }
 
 var mailState = {};
+var mailFilter = 'all';
+var mailOpen = '';
 var mails = [
   {
-    id: 'status',
-    from: 'Nadia Petersen',
-    email: 'nadia@petersenbrokers.co.za',
+    id: 'status', group: 'desk',
+    from: 'Nadia Petersen', email: 'nadia@petersenbrokers.co.za',
     sub: 'RE: van der Merwe / BH-28491 — client on the phone',
     pre: 'Please advise current status. Client is waiting.',
-    book: 'Santam',
-    intent: 'Claim status',
-    cls: 'read',
-    conf: '96%',
+    book: 'Santam', intent: 'Claim status', cls: 'read', conf: '96%', action: 'auto',
     letter: 'Hi team,<br><br>Please advise current status on claim <b>BH-28491</b> for J. van der Merwe. The client is on the phone.<br><br>Kind regards<br>Nadia Petersen<br>Petersen Brokers',
-    draft: 'Hi Nadia,<br><br>BH-28491 is cover-confirmed on the Santam motor binder. Accident photos are on file. We are waiting on the driver’s licence — that is the delay, not assessment.<br><br>I have not assigned an assessor yet. Reply on this thread if you can send the licence today.<br><br>Broker Desk · Brolink',
-    action: 'auto'
+    draft: 'Hi Nadia,<br><br>BH-28491 is cover-confirmed on the Santam motor binder. Accident photos are on file. We are waiting on the driver’s licence — that is the delay, not assessment.<br><br>I have not assigned an assessor yet. Reply on this thread if you can send the licence today.<br><br>Broker Desk · Brolink'
   },
   {
-    id: 'cover',
-    from: 'Thabo Mokoena',
-    email: 'thabo@kminsure.co.za',
+    id: 'cover', group: 'desk',
+    from: 'Thabo Mokoena', email: 'thabo@kminsure.co.za',
     sub: 'Cover confirmation — ST-88211 Hollard commercial',
     pre: 'Landlord needs confirmation of cover in force as at today.',
-    book: 'Hollard',
-    intent: 'Cover confirmation',
-    cls: 'read',
-    conf: '94%',
+    book: 'Hollard', intent: 'Cover confirmation', cls: 'read', conf: '94%', action: 'auto',
     letter: 'Good morning,<br><br>Please confirm cover in force on <b>ST-88211</b> (Hollard commercial / fleet) as at today. The client’s landlord has requested written confirmation.<br><br>Thabo Mokoena<br>KM Insure',
-    draft: 'Hi Thabo,<br><br>Confirmed: ST-88211 is in force on the Hollard commercial binder as at 25 Aug 2026. This is a cover confirmation only — it is not a certificate of insurance for third parties, and it does not vary the policy.<br><br>Broker Desk · Brolink',
-    action: 'auto'
+    draft: 'Hi Thabo,<br><br>Confirmed: ST-88211 is in force on the Hollard commercial binder as at 25 Aug 2026. This is a cover confirmation only — it is not a certificate of insurance for third parties, and it does not vary the policy.<br><br>Broker Desk · Brolink'
   },
   {
-    id: 'endorse',
-    from: 'Nadia Petersen',
-    email: 'nadia@petersenbrokers.co.za',
+    id: 'endorse', group: 'endorse',
+    from: 'Nadia Petersen', email: 'nadia@petersenbrokers.co.za',
     sub: 'Specified item — ST-449201 Santam',
     pre: 'Please add Rolex Datejust, serial 2G4R881, R128,000.',
-    book: 'Santam',
-    intent: 'Endorsement / specified item',
-    cls: 'write',
-    conf: '91%',
+    book: 'Santam', intent: 'Endorsement / specified item', cls: 'write', conf: '91%', action: 'confirm',
     letter: 'Please add a specified item on Santam policy <b>ST-449201</b>:<br>Rolex Datejust · serial 2G4R881 · R128,000.<br><br>Invoice attached. Kindly confirm premium delta before binding.',
-    draft: 'Hi Nadia,<br><br>Draft endorsement ready on ST-449201. Premium delta <b>+R186.40 / month</b>, specified-item excess R1,000 (illustrative).<br><br>I will not write this to Websure until you confirm on this thread — it is a policy variation, not a status lookup.<br><br>Broker Desk · Brolink',
-    action: 'confirm'
+    draft: 'Hi Nadia,<br><br>Draft endorsement ready on ST-449201. Premium delta <b>+R186.40 / month</b>, specified-item excess R1,000 (illustrative).<br><br>I will not write this to Websure until you confirm on this thread — it is a policy variation, not a status lookup.<br><br>Broker Desk · Brolink'
   },
   {
-    id: 'comm',
-    from: 'Lindiwe Dlamini',
-    email: 'lindiwe@summitrisk.co.za',
+    id: 'vehicle', group: 'endorse',
+    from: 'Thabo Mokoena', email: 'thabo@kminsure.co.za',
+    sub: 'Add vehicle — ST-88211 Hollard fleet',
+    pre: 'Please add 2022 Toyota Hilux, CA 829-441, retail R489,000.',
+    book: 'Hollard', intent: 'Endorsement / add vehicle', cls: 'write', conf: '90%', action: 'confirm',
+    letter: 'Please add a vehicle to <b>ST-88211</b>:<br>2022 Toyota Hilux 2.8 GD-6 · CA 829-441 · retail R489,000 · regular driver Thabo Mokoena.<br><br>Licence disc attached. Need cover from tomorrow.',
+    draft: 'Hi Thabo,<br><br>Draft vehicle endorsement on ST-88211 (Hollard fleet). Cover start tomorrow 00:01, pending confirm. Premium delta <b>+R1,240 / month</b> (illustrative). Tracking and overnight-risk still as per existing fleet warranty.<br><br>I will not write to Websure until you confirm. This is a policy variation on the Hollard book only.<br><br>Broker Desk · Brolink'
+  },
+  {
+    id: 'address', group: 'endorse',
+    from: 'Nadia Petersen', email: 'nadia@petersenbrokers.co.za',
+    sub: 'Change risk address — ST-449201',
+    pre: 'Client moving from Lyttelton to Waterkloof Ridge on 1 Sep.',
+    book: 'Santam', intent: 'Endorsement / risk address', cls: 'write', conf: '89%', action: 'confirm',
+    letter: 'Please change the risk address on <b>ST-449201</b> from 14 Kruger Street, Lyttelton to 8 Berg Road, Waterkloof Ridge, effective 1 September. Contents sum insured unchanged. Alarm and armed response remain in force.',
+    draft: 'Hi Nadia,<br><br>Draft address endorsement on ST-449201. Effective 1 Sep. Waterkloof Ridge is a different crime-risk band — premium delta <b>+R62 / month</b> (illustrative). Alarm warranty carried across.<br><br>Confirm and I will write to Websure. No cover gap if we commit before 1 Sep.<br><br>Broker Desk · Brolink'
+  },
+  {
+    id: 'debitdate', group: 'endorse',
+    from: 'Lindiwe Dlamini', email: 'lindiwe@summitrisk.co.za',
+    sub: 'Move debit order date — ST-110882 Santam',
+    pre: 'Please move the debit from the 1st to the 25th.',
+    book: 'Santam', intent: 'Endorsement / debit-order date', cls: 'write', conf: '93%', action: 'confirm',
+    letter: 'Client salary date changed. Please move the debit order on <b>ST-110882</b> from the 1st to the 25th of each month, effective September. Banking details unchanged.',
+    draft: 'Hi Lindiwe,<br><br>Draft debit-date change on ST-110882: 1st → 25th from September. Banking details unchanged — this is not a new debit mandate and it is not a collection retry.<br><br>Confirm and I will write the date to Websure. Premium amount is unchanged.<br><br>Broker Desk · Brolink'
+  },
+  {
+    id: 'debitfail', group: 'collections',
+    from: 'Collections exception', email: 'collections@brolink.co.za',
+    sub: 'Unpaid debit — ST-110882 · R2,140.40',
+    pre: 'Code 22 insufficient funds. Do not re-present until the broker agrees a date.',
+    book: 'Santam', intent: 'Collections / unpaid debit', cls: 'write', conf: '95%', action: 'collect',
+    letter: 'Exception from premium collections:<br><br>Policy <b>ST-110882</b> · J. van der Merwe · Santam · unpaid debit <b>R2,140.40</b> · code 22 insufficient funds · 25 Aug 06:12.<br><br>Do not re-present. Notify the placing broker and wait for a new date.',
+    draft: 'Hi Lindiwe,<br><br>The September debit on ST-110882 (van der Merwe) returned unpaid — insufficient funds, R2,140.40. Cover is still in force pending the collections rule on this binder.<br><br>Please confirm a new debit date with the client. I will <b>not</b> re-present the debit from this desk — that is a financial action for collections ops.<br><br>Broker Desk · Brolink'
+  },
+  {
+    id: 'comm', group: 'desk',
+    from: 'Lindiwe Dlamini', email: 'lindiwe@summitrisk.co.za',
     sub: 'August commission statement not received',
     pre: 'We have not received the pack. Please advise urgently.',
-    book: 'Multi',
-    intent: 'Commission / finance',
-    cls: 'read',
-    conf: '88%',
+    book: 'Multi', intent: 'Commission / finance', cls: 'read', conf: '88%', action: 'escalate',
     letter: 'Morning,<br><br>We have not received the August commission pack or the single payment advice. Please advise — this affects cash flow for the brokerage.<br><br>Lindiwe Dlamini<br>Summit Risk',
-    draft: 'Hi Lindiwe,<br><br>This sits with commission ops, not the binder desk. I have escalated to the commission pack queue and asked them to reply on this thread with the statement and payment reference.<br><br>I have not changed any policy or claim record.<br><br>Broker Desk · Brolink',
-    action: 'escalate'
+    draft: 'Hi Lindiwe,<br><br>This sits with commission ops, not the binder desk. I have escalated to the commission pack queue and asked them to reply on this thread with the statement and payment reference.<br><br>I have not changed any policy or claim record.<br><br>Broker Desk · Brolink'
   },
   {
-    id: 'xbook',
-    from: 'Pieter Botha',
-    email: 'pieter@bothaandco.co.za',
+    id: 'xbook', group: 'isolation',
+    from: 'Pieter Botha', email: 'pieter@bothaandco.co.za',
     sub: 'Assessor report — BH-28491',
     pre: 'Please send the assessor report on this claim.',
-    book: 'Hollard workspace',
-    intent: 'Claim file request',
-    cls: 'refuse',
-    conf: '99%',
+    book: 'Hollard workspace', intent: 'Claim file request', cls: 'refuse', conf: '99%', action: 'refuse',
     letter: 'Please send the assessor report for BH-28491. We need it for the client this afternoon.<br><br>Pieter Botha',
-    draft: 'Hi Pieter,<br><br>BH-28491 sits on the <b>Santam</b> book. This mailbox is operating in the Hollard workspace and has no read, write, or financial right on that file. No payload is attached.<br><br>Please send the request from the Santam-book thread, or ask the placing broker on that binder.<br><br>Broker Desk · Brolink',
-    action: 'refuse'
+    draft: 'Hi Pieter,<br><br>BH-28491 sits on the <b>Santam</b> book. This mailbox is operating in the Hollard workspace and has no read, write, or financial right on that file. No payload is attached.<br><br>Please send the request from the Santam-book thread, or ask the placing broker on that binder.<br><br>Broker Desk · Brolink'
   }
 ];
 
@@ -1002,36 +1016,65 @@ function mailTag(id) {
   if (s === 'queued') return '<span class="tag tag-write">confirm</span>';
   if (s === 'escalated') return '<span class="tag tag-fin">escalated</span>';
   if (s === 'refused') return '<span class="tag tag-refuse">refused</span>';
+  if (s === 'blocked') return '<span class="tag tag-fin">blocked</span>';
   var m = mails.filter(function(x){ return x.id === id; })[0];
   if (m.action === 'auto') return '<span class="tag tag-read">auto</span>';
   if (m.action === 'confirm') return '<span class="tag tag-write">write</span>';
+  if (m.action === 'collect') return '<span class="tag tag-fin">unpaid</span>';
   if (m.action === 'escalate') return '<span class="tag tag-fin">ops</span>';
   return '<span class="tag tag-refuse">isolation</span>';
 }
+function visibleMails() {
+  if (mailFilter === 'all') return mails;
+  return mails.filter(function(m) { return m.group === mailFilter; });
+}
+function setMailFilter(f) {
+  mailFilter = f;
+  renderMailList(mailOpen);
+}
 function renderMailList(active) {
-  el('mailList').innerHTML = mails.map(function(m) {
+  var filters = [
+    ['all','All'],['desk','Desk'],['endorse','Endorsements'],['collections','Collections'],['isolation','Isolation']
+  ].map(function(f) {
+    return '<button type="button" class="btn btn-sm ' + (mailFilter === f[0] ? 'btn-primary' : 'btn-outline') + '" onclick="setMailFilter(\'' + f[0] + '\')">' + f[1] + '</button>';
+  }).join('');
+  var items = visibleMails().map(function(m) {
     return '<button type="button" class="mail-item' + (active === m.id ? ' on' : '') + '" onclick="openMail(\'' + m.id + '\')">'
       + '<div class="mail-from"><span>' + m.from + '</span>' + mailTag(m.id) + '</div>'
       + '<div class="mail-sub">' + m.sub + '</div>'
       + '<div class="mail-pre">' + m.pre + '</div></button>';
   }).join('');
+  el('mailList').innerHTML = '<div class="mail-filters">' + filters + '</div>' + items;
 }
 function openMail(id) {
   var m = mails.filter(function(x){ return x.id === id; })[0];
+  if (!m) return;
+  mailOpen = id;
+  if (mailFilter !== 'all' && m.group !== mailFilter) {
+    mailFilter = 'all';
+  }
   renderMailList(id);
   var st = mailStatus(id);
   var btns = '';
   if (st === 'new' && m.action === 'auto') btns = '<button class="btn btn-primary btn-sm" type="button" onclick="mailAct(\'' + id + '\',\'sent\')">Send status reply</button>';
-  if (st === 'new' && m.action === 'confirm') btns = '<button class="btn btn-primary btn-sm" type="button" onclick="mailAct(\'' + id + '\',\'queued\')">Hold for confirm</button> <button class="btn btn-outline btn-sm" type="button" onclick="mailAct(\'' + id + '\',\'sent\')">Confirm and write to Websure</button>';
-  if (st === 'queued') btns = '<button class="btn btn-primary btn-sm" type="button" onclick="mailAct(\'' + id + '\',\'sent\')">Confirm and write to Websure</button>';
+  if ((st === 'new' && m.action === 'confirm') || (st === 'new' && m.action === 'collect')) {
+    btns = '<button class="btn btn-primary btn-sm" type="button" onclick="mailAct(\'' + id + '\',\'queued\')">Hold for confirm</button> <button class="btn btn-outline btn-sm" type="button" onclick="mailAct(\'' + id + '\',\'sent\')">Confirm and notify / write</button>';
+  }
+  if (st === 'queued') btns = '<button class="btn btn-primary btn-sm" type="button" onclick="mailAct(\'' + id + '\',\'sent\')">Confirm and notify / write</button>';
   if (st === 'new' && m.action === 'escalate') btns = '<button class="btn btn-primary btn-sm" type="button" onclick="mailAct(\'' + id + '\',\'escalated\')">Escalate to commission ops</button>';
   if (st === 'new' && m.action === 'refuse') btns = '<button class="btn btn-primary btn-sm" type="button" onclick="mailAct(\'' + id + '\',\'refused\')">Refuse and write audit</button>';
+  if (m.action === 'collect') {
+    btns += ' <button class="btn btn-outline btn-sm" type="button" onclick="mailAct(\'' + id + '\',\'blocked\')">Re-present debit</button>';
+  }
   var result = '';
-  if (st === 'sent' && m.action !== 'confirm') result = '<div class="ok-box"><span class="tag tag-read">sent</span> Reply sent. Read-only Websure lookup. Trace written. No policy change.</div>';
-  if (st === 'sent' && m.action === 'confirm') result = '<div class="ok-box"><span class="tag tag-write">write</span> Reply sent. Endorsement committed to Websure via API after confirm. Santam book only.</div>';
-  if (st === 'queued') result = '<div class="warn-box"><span class="tag tag-write">write</span> Draft parked. Will not write to Websure until confirm.</div>';
+  if (st === 'sent' && m.action === 'auto') result = '<div class="ok-box"><span class="tag tag-read">sent</span> Reply sent. Read-only Websure lookup. Trace written. No policy change.</div>';
+  if (st === 'sent' && m.action === 'confirm') result = '<div class="ok-box"><span class="tag tag-write">write</span> Reply sent. Endorsement committed to Websure via API after confirm. Book: ' + m.book + ' only.</div>';
+  if (st === 'sent' && m.action === 'collect') result = '<div class="ok-box"><span class="tag tag-write">write</span> Broker notified. Debit was <b>not</b> re-presented. Collections ops owns the retry calendar.</div>';
+  if (st === 'queued' && m.action === 'collect') result = '<div class="warn-box"><span class="tag tag-write">write</span> Broker notice parked. Re-presenting the debit stays a financial action.</div>';
+  if (st === 'queued' && m.action === 'confirm') result = '<div class="warn-box"><span class="tag tag-write">write</span> Draft parked. Will not write to Websure until confirm.</div>';
   if (st === 'escalated') result = '<div class="warn-box"><span class="tag tag-fin">escalated</span> Routed to commission ops. Desk did not invent a payment reference.</div>';
   if (st === 'refused') result = '<div class="warn-box"><span class="tag tag-refuse">refused</span> CROSS_TENANT_REFUSE · hollard.workspace · claim:BH-28491 · no payload.</div>';
+  if (st === 'blocked') result = '<div class="fin-box"><span class="tag tag-fin">financial</span> Re-presenting a debit moves money. Collections ops authorises. The desk does not.</div>';
   el('mailRead').innerHTML = ''
     + '<div class="row"><span class="k">Intent</span><span class="v">' + m.intent + '</span></div>'
     + '<div class="row"><span class="k">Insurer book</span><span class="v">' + m.book + '</span></div>'
@@ -1043,27 +1086,36 @@ function openMail(id) {
 }
 function mailAct(id, st) {
   mailState[id] = st;
+  if (id === 'debitfail' && st === 'sent') el('qCol').textContent = '11';
   openMail(id);
 }
 function resetInbox() {
   clearLater();
   mailState = {};
+  mailFilter = 'all';
+  mailOpen = '';
+  el('qCol').textContent = '12';
   renderMailList('');
-  el('mailRead').innerHTML = '<div class="empty">Select a mail. High-confidence status replies send. Anything that changes a policy waits for confirm. Santam never answers a Hollard thread.</div>';
+  el('mailRead').innerHTML = '<div class="empty">Select a mail. Status and cover can auto-send. Endorsements wait for confirm. Unpaid debit notifies the broker — re-presenting it is financial.</div>';
 }
 function runQueue() {
   clearLater();
+  mailFilter = 'all';
   var box = document.getElementById('inbox');
   if (box) box.scrollIntoView({ behavior: 'smooth', block: 'start' });
   var order = [
     ['status', 'sent'],
     ['cover', 'sent'],
     ['endorse', 'queued'],
+    ['vehicle', 'queued'],
+    ['address', 'queued'],
+    ['debitdate', 'queued'],
+    ['debitfail', 'queued'],
     ['comm', 'escalated'],
     ['xbook', 'refused']
   ];
   order.forEach(function(step, i) {
-    later(i * 450, function() {
+    later(i * 380, function() {
       mailState[step[0]] = step[1];
       openMail(step[0]);
     });
