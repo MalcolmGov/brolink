@@ -379,7 +379,7 @@ a { color: inherit; }
 .ask li { margin-bottom: 6px; }
 
 @media print {
-  .nav, .hero, .pillars, #inbox, #journey, #claims, #compliance, #isolation, #scorecard, .footer, .theme-chip { display:none !important; }
+  .nav, .hero, .pillars, #inbox, #call, #journey, #claims, #compliance, #isolation, #scorecard, .footer, .theme-chip { display:none !important; }
   .section { padding: 24px 0; }
   .contact { background: #fff; }
 }
@@ -387,6 +387,41 @@ a { color: inherit; }
 .contact { background: var(--surface); text-align:center; }
 .footer { padding: 28px 24px; border-top: 1px solid var(--line); text-align:center; font-size: 12px; color: var(--dim); }
 .hidden { display: none !important; }
+
+#call .frame { scroll-margin-top: 78px; }
+.call-grid { display:grid; grid-template-columns: 0.9fr 1.1fr; min-height: 520px; }
+@media (max-width: 900px) { .call-grid { grid-template-columns: 1fr; } }
+.call-phone { background: var(--card); padding: 22px; border-right: 1px solid var(--line); }
+.call-who { display:flex; align-items:center; gap:12px; }
+.call-avatar {
+  width:48px; height:48px; border-radius:50%; background:var(--teal); color: var(--on-primary);
+  display:flex; align-items:center; justify-content:center; font-weight:750; font-size:15px;
+}
+.call-name { font-size: 15px; font-weight: 700; }
+.call-sub { font-size: 12px; color: var(--dim); }
+.call-live { font-size: 12px; font-weight: 650; color: var(--dim); margin-top: 14px; }
+.call-live.on { color: var(--green); }
+.call-clock { font-family: var(--font-mono); font-size: 28px; font-weight: 750; letter-spacing: -0.5px; margin: 8px 0 14px; }
+.call-wave { display:flex; align-items:flex-end; gap:3px; height: 64px; padding: 8px 0 16px; }
+.call-wave i {
+  display:block; width:4px; height: 48px; border-radius: 2px; background: var(--teal);
+  transform: scaleY(0.28); transform-origin: bottom; opacity: 0.55;
+  animation: callbar 0.72s ease-in-out infinite; animation-play-state: paused;
+}
+.call-wave.on i { animation-play-state: running; opacity: 1; }
+.call-wave i:nth-child(2n) { animation-duration: 0.58s; animation-delay: 0.08s; }
+.call-wave i:nth-child(3n) { animation-duration: 0.9s; animation-delay: 0.16s; }
+.call-wave i:nth-child(5n) { animation-duration: 0.64s; animation-delay: 0.28s; }
+@keyframes callbar {
+  0%, 100% { transform: scaleY(0.28); }
+  50% { transform: scaleY(1); }
+}
+.call-script { padding: 18px; display:flex; flex-direction:column; gap: 12px; }
+.tx { max-height: 248px; overflow-y: auto; display:flex; flex-direction:column; gap: 8px; min-height: 120px; }
+.tx-line { font-size: 13px; line-height: 1.5; padding: 8px 10px; border-radius: 10px; background: var(--bg); border: 1px solid var(--line); }
+.tx-line .who { font-size: 10px; font-weight: 700; letter-spacing: 0.5px; text-transform: uppercase; color: var(--dim); display:block; margin-bottom: 2px; }
+.tx-line.nadia { border-left: 3px solid var(--teal); }
+.tx-line.desk { border-left: 3px solid var(--line); }
 </style>
 </head>
 <body>
@@ -399,6 +434,7 @@ a { color: inherit; }
     </div>
     <div class="nav-links">
       <a href="#inbox">Email desk</a>
+      <a href="#call">Phone</a>
       <a href="#journey">Broker morning</a>
       <a href="#claims">Claims cell</a>
       <a href="#compliance">Binder</a>
@@ -432,6 +468,7 @@ a { color: inherit; }
             <div class="stat"><div class="stat-val">1</div><div class="stat-lbl">Cross-book refusal</div></div>
           </div>
           <div class="act"><span>Broker desk inbox · 2 auto-sent · 1 confirm · 1 refuse</span><span class="tag tag-read">read</span></div>
+          <div class="act"><span>Call wrap · young driver · confirm (under 25)</span><span class="tag tag-write">write</span></div>
           <div class="act"><span>FNOL pack read · licence expired · chase parked</span><span class="tag tag-write">write</span></div>
           <div class="act"><span>Hollard agent queried a Santam policy</span><span class="tag tag-refuse">refused</span></div>
         </div>
@@ -456,7 +493,7 @@ a { color: inherit; }
       <div class="pillar">
         <div class="n">03 · Total experience</div>
         <h3>The broker of tomorrow</h3>
-        <p>Email first (where the volume sits), then WhatsApp. Status, docs, first-draft endorsements — one layer on Websure.</p>
+        <p>Email first (where the volume sits), then the desk phone, then WhatsApp. Status, docs, first-draft endorsements — one layer on Websure.</p>
       </div>
     </div>
   </div>
@@ -536,6 +573,78 @@ a { color: inherit; }
         <div class="mail-trace-col">
           <div class="panel-kicker">Agent trace · glass box</div>
           <div class="trace" id="mailTrace" aria-live="polite"><div class="trace-line k-dim"><span class="ts">—</span><span class="tm">Waiting for a mail…</span></div></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="section" id="call">
+  <div class="container">
+    <div class="text-center mb-48">
+      <div class="sec-label">Broker desk · the other volume is the phone</div>
+      <h2 class="sec-title">The call ends. The wrap is already a draft.</h2>
+      <p class="sec-desc">Nadia does not write an email. The layer transcribes the DID, extracts the endorsement, and parks a confirm-before-write on the same Broker Desk. A 19-year-old driver is underwriting judgement — not auto-bind.</p>
+      <div style="margin-top:22px;display:flex;gap:10px;justify-content:center;flex-wrap:wrap;">
+        <button class="btn btn-primary" type="button" id="playCallTop" onclick="playWrap()">Play the wrap →</button>
+        <button class="btn btn-outline" type="button" onclick="resetCall()">Reset call</button>
+      </div>
+    </div>
+    <div class="frame">
+      <div class="frame-h">
+        <div style="display:flex;align-items:center;gap:10px;">
+          <span class="dots"><i></i><i></i><i></i></span>
+          Broker Desk DID · 012 673 0000 · wrap, not a voicebot
+        </div>
+        <div style="display:flex;gap:8px;flex-wrap:wrap;">
+          <button class="btn btn-primary btn-sm" type="button" onclick="playWrap()">Play wrap</button>
+          <button class="btn btn-outline btn-sm" type="button" onclick="resetCall()">Reset call</button>
+        </div>
+      </div>
+      <div class="call-grid">
+        <div class="call-phone">
+          <div class="call-who">
+            <div class="call-avatar">NP</div>
+            <div>
+              <div class="call-name">Nadia Petersen</div>
+              <div class="call-sub">Petersen Brokers · inbound</div>
+            </div>
+          </div>
+          <div class="call-live" id="callLive">Idle · waiting to wrap</div>
+          <div class="call-clock" id="callClock">00:00</div>
+          <div class="call-wave" id="callWave" aria-hidden="true">
+            <i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i>
+            <i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i>
+            <i></i><i></i>
+          </div>
+          <div class="panel-kicker" style="margin-bottom:8px;">Live transcript</div>
+          <div class="tx" id="callTx"><div class="empty">Play the wrap. Forty-one seconds of desk audio, compressed for the room.</div></div>
+        </div>
+        <div class="call-script">
+          <div class="panel-kicker">Extracted · reconciled to Websure</div>
+          <div class="docs" id="callFields">
+            <div class="row"><span class="k">Policy</span><span class="v" id="ePol">—</span></div>
+            <div class="row"><span class="k">Intent</span><span class="v" id="eInt">—</span></div>
+            <div class="row"><span class="k">Driver</span><span class="v" id="eDrv">—</span></div>
+            <div class="row"><span class="k">Age / licence</span><span class="v" id="eAge">—</span></div>
+            <div class="row"><span class="k">Effective</span><span class="v" id="eEff">—</span></div>
+            <div class="row"><span class="k">Book</span><span class="v" id="eBook">—</span></div>
+          </div>
+          <div id="callUw" class="warn-box hidden">
+            <span class="tag tag-write">write</span> &nbsp; Driver under 25. Premium loading is illustrative. <b>Accepting this risk is underwriting judgement</b> — the layer drafts, it does not bind.
+          </div>
+          <div id="callIso" class="ok-box hidden">
+            <span class="tag tag-read">isolation</span> &nbsp; Nadia said Santam only. Hollard fleet tools were not in scope. No payload on any other book.
+          </div>
+          <div class="panel-kicker" style="margin-top:4px;">Agent trace · glass box</div>
+          <div class="trace" id="callTrace" aria-live="polite"><div class="trace-line k-dim"><span class="ts">—</span><span class="tm">Waiting for the wrap…</span></div></div>
+          <div style="display:flex;gap:8px;flex-wrap:wrap;">
+            <button class="btn btn-primary btn-sm" type="button" id="fileCallBtn" disabled onclick="fileCallToDesk()">File to Broker Desk</button>
+            <button class="btn btn-outline btn-sm" type="button" onclick="tryCallBind()">Bind without confirm</button>
+          </div>
+          <div id="callBindNote" class="fin-box hidden">
+            <span class="tag tag-fin">judgement</span> &nbsp; Binding a young driver is underwriting, not a desk write. Confirm parks the draft. It does not accept the risk.
+          </div>
         </div>
       </div>
     </div>
@@ -747,6 +856,7 @@ a { color: inherit; }
       <div class="flow-col">
         <h3>01 · Channels</h3>
         <button type="button" class="flow-chip" onclick="showArch('mail', this)">Shared mailbox<span>Microsoft Graph / IMAP · broker desk, not a personal inbox</span></button>
+        <button type="button" class="flow-chip" onclick="showArch('phone', this)">Desk phone wrap<span>Same agent after the DID hangs up — not a voicebot</span></button>
         <button type="button" class="flow-chip" onclick="showArch('wa', this)">WhatsApp later<span>Same agent, second channel — after email is trusted</span></button>
       </div>
       <div class="flow-col">
@@ -780,7 +890,7 @@ a { color: inherit; }
     <div class="card score">
       <div>
         <div class="claims-grid" style="padding:0; gap:12px;">
-          <div class="field"><label>Broker desk queries / month (email + WhatsApp)</label><input type="number" id="bq" value="2400" oninput="calc()"></div>
+          <div class="field"><label>Broker desk queries / month (email + phone + WhatsApp)</label><input type="number" id="bq" value="2400" oninput="calc()"></div>
           <div class="field"><label>Minutes per query today</label><input type="number" id="mq" value="18" oninput="calc()"></div>
           <div class="field"><label>FNOL packs / month</label><input type="number" id="fn" value="900" oninput="calc()"></div>
           <div class="field"><label>Cost per query today (R)</label><input type="number" id="cq" value="42" oninput="calc()"></div>
@@ -827,12 +937,12 @@ a { color: inherit; }
           <tr>
             <td>0:08</td>
             <td>Email desk</td>
-            <td>Go to <a href="#inbox">#inbox</a>. “This is where your volume already sits.” Click <b>Run the queue</b>. Pause on the <b>agent trace</b> — intent, book, isolation — then auto-send vs confirm vs escalate vs refuse.</td>
+            <td>Go to <a href="#inbox">#inbox</a>. “This is where your volume already sits.” Click <b>Run the queue</b>. Pause on the <b>agent trace</b> — intent, book, isolation — then auto-send vs confirm vs escalate vs refuse. Then <a href="#call">phone</a>: play the wrap, file it to the desk.</td>
           </tr>
           <tr>
             <td>0:25</td>
             <td>Confirm-before-write</td>
-            <td>Open the specified-item, vehicle, address, or debit-date mail. Hold, then confirm. Then the unpaid-debit mail: notify the broker; <b>Re-present debit</b> must stay blocked. Then <a href="#claims">claims cell</a>: ingest the pack, watch the licence-expiry exception on the trace, chase, hit <b>Authorise settlement</b> — it must fail.</td>
+            <td>Open the specified-item, vehicle, address, debit-date, or the <b>call-wrap</b> mail. Hold, then confirm. On the wrap, hit <b>Bind without confirm</b> — under-25 is UW, not auto-bind. Then unpaid-debit: notify the broker; <b>Re-present debit</b> must stay blocked. Then <a href="#claims">claims cell</a>: ingest the pack, watch the licence-expiry exception on the trace, chase, hit <b>Authorise settlement</b> — it must fail.</td>
           </tr>
           <tr>
             <td>0:40</td>
@@ -856,13 +966,13 @@ a { color: inherit; }
     <div class="comp-grid" style="margin-bottom:16px; text-align:left;">
       <div class="card">
         <div class="panel-kicker" style="margin-bottom:10px;">Talk track — open</div>
-        <p style="font-size:14px; color:var(--muted); line-height:1.65;">Admin is the product. If we take chasing, status, FNOL reading, and first-draft endorsements off the broker and off the floor — with traces the insurer can supervise — Brolink becomes the platform of the broker of tomorrow. We sit on Websure. We do not rebuild it.</p>
+        <p style="font-size:14px; color:var(--muted); line-height:1.65;">Admin is the product. If we take chasing, status, FNOL reading, phone wrap, and first-draft endorsements off the broker and off the floor — with traces the insurer can supervise — Brolink becomes the platform of the broker of tomorrow. We sit on Websure. We do not rebuild it.</p>
       </div>
       <div class="card">
         <div class="panel-kicker" style="margin-bottom:10px;">Do not say</div>
         <ul class="ask">
           <li>Replace Websure, or “Websure AI v2.4”</li>
-          <li>Fully autonomous settlement or underwriting</li>
+          <li>Fully autonomous settlement or underwriting — including auto-binding a young driver</li>
           <li>Headcount takeout (People is pillar 1)</li>
           <li>Santam-only examples as the whole story</li>
           <li>Pricing, partnership, or “pilot” in this hour</li>
@@ -876,7 +986,8 @@ a { color: inherit; }
         <li>Which mailbox is the live broker desk, and who owns it?</li>
         <li>What does Websure already expose — API, webhooks, or UI only?</li>
         <li>Which insurer book would be in scope first, and how is Santam data separated from Hollard today?</li>
-        <li>Where is the backlog worst: email queries, FNOL docs, or endorsements?</li>
+        <li>Where is the backlog worst: email, the desk DID, FNOL docs, or endorsements?</li>
+        <li>Do you already record the broker-desk DID, and who owns that recording?</li>
         <li>Is there a Santam group AI / vendor policy, and who clears it?</li>
         <li>Do you want this as a capability you own, or one we operate?</li>
       </ul>
@@ -886,7 +997,7 @@ a { color: inherit; }
       <div class="panel-kicker" style="margin-bottom:10px;">If they say yes — 90-day discovery (paid)</div>
       <p style="font-size:14px; color:var(--muted); line-height:1.65;"><b>Weeks 1–2:</b> Websure API walkthrough · shared mailbox · one insurer book only.<br>
       <b>Weeks 3–6:</b> Email desk on read-only Websure (status, cover, missing docs).<br>
-      <b>Weeks 7–12:</b> One write path with confirm-before-write · isolation tests on a second book. WhatsApp is a channel after that, not a new product.</p>
+      <b>Weeks 7–12:</b> One write path with confirm-before-write · isolation tests on a second book. Phone wrap and WhatsApp are channels after that, not new products.</p>
     </div>
 
     <div class="text-center">
@@ -1158,10 +1269,160 @@ function trySettle() {
   el('finNote').classList.remove('hidden');
 }
 
+var callGen = 0, callPlaying = false, callDone = false, callFiled = false;
+function padTime(n) { return (n < 10 ? '00:0' : '00:') + n; }
+function addTx(who, text) {
+  var box = el('callTx');
+  if (box.querySelector('.empty')) box.innerHTML = '';
+  var d = document.createElement('div');
+  d.className = 'tx-line ' + (who === 'Nadia' ? 'nadia' : 'desk');
+  d.innerHTML = '<span class="who">' + who + '</span>' + text;
+  box.appendChild(d);
+  box.scrollTop = box.scrollHeight;
+}
+function resetCall() {
+  callGen += 1;
+  callPlaying = false;
+  callDone = false;
+  callFiled = false;
+  var callMail = mails.filter(function(x){ return x.id === 'call'; })[0];
+  if (callMail) callMail.hidden = true;
+  delete mailState.call;
+  el('callLive').textContent = 'Idle · waiting to wrap';
+  el('callLive').classList.remove('on');
+  el('callClock').textContent = '00:00';
+  el('callWave').classList.remove('on');
+  el('callTx').innerHTML = '<div class="empty">Play the wrap. Forty-one seconds of desk audio, compressed for the room.</div>';
+  ['ePol','eInt','eDrv','eAge','eEff','eBook'].forEach(function(id) { el(id).textContent = '—'; });
+  el('callUw').classList.add('hidden');
+  el('callIso').classList.add('hidden');
+  el('callBindNote').classList.add('hidden');
+  el('fileCallBtn').disabled = true;
+  el('callTrace').innerHTML = '<div class="trace-line k-dim"><span class="ts">—</span><span class="tm">Waiting for the wrap…</span></div>';
+  if (mailOpen === 'call') {
+    mailOpen = '';
+    renderMailList('');
+    el('mailRead').innerHTML = '<div class="empty">Select a mail. Status and cover can auto-send. Endorsements wait for confirm. Unpaid debit notifies the broker — re-presenting it is financial.</div>';
+    el('mailTrace').innerHTML = '<div class="trace-line k-dim"><span class="ts">—</span><span class="tm">Waiting for a mail…</span></div>';
+  } else {
+    renderMailList(mailOpen);
+  }
+}
+function playWrap() {
+  if (callPlaying) return;
+  callGen += 1;
+  var gen = callGen;
+  callPlaying = true;
+  callDone = false;
+  el('callLive').textContent = 'Live · wrapping the DID';
+  el('callLive').classList.add('on');
+  el('callWave').classList.add('on');
+  el('callTx').innerHTML = '';
+  el('callUw').classList.add('hidden');
+  el('callIso').classList.add('hidden');
+  el('callBindNote').classList.add('hidden');
+  el('fileCallBtn').disabled = true;
+  ['ePol','eInt','eDrv','eAge','eEff','eBook'].forEach(function(id) { el(id).textContent = '—'; });
+  var frame = el('callWave').closest('.frame');
+  if (frame) frame.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  var traces = [
+    { t: '08:47:02', m: 'channel · desk DID · inbound · Nadia Petersen', k: '' },
+    { t: '08:47:08', m: 'asr · live transcript · 00:41 compressed', k: 'ok' },
+    { t: '08:47:14', m: 'extract · ST-449201 · add regular driver', k: 'ok' },
+    { t: '08:47:21', m: 'extract · Anika van der Merwe · 19 · licence Mar 2026', k: 'ok' },
+    { t: '08:47:28', m: 'flag · under 25 · UW judgement · not auto-bind', k: 'warn' },
+    { t: '08:47:34', m: 'isolation · santam.workspace ALLOW · hollard out of scope', k: 'ok' },
+    { t: '08:47:40', m: 'write · draft_endorsement · confirm required', k: 'warn' }
+  ];
+  renderTrace('callTrace', traces, false, gen, function() { return callGen; });
+  var lines = [
+    [400, 'Nadia', 'Morning — Nadia Petersen, Petersen Brokers.'],
+    [1100, 'Desk', 'Hi Nadia, you’re on the broker desk. Go ahead.'],
+    [1900, 'Nadia', 'Van der Merwe, Santam motor — the Polo. ST-449201 I think. Client wants her daughter on as a regular driver.'],
+    [3200, 'Nadia', 'Anika van der Merwe, nineteen, got her licence in March, lives at the Lyttelton address, no claims that I know of.'],
+    [4600, 'Nadia', 'Cover from the first of September. Don’t bind it until I confirm the premium with the client.'],
+    [5800, 'Desk', 'Understood. We’ll draft — we won’t write to Websure until you confirm.'],
+    [6800, 'Nadia', 'And this is Santam only, not the Hollard fleet. Thanks, that’s it.']
+  ];
+  lines.forEach(function(row) {
+    later(row[0], function() {
+      if (gen !== callGen) return;
+      addTx(row[1], row[2]);
+    });
+  });
+  var clock = [0, 6, 12, 19, 27, 34, 41];
+  clock.forEach(function(sec, i) {
+    later(i * 1100, function() {
+      if (gen !== callGen) return;
+      el('callClock').textContent = padTime(sec);
+    });
+  });
+  later(2200, function() {
+    if (gen !== callGen) return;
+    el('ePol').textContent = 'ST-449201 · Polo';
+    el('eInt').textContent = 'Add regular driver';
+  });
+  later(3600, function() {
+    if (gen !== callGen) return;
+    el('eDrv').textContent = 'Anika van der Merwe';
+    el('eAge').textContent = '19 · licence Mar 2026';
+  });
+  later(5000, function() {
+    if (gen !== callGen) return;
+    el('eEff').textContent = '1 Sep 2026';
+    el('callUw').classList.remove('hidden');
+  });
+  later(7000, function() {
+    if (gen !== callGen) return;
+    el('eBook').textContent = 'Santam · Hollard out of scope';
+    el('callIso').classList.remove('hidden');
+  });
+  later(7800, function() {
+    if (gen !== callGen) return;
+    callPlaying = false;
+    callDone = true;
+    el('callLive').textContent = 'Ended · 00:41 · wrap ready';
+    el('callLive').classList.remove('on');
+    el('callWave').classList.remove('on');
+    el('fileCallBtn').disabled = false;
+  });
+}
+function fileCallToDesk() {
+  if (!callDone) return;
+  var callMail = mails.filter(function(x){ return x.id === 'call'; })[0];
+  if (!callMail) return;
+  callFiled = true;
+  callMail.hidden = false;
+  mailState.call = 'queued';
+  mailFilter = 'all';
+  var box = el('inbox');
+  if (box) box.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  later(350, function() { openMail('call'); });
+}
+function tryCallBind() {
+  el('callBindNote').classList.remove('hidden');
+}
+
 var mailState = {};
 var mailFilter = 'all';
 var mailOpen = '';
 var mails = [
+  {
+    id: 'call', group: 'endorse', hidden: true,
+    from: 'Nadia Petersen', email: 'voice · desk DID 012 673 0000',
+    sub: 'Call wrap — add driver Anika · ST-449201',
+    pre: '41s inbound. Add regular driver, 19, from 1 Sep. Confirm before bind.',
+    book: 'Santam', intent: 'Endorsement / add driver', cls: 'write', conf: '90%', action: 'confirm',
+    trace: [
+      { t: '08:47:41', m: 'wrap · inbound DID · 00:41 · Nadia Petersen', k: 'ok' },
+      { t: '08:47:42', m: 'extract · Anika van der Merwe · 19 · licence Mar 2026', k: '' },
+      { t: '08:47:42', m: 'isolation · santam.workspace · ALLOW · hollard out of scope', k: 'ok' },
+      { t: '08:47:43', m: 'flag · driver under 25 · UW judgement not auto-bind', k: 'warn' },
+      { t: '08:47:43', m: 'tool · draft_endorsement · class=write · confirm required', k: 'warn' }
+    ],
+    letter: 'Source: Broker Desk DID wrap · 25 Aug 08:47 · 00:41.<br><br>Nadia Petersen asked to add <b>Anika van der Merwe</b> as a regular driver on Santam <b>ST-449201</b> (Polo), effective 1 September. Age 19, licence March 2026, Lyttelton address, no claims declared. She asked not to bind until she confirms premium with the client. She confirmed Santam only — not the Hollard fleet.',
+    draft: 'Hi Nadia,<br><br>Draft young-driver endorsement on ST-449201. Anika van der Merwe, regular driver, effective 1 Sep. Illustrative loading <b>+R310 / month</b> (under-25). I have <b>not</b> accepted this risk — that is underwriting judgement, not a desk write.<br><br>Confirm on this thread and I will park it for the underwriter. I will not bind from the wrap.<br><br>Broker Desk · Brolink'
+  },
   {
     id: 'status', group: 'desk',
     from: 'Nadia Petersen', email: 'nadia@petersenbrokers.co.za',
@@ -1322,8 +1583,8 @@ function mailTag(id) {
   return '<span class="tag tag-refuse">isolation</span>';
 }
 function visibleMails() {
-  if (mailFilter === 'all') return mails;
-  return mails.filter(function(m) { return m.group === mailFilter; });
+  var list = mailFilter === 'all' ? mails : mails.filter(function(m) { return m.group === mailFilter; });
+  return list.filter(function(m) { return !m.hidden; });
 }
 function setMailFilter(f) {
   mailFilter = f;
@@ -1401,6 +1662,9 @@ function resetInbox() {
   mailOpen = '';
   mailQueueFast = false;
   mailTraceGen += 1;
+  callFiled = false;
+  var callMail = mails.filter(function(x){ return x.id === 'call'; })[0];
+  if (callMail) callMail.hidden = true;
   el('qCol').textContent = '12';
   renderMailList('');
   el('mailRead').innerHTML = '<div class="empty">Select a mail. Status and cover can auto-send. Endorsements wait for confirm. Unpaid debit notifies the broker — re-presenting it is financial.</div>';
@@ -1498,6 +1762,7 @@ var archCopy = {
   write: ['write — confirm before Websure', 'Claim notes, document chase, endorsement drafts. The agent prepares the payload. A human confirms. Then we call the Websure API. This is the FSCA-shaped control.'],
   financial: ['financial — people stay on the mandate', 'Premium, settlement, debit-order, recoveries. The assessor or finance owner authorises. The layer never holds this tool in auto. That is why Authorise settlement is blocked in the claims cell.'],
   mail: ['Shared mailbox first', 'Not a personal inbox. Microsoft Graph or IMAP on the broker-desk box. Classify intent and insurer book, look up Websure, then send / hold / escalate / refuse. Live value before any Websure write is approved.'],
+  phone: ['Desk phone wrap — not a voicebot', 'The DID is already recorded on most floors. When the call ends, the same agent transcribes, extracts, and parks a draft on the shared mailbox. Same action classes, same isolation. We do not put an avatar on the phone to the broker or the client.'],
   wa: ['WhatsApp is a channel, not a product', 'Same agent, same action classes, same isolation. Only after email is trusted. Do not lead the 90 days with WhatsApp Business procurement.'],
   agent: ['Glass-box traces', 'Every decision carries intent, book, action class, and confirm/refuse. On FNOL the same strip shows vision extract, binder reconcile, and the financial wall. The insurer’s supervision duty under the binder is the point — a black box is unusable here.'],
   iso: ['Isolation is in the connector', 'Santam tools cannot resolve a Hollard id. CROSS_TENANT_REFUSE is a hard fail with an audit line and no payload. Prompt instructions are not the control.'],
