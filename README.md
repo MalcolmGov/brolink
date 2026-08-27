@@ -14,8 +14,9 @@ This is a **layer alongside Websure**, not a replacement. It does not settle cla
 4. **Claims cell** — FNOL pack is read (photo, licence, quote), reconciled to the Santam binder, expired licence chased. Settlement stays with the assessor. Agent trace is visible.
 5. **Binder supervision** — per-insurer bordereaux, TCF, DSARs, collections exceptions.
 6. **Isolation** — Hollard workspace searching a Santam claim is refused with an audit line.
-7. **Connect** — mailbox → classified actions → Websure / Astute. Read, write, financial.
-8. **Working session pack** — 90-minute agenda, talk track, who must be in the room, discovery questions.
+7. **On Websure** — overlay on an illustrative policy screen. Open ST-449201, confirm a note, bind stays blocked. A Hollard policy in the Santam session is refused.
+8. **Connect** — mailbox → classified actions → Websure / Astute. Read, write, financial.
+9. **Working session pack** — 90-minute agenda, talk track, who must be in the room, discovery questions.
 
 ## Working session
 

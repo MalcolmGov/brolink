@@ -379,7 +379,7 @@ a { color: inherit; }
 .ask li { margin-bottom: 6px; }
 
 @media print {
-  .nav, .hero, .pillars, #inbox, #call, #journey, #claims, #compliance, #isolation, #scorecard, .footer, .theme-chip { display:none !important; }
+  .nav, .hero, .pillars, #inbox, #call, #journey, #claims, #compliance, #isolation, #websure, #scorecard, .footer, .theme-chip { display:none !important; }
   .section { padding: 24px 0; }
   .contact { background: #fff; }
 }
@@ -422,6 +422,61 @@ a { color: inherit; }
 .tx-line .who { font-size: 10px; font-weight: 700; letter-spacing: 0.5px; text-transform: uppercase; color: var(--dim); display:block; margin-bottom: 2px; }
 .tx-line.nadia { border-left: 3px solid var(--teal); }
 .tx-line.desk { border-left: 3px solid var(--line); }
+
+#websure .frame { scroll-margin-top: 78px; }
+.ws-top {
+  display:flex; align-items:center; justify-content:space-between; gap:12px; flex-wrap:wrap;
+  padding: 10px 14px; background: #16343c; color: #e7f4f6; font-size: 12px;
+}
+.ws-top strong { font-size: 13px; letter-spacing: 0.3px; }
+.ws-top span { color: #b7c9ce; }
+.ws-app { display:grid; grid-template-columns: 148px 1fr 300px; min-height: 560px; }
+@media (max-width: 980px) {
+  .ws-app { grid-template-columns: 1fr; }
+  .ws-rail { display:flex; gap:6px; flex-wrap:wrap; border-right:none; border-bottom: 1px solid var(--line); }
+  .ws-rail button { width: auto; }
+  .ws-dock { border-left: none; border-top: 1px solid var(--line); }
+}
+.ws-rail { background: #eef2f4; border-right: 1px solid var(--line); padding: 12px; }
+.ws-rail button {
+  display:block; width:100%; text-align:left; padding: 8px 10px; margin-bottom: 4px;
+  border: none; border-radius: 8px; background: transparent; color: var(--muted);
+  font-family: inherit; font-size: 12px; font-weight: 600; cursor: pointer;
+}
+.ws-rail button.on { background: #fff; color: var(--ink); box-shadow: var(--shadow); }
+.ws-main { padding: 16px; background: var(--surface); }
+.ws-crumb { font-size: 11px; color: var(--dim); margin-bottom: 10px; }
+.ws-banner {
+  display:flex; justify-content:space-between; gap:12px; flex-wrap:wrap; align-items:flex-start;
+  padding: 12px 14px; background: var(--bg); border: 1px solid var(--line); border-radius: 10px; margin-bottom: 12px;
+}
+.ws-banner h3 { font-size: 16px; }
+.ws-banner p { font-size: 12px; color: var(--muted); }
+.ws-tabs { display:flex; gap: 4px; margin-bottom: 12px; flex-wrap:wrap; }
+.ws-tabs button {
+  padding: 7px 12px; border-radius: 8px; border: 1px solid var(--line); background: var(--card);
+  color: var(--muted); cursor: pointer; font-family: inherit; font-size: 12px; font-weight: 600;
+}
+.ws-tabs button.on { border-color: var(--teal); color: var(--teal-bright); background: #e7f4f6; }
+.ws-table { width:100%; border-collapse: collapse; font-size: 12px; }
+.ws-table th { text-align:left; color: var(--dim); font-weight: 600; padding: 8px; border-bottom: 1px solid var(--line); }
+.ws-table td { padding: 8px; border-bottom: 1px solid var(--line); }
+.ws-table tr.hl td { background: rgba(26,143,161,0.1); }
+.ws-plist button {
+  display:block; width:100%; text-align:left; padding: 10px 12px; margin-bottom: 8px;
+  border: 1px solid var(--line); border-radius: 10px; background: var(--bg);
+  font-family: inherit; color: var(--ink); cursor: pointer;
+}
+.ws-plist button:hover { border-color: var(--teal); }
+.ws-plist button strong { display:block; font-size: 13px; }
+.ws-plist button span { font-size: 11px; color: var(--dim); }
+.ws-dock {
+  background: #f8fafb; border-left: 1px solid var(--line); padding: 14px;
+  display:flex; flex-direction:column; gap: 10px;
+}
+.ws-dock h4 { font-size: 15px; }
+.ws-note { font-size: 12px; color: var(--muted); padding: 8px 0; border-bottom: 1px solid var(--line); }
+.ws-note:last-child { border-bottom: none; }
 </style>
 </head>
 <body>
@@ -439,6 +494,7 @@ a { color: inherit; }
       <a href="#claims">Claims cell</a>
       <a href="#compliance">Binder</a>
       <a href="#isolation">Isolation</a>
+      <a href="#websure">On Websure</a>
       <a href="#architecture">Connect</a>
       <a href="#session">Session</a>
     </div>
@@ -451,11 +507,11 @@ a { color: inherit; }
       <div>
         <div class="badge"><span class="dot"></span> Alongside Websure · not a replacement</div>
         <h1>From admin<br>to <em>advantage.</em></h1>
-        <p class="hero-lead">A working layer on top of Websure that takes chasing, status, FNOL reading, and first-draft endorsements off the broker and off the floor — with traces the insurer can supervise.</p>
+        <p class="hero-lead">A working layer on top of Websure that takes chasing, status, FNOL reading, phone wrap, and first-draft endorsements off the floor — docked on the policy, with traces the insurer can supervise.</p>
         <p class="hero-quote">“Insurance administration done right — through people, technology, and partnerships.”<br><strong>Olebogeng Mogale, CEO · 2030 Strategy</strong></p>
         <div class="hero-actions">
           <a href="#inbox" class="btn btn-primary">Open the broker inbox →</a>
-          <a href="#architecture" class="btn btn-outline">How we connect</a>
+          <a href="#websure" class="btn btn-outline">See it on Websure</a>
         </div>
       </div>
       <div class="hero-visual">
@@ -467,10 +523,10 @@ a { color: inherit; }
             <div class="stat"><div class="stat-val">0</div><div class="stat-lbl">Unsupervised writes</div></div>
             <div class="stat"><div class="stat-val">1</div><div class="stat-lbl">Cross-book refusal</div></div>
           </div>
-          <div class="act"><span>Broker desk inbox · 2 auto-sent · 1 confirm · 1 refuse</span><span class="tag tag-read">read</span></div>
           <div class="act"><span>Call wrap · young driver · confirm (under 25)</span><span class="tag tag-write">write</span></div>
           <div class="act"><span>FNOL pack read · licence expired · chase parked</span><span class="tag tag-write">write</span></div>
-          <div class="act"><span>Hollard agent queried a Santam policy</span><span class="tag tag-refuse">refused</span></div>
+          <div class="act"><span>Websure overlay · Anika parked for UW</span><span class="tag tag-write">write</span></div>
+          <div class="act"><span>Hollard policy in Santam session</span><span class="tag tag-refuse">refused</span></div>
         </div>
       </div>
     </div>
@@ -845,6 +901,124 @@ a { color: inherit; }
   </div>
 </section>
 
+<section class="section" id="websure">
+  <div class="container">
+    <div class="text-center mb-48">
+      <div class="sec-label">Alongside Websure · the overlay</div>
+      <h2 class="sec-title">The layer sits on the policy. It does not become the policy.</h2>
+      <p class="sec-desc">Illustrative Websure-shaped screen — not their UI. Open ST-449201. The dock reads the record over API, proposes the young-driver write, and still cannot bind. A Hollard policy in this workspace is refused.</p>
+      <div style="margin-top:22px;display:flex;gap:10px;justify-content:center;flex-wrap:wrap;">
+        <button class="btn btn-primary" type="button" onclick="openWs('santam')">Open ST-449201 →</button>
+        <button class="btn btn-outline" type="button" onclick="resetWs()">Reset screen</button>
+      </div>
+    </div>
+    <div class="frame">
+      <div class="ws-top">
+        <div><strong>Websure</strong> &nbsp; <span>Brolink UMA · Centurion · illustrative chrome</span></div>
+        <div style="display:flex;gap:8px;align-items:center;flex-wrap:wrap;">
+          <span id="wsBookLbl">Santam workspace</span>
+          <button class="btn btn-sm btn-outline" type="button" onclick="openWs('santam')">Open ST-449201</button>
+          <button class="btn btn-sm btn-outline" type="button" onclick="resetWs()">Reset</button>
+        </div>
+      </div>
+      <div class="ws-app">
+        <div class="ws-rail">
+          <button type="button" class="on" id="wsNavPol" onclick="wsRail('pol')">Policies</button>
+          <button type="button" id="wsNavClm" onclick="wsRail('clm')">Claims</button>
+          <button type="button" id="wsNavEnd" onclick="wsRail('end')">Endorsements</button>
+          <button type="button" id="wsNavRep" onclick="wsRail('rep')">Bordereaux</button>
+        </div>
+        <div class="ws-main">
+          <div class="ws-crumb" id="wsCrumb">Policies · select a record</div>
+          <div id="wsList">
+            <div class="panel-kicker" style="margin-bottom:8px;">Recent in this workspace</div>
+            <div class="ws-plist">
+              <button type="button" onclick="openWs('santam')">
+                <strong>ST-449201</strong>
+                <span>J. van der Merwe · Santam motor · in force</span>
+              </button>
+              <button type="button" onclick="openWs('cross')">
+                <strong>ST-88211</strong>
+                <span>KM Insure · Hollard commercial fleet</span>
+              </button>
+            </div>
+          </div>
+          <div id="wsRefuse" class="hidden">
+            <div class="warn-box">
+              <span class="tag tag-refuse">refused</span>
+              <div style="margin-top:8px;color:var(--ink);"><b>ST-88211</b> sits on the Hollard book. This Websure session is the Santam workspace. No policy payload loaded. Isolation is in the connector, not the overlay prompt.</div>
+            </div>
+          </div>
+          <div id="wsPol" class="hidden">
+            <div class="ws-banner">
+              <div>
+                <h3>ST-449201 · J. van der Merwe</h3>
+                <p>Santam motor binder · 2019 VW Polo · CA 441-229 · in force</p>
+              </div>
+              <span class="tag tag-read">cover in force</span>
+            </div>
+            <div class="ws-tabs">
+              <button type="button" class="on" id="tabSum" onclick="wsTab('sum')">Summary</button>
+              <button type="button" id="tabDrv" onclick="wsTab('drv')">Drivers</button>
+              <button type="button" id="tabClm" onclick="wsTab('clm')">Claims</button>
+              <button type="button" id="tabNote" onclick="wsTab('note')">Notes</button>
+            </div>
+            <div id="paneSum">
+              <div class="docs">
+                <div class="row"><span class="k">Insured</span><span class="v">J. van der Merwe</span></div>
+                <div class="row"><span class="k">Vehicle</span><span class="v">2019 VW Polo 1.0 TSI</span></div>
+                <div class="row"><span class="k">VIN</span><span class="v">AHTZZ25G8G0128841</span></div>
+                <div class="row"><span class="k">Excess</span><span class="v">R2,500</span></div>
+                <div class="row"><span class="k">Debit</span><span class="v">25th · R2,140.40</span></div>
+                <div class="row"><span class="k">Open claim</span><span class="v">BH-28491 · licence expired</span></div>
+              </div>
+            </div>
+            <div id="paneDrv" class="hidden">
+              <table class="ws-table">
+                <thead><tr><th>Driver</th><th>Role</th><th>Age</th><th>Status</th></tr></thead>
+                <tbody>
+                  <tr><td>J. van der Merwe</td><td>Regular</td><td>54</td><td>On cover</td></tr>
+                  <tr id="anikaRow"><td>Anika van der Merwe</td><td>Proposed</td><td>19</td><td id="anikaSt">Not on cover</td></tr>
+                </tbody>
+              </table>
+            </div>
+            <div id="paneClm" class="hidden">
+              <div class="docs">
+                <div class="row"><span class="k">Claim</span><span class="v">BH-28491</span></div>
+                <div class="row"><span class="k">Cover</span><span class="v">Confirmed · Santam motor</span></div>
+                <div class="row"><span class="k">Docs</span><span class="v">Licence expired 12 Jan 2026</span></div>
+                <div class="row"><span class="k">Assessor</span><span class="v">Not assigned</span></div>
+              </div>
+            </div>
+            <div id="paneNote" class="hidden">
+              <div id="wsNotes">
+                <div class="ws-note">24 Aug 07:41 · FNOL registered via broker WhatsApp.</div>
+                <div class="ws-note">24 Aug 08:02 · Cover checked. Excess R2,500.</div>
+                <div class="ws-note hidden" id="wsNoteAdd">25 Aug 08:52 · Brolink layer · young-driver draft parked for UW. Confirmed on the floor. Risk not accepted.</div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="ws-dock">
+          <div class="panel-kicker">Brolink layer · docked</div>
+          <h4 id="dockTitle">Waiting for a policy</h4>
+          <p id="dockLead" style="font-size:12px;color:var(--muted);">Open ST-449201. The layer calls get_policy — it does not scrape the screen.</p>
+          <div id="dockBody" class="empty">No live context yet.</div>
+          <div class="panel-kicker">Agent trace</div>
+          <div class="trace" id="wsTrace" style="min-height:120px;max-height:180px;"><div class="trace-line k-dim"><span class="ts">—</span><span class="tm">Waiting…</span></div></div>
+          <div style="display:flex;gap:8px;flex-wrap:wrap;">
+            <button class="btn btn-primary btn-sm" type="button" id="wsConfirmBtn" disabled onclick="confirmWsNote()">Confirm write to notes</button>
+            <button class="btn btn-outline btn-sm" type="button" id="wsBindBtn" disabled onclick="tryWsBind()">Bind endorsement</button>
+          </div>
+          <div id="wsBindNote" class="fin-box hidden">
+            <span class="tag tag-fin">judgement</span> &nbsp; Binding Anika is underwriting. The overlay parks a note. It does not accept the risk.
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
 <section class="section" id="architecture">
   <div class="container">
     <div class="text-center mb-48">
@@ -946,8 +1120,8 @@ a { color: inherit; }
           </tr>
           <tr>
             <td>0:40</td>
-            <td>Isolation + connect</td>
-            <td><a href="#isolation">Hollard workspace</a> → search BH-28491 → refuse. Then <a href="#architecture">architecture</a>: mailbox → classified actions → Websure API. IT should nod here.</td>
+            <td>Isolation + Websure</td>
+            <td><a href="#isolation">Hollard workspace</a> → search BH-28491 → refuse. Then <a href="#websure">on Websure</a>: open ST-449201, confirm the note, <b>Bind endorsement</b> must fail. Open ST-88211 in the same session — refused. Architecture chips only if IT asks.</td>
           </tr>
           <tr>
             <td>0:55</td>
@@ -1403,6 +1577,146 @@ function tryCallBind() {
   el('callBindNote').classList.remove('hidden');
 }
 
+var wsGen = 0, wsOpened = '', wsNoted = false;
+function setWsRail(id) {
+  ['wsNavPol','wsNavClm','wsNavEnd','wsNavRep'].forEach(function(n) {
+    el(n).classList.toggle('on', n === id);
+  });
+}
+function wsTab(name) {
+  if (wsOpened !== 'santam') return;
+  var tabs = { sum: 'tabSum', drv: 'tabDrv', clm: 'tabClm', note: 'tabNote' };
+  var panes = { sum: 'paneSum', drv: 'paneDrv', clm: 'paneClm', note: 'paneNote' };
+  Object.keys(tabs).forEach(function(k) {
+    el(tabs[k]).classList.toggle('on', k === name);
+    el(panes[k]).classList.toggle('hidden', k !== name);
+  });
+  el('anikaRow').classList.toggle('hl', name === 'drv');
+}
+function wsRail(name) {
+  var ids = { pol: 'wsNavPol', clm: 'wsNavClm', end: 'wsNavEnd', rep: 'wsNavRep' };
+  setWsRail(ids[name]);
+  if (wsOpened !== 'santam') return;
+  if (name === 'pol') wsTab('sum');
+  if (name === 'clm') wsTab('clm');
+  if (name === 'end') wsTab('drv');
+  if (name === 'rep') {
+    el('dockTitle').textContent = 'Bordereaux stays a file pack';
+    el('dockLead').textContent = 'SFTP / ops. The overlay does not invent a submission from this screen.';
+  }
+}
+function resetWs() {
+  wsGen += 1;
+  wsOpened = '';
+  wsNoted = false;
+  el('wsList').classList.remove('hidden');
+  el('wsPol').classList.add('hidden');
+  el('wsRefuse').classList.add('hidden');
+  el('wsCrumb').textContent = 'Policies · select a record';
+  el('wsBookLbl').textContent = 'Santam workspace';
+  el('anikaRow').classList.remove('hl');
+  el('anikaSt').textContent = 'Not on cover';
+  el('wsNoteAdd').classList.add('hidden');
+  el('wsBindNote').classList.add('hidden');
+  el('wsConfirmBtn').disabled = true;
+  el('wsBindBtn').disabled = true;
+  setWsRail('wsNavPol');
+  el('tabSum').classList.add('on');
+  el('tabDrv').classList.remove('on');
+  el('tabClm').classList.remove('on');
+  el('tabNote').classList.remove('on');
+  el('paneSum').classList.remove('hidden');
+  el('paneDrv').classList.add('hidden');
+  el('paneClm').classList.add('hidden');
+  el('paneNote').classList.add('hidden');
+  el('dockTitle').textContent = 'Waiting for a policy';
+  el('dockLead').textContent = 'Open ST-449201. The layer calls get_policy — it does not scrape the screen.';
+  el('dockBody').className = 'empty';
+  el('dockBody').textContent = 'No live context yet.';
+  el('wsTrace').innerHTML = '<div class="trace-line k-dim"><span class="ts">—</span><span class="tm">Waiting…</span></div>';
+}
+function openWs(kind) {
+  wsGen += 1;
+  var gen = wsGen;
+  wsNoted = false;
+  el('wsBindNote').classList.add('hidden');
+  el('wsNoteAdd').classList.add('hidden');
+  el('anikaSt').textContent = 'Not on cover';
+  var frame = el('wsTrace').closest('.frame');
+  if (frame) frame.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  el('wsList').classList.add('hidden');
+  if (kind === 'cross') {
+    wsOpened = 'cross';
+    el('wsPol').classList.add('hidden');
+    el('wsRefuse').classList.remove('hidden');
+    el('wsCrumb').textContent = 'Policies · ST-88211 · blocked';
+    el('wsBookLbl').textContent = 'Santam workspace';
+    el('wsConfirmBtn').disabled = true;
+    el('wsBindBtn').disabled = true;
+    el('dockTitle').textContent = 'CROSS_TENANT_REFUSE';
+    el('dockLead').textContent = 'Hollard fleet id in a Santam Websure session. No payload. The overlay cannot override the connector.';
+    el('dockBody').className = '';
+    el('dockBody').innerHTML = '<div class="warn-box"><span class="tag tag-refuse">refused</span> &nbsp; ST-88211 not loaded. Isolation is not a prompt instruction.</div>';
+    renderTrace('wsTrace', [
+      { t: '08:52:01', m: 'session · santam.workspace · Websure chrome', k: '' },
+      { t: '08:52:02', m: 'tool · get_policy ST-88211 · class=read', k: '' },
+      { t: '08:52:02', m: 'result · CROSS_TENANT_REFUSE · no payload', k: 'bad' }
+    ], false, gen, function() { return wsGen; });
+    return;
+  }
+  wsOpened = 'santam';
+  el('wsRefuse').classList.add('hidden');
+  el('wsPol').classList.remove('hidden');
+  el('wsCrumb').textContent = 'Policies · ST-449201 · Santam motor';
+  el('wsBookLbl').textContent = 'Santam workspace';
+  el('wsConfirmBtn').disabled = true;
+  el('wsBindBtn').disabled = true;
+  setWsRail('wsNavPol');
+  wsTab('sum');
+  el('dockTitle').textContent = 'Reading ST-449201…';
+  el('dockLead').textContent = 'get_policy via the Websure API wrap. Screen scrape is not the architecture.';
+  el('dockBody').className = 'empty';
+  el('dockBody').textContent = 'Calling get_policy…';
+  renderTrace('wsTrace', [
+    { t: '08:52:03', m: 'session · santam.workspace · overlay docked', k: '' },
+    { t: '08:52:04', m: 'tool · get_policy ST-449201 · class=read · ALLOW', k: 'ok' },
+    { t: '08:52:05', m: 'context · wrap parked · Anika van der Merwe · 19', k: 'ok' },
+    { t: '08:52:06', m: 'flag · under 25 · UW judgement · not auto-bind', k: 'warn' },
+    { t: '08:52:07', m: 'next · draft_endorsement · class=write · confirm required', k: 'warn' }
+  ], false, gen, function() { return wsGen; });
+  later(900, function() {
+    if (gen !== wsGen) return;
+    wsTab('drv');
+    setWsRail('wsNavEnd');
+    el('anikaRow').classList.add('hl');
+    el('dockTitle').textContent = 'Next action · add driver';
+    el('dockLead').textContent = 'Same draft as the DID wrap. Park for underwriting. Do not bind from the overlay.';
+    el('dockBody').className = '';
+    el('dockBody').innerHTML = ''
+      + '<div class="row"><span class="k">Driver</span><span class="v">Anika van der Merwe · 19</span></div>'
+      + '<div class="row" style="margin-top:6px;"><span class="k">Policy</span><span class="v">ST-449201 · Santam</span></div>'
+      + '<div class="row" style="margin-top:6px;"><span class="k">Class</span><span class="v">WRITE · confirm</span></div>'
+      + '<div class="warn-box" style="margin-top:10px;"><span class="tag tag-write">write</span> &nbsp; Confirm parks a Websure note. Binding stays with UW.</div>';
+    el('wsConfirmBtn').disabled = false;
+    el('wsBindBtn').disabled = false;
+  });
+}
+function confirmWsNote() {
+  if (wsOpened !== 'santam' || wsNoted) return;
+  wsNoted = true;
+  el('wsNoteAdd').classList.remove('hidden');
+  el('anikaSt').textContent = 'Parked · UW';
+  el('wsConfirmBtn').disabled = true;
+  wsTab('note');
+  el('dockTitle').textContent = 'Note written · risk not accepted';
+  el('dockLead').textContent = 'Trace on the Santam binder. Anika is not on cover.';
+  el('dockBody').innerHTML = '<div class="ok-box"><span class="tag tag-write">write</span> &nbsp; Websure note committed after confirm. Endorsement not bound.</div>';
+  appendTrace(el('wsTrace'), { t: '08:52:11', m: 'write · claim_note ST-449201 · confirmed · not bound', k: 'ok' });
+}
+function tryWsBind() {
+  el('wsBindNote').classList.remove('hidden');
+}
+
 var mailState = {};
 var mailFilter = 'all';
 var mailOpen = '';
@@ -1766,7 +2080,7 @@ var archCopy = {
   wa: ['WhatsApp is a channel, not a product', 'Same agent, same action classes, same isolation. Only after email is trusted. Do not lead the 90 days with WhatsApp Business procurement.'],
   agent: ['Glass-box traces', 'Every decision carries intent, book, action class, and confirm/refuse. On FNOL the same strip shows vision extract, binder reconcile, and the financial wall. The insurer’s supervision duty under the binder is the point — a black box is unusable here.'],
   iso: ['Isolation is in the connector', 'Santam tools cannot resolve a Hollard id. CROSS_TENANT_REFUSE is a hard fail with an audit line and no payload. Prompt instructions are not the control.'],
-  websure: ['Websure API — wrap, do not embed', 'Their site already claims internet-facing APIs. We ask IT for auth, read endpoints, and the writes we are allowed. Each endpoint becomes a named tool: get_claim, draft_endorsement. The agent never sees a raw URL.'],
+  websure: ['Websure API — wrap, do not embed', 'Their site already claims internet-facing APIs. We ask IT for auth, read endpoints, and the writes we are allowed. Each endpoint becomes a named tool: get_policy, get_claim, draft_endorsement. The overlay docks on the policy screen. The agent never sees a raw URL, and it never becomes Websure.'],
   other: ['Same catalogue, other systems', 'Astute Short Term Switch for insurer data sharing we do not re-implement. Collections and commission escalate until an API exists. Bordereaux via SFTP. RPA only if a single Websure action has no API — never as the architecture.']
 };
 function showArch(kind, btn) {
