@@ -673,9 +673,144 @@ a { color: inherit; }
   0%, 100% { transform: scaleY(0.28); }
   50% { transform: scaleY(1); }
 }
+@keyframes countUp {
+  from { opacity: 0; transform: translateY(6px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+@keyframes tickPulse {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.5; }
+}
 ::-webkit-scrollbar { width: 4px; height: 4px; }
 ::-webkit-scrollbar-track { background: transparent; }
 ::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.15); border-radius: 4px; }
+
+/* ── Savings Counter Bar ── */
+.savings-bar {
+  position: fixed; top: 58px; left: 0; right: 0; z-index: 90;
+  background: linear-gradient(90deg, rgba(7,13,24,0.98) 0%, rgba(11,21,40,0.98) 100%);
+  border-bottom: 1px solid rgba(0,229,255,0.2);
+  backdrop-filter: blur(12px);
+  padding: 8px 0;
+  transform: translateY(-100%);
+  transition: transform 0.4s ease;
+}
+.savings-bar.visible { transform: translateY(0); }
+.savings-bar .container { display:flex; align-items:center; justify-content:space-between; gap:16px; flex-wrap:wrap; }
+.savings-bar-label { font-size: 10px; font-weight: 800; letter-spacing: 1px; text-transform: uppercase; color: #64748b; white-space: nowrap; }
+.savings-metrics { display:flex; gap:24px; align-items:center; flex-wrap:wrap; flex:1; justify-content:center; }
+.savings-metric { display:flex; flex-direction:column; align-items:center; gap:1px; }
+.savings-metric .val {
+  font-size: 15px; font-weight: 800; color: #00e5ff;
+  font-family: 'JetBrains Mono', monospace;
+  transition: all 0.3s ease;
+}
+.savings-metric .val.pop { animation: countUp 0.3s ease; }
+.savings-metric .lbl { font-size: 9px; font-weight: 700; color: #64748b; text-transform: uppercase; letter-spacing: 0.6px; white-space: nowrap; }
+.savings-metric.highlight .val { color: #34d399; font-size: 17px; }
+.savings-divider { width: 1px; height: 28px; background: rgba(255,255,255,0.1); }
+.savings-reset-btn {
+  font-size: 10px; color: #64748b; background: none; border: 1px solid rgba(255,255,255,0.12);
+  padding: 4px 10px; border-radius: 6px; cursor: pointer; font-family: inherit;
+  transition: 0.2s;
+}
+.savings-reset-btn:hover { color: #f8fafc; border-color: rgba(255,255,255,0.3); }
+
+/* ── Before/After Badge ── */
+.time-badge {
+  display: inline-flex; align-items: center; gap: 10px;
+  margin-top: 14px; padding: 8px 16px;
+  background: rgba(0,0,0,0.35); border: 1px solid rgba(255,255,255,0.1);
+  border-radius: 9999px; font-size: 12px; font-family: 'JetBrains Mono', monospace;
+}
+.time-badge .manual { color: #ef4444; }
+.time-badge .arrow { color: #64748b; }
+.time-badge .auto { color: #34d399; font-weight: 700; }
+.time-badge .saving { color: #fbbf24; font-weight: 700; }
+
+/* ── Day-in-the-Life Timeline ── */
+.day-timeline {
+  position: relative;
+  padding: 32px 0 20px;
+}
+.day-timeline::before {
+  content: '';
+  position: absolute; left: 0; right: 0; top: 50px;
+  height: 2px; background: linear-gradient(90deg, rgba(0,229,255,0.08), rgba(0,229,255,0.3), rgba(0,229,255,0.08));
+}
+.day-steps { display: grid; grid-template-columns: repeat(5, 1fr); gap: 0; position: relative; }
+@media (max-width: 860px) { .day-steps { grid-template-columns: repeat(3, 1fr); gap: 16px; } }
+@media (max-width: 560px) { .day-steps { grid-template-columns: 1fr 1fr; gap: 16px; } }
+.day-step {
+  display: flex; flex-direction: column; align-items: center; gap: 10px;
+  cursor: pointer; padding: 0 4px; text-decoration: none;
+  transition: 0.2s;
+}
+.day-step:hover .day-node { border-color: #00e5ff; background: rgba(0,229,255,0.15); }
+.day-step:hover .day-time { color: #00e5ff; }
+.day-node {
+  width: 44px; height: 44px; border-radius: 50%;
+  background: rgba(11,21,40,0.9); border: 1.5px solid rgba(255,255,255,0.15);
+  display: flex; align-items: center; justify-content: center;
+  font-size: 18px; transition: 0.25s;
+  box-shadow: 0 4px 16px rgba(0,0,0,0.4);
+  position: relative; z-index: 1;
+}
+.day-time { font-size: 11px; font-weight: 800; color: #00e5ff; font-family: 'JetBrains Mono', monospace; }
+.day-label { font-size: 12px; font-weight: 700; color: #f8fafc; text-align: center; }
+.day-sublabel { font-size: 10px; color: #64748b; text-align: center; line-height: 1.4; }
+.day-saving-chip {
+  font-size: 10px; font-weight: 700; color: #34d399;
+  background: rgba(52,211,153,0.1); border: 1px solid rgba(52,211,153,0.25);
+  padding: 2px 8px; border-radius: 9999px;
+}
+
+/* ── ROI Calculator ── */
+#roi-calc { scroll-margin-top: 78px; }
+.roi-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 40px; align-items: start; }
+@media (max-width: 860px) { .roi-grid { grid-template-columns: 1fr; } }
+.roi-inputs { display: flex; flex-direction: column; gap: 20px; }
+.roi-field label {
+  display: block; font-size: 10px; font-weight: 800; letter-spacing: 0.8px;
+  text-transform: uppercase; color: #64748b; margin-bottom: 8px;
+}
+.roi-field input, .roi-field select {
+  width: 100%; padding: 13px 16px;
+  background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.12);
+  border-radius: 12px; color: #f8fafc; font-size: 15px; font-weight: 600;
+  font-family: inherit; outline: none; transition: 0.2s;
+}
+.roi-field input:focus, .roi-field select:focus { border-color: #00e5ff; background: rgba(0,229,255,0.04); }
+.roi-field select option { background: #0b1528; }
+.roi-result {
+  background: rgba(11,21,40,0.95);
+  border: 1px solid rgba(0,229,255,0.2);
+  border-radius: 20px; padding: 28px;
+  box-shadow: 0 24px 60px rgba(0,0,0,0.5);
+}
+.roi-headline {
+  font-size: 13px; font-weight: 800; letter-spacing: 0.8px; text-transform: uppercase;
+  color: #64748b; margin-bottom: 6px;
+}
+.roi-number {
+  font-size: 48px; font-weight: 800; color: #34d399;
+  font-family: 'JetBrains Mono', monospace; letter-spacing: -2px; line-height: 1;
+  margin-bottom: 4px;
+  transition: all 0.4s ease;
+}
+.roi-period { font-size: 13px; color: #64748b; margin-bottom: 24px; }
+.roi-breakdown { display: flex; flex-direction: column; gap: 0; }
+.roi-row {
+  display: flex; justify-content: space-between; align-items: center;
+  padding: 10px 0; border-bottom: 1px solid rgba(255,255,255,0.07);
+  font-size: 13px;
+}
+.roi-row:last-child { border-bottom: none; }
+.roi-row .rk { color: #64748b; }
+.roi-row .rv { color: #f8fafc; font-weight: 700; font-family: 'JetBrains Mono', monospace; font-size: 12px; }
+.roi-row .rv.green { color: #34d399; }
+.roi-cta-row { margin-top: 20px; padding-top: 20px; border-top: 1px solid rgba(0,229,255,0.15); }
+.roi-assumption { font-size: 11px; color: #475569; margin-top: 16px; line-height: 1.6; }
 /*
 :root {
   --font-sans: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
@@ -1170,6 +1305,40 @@ a { color: inherit; }
   </div>
 </nav>
 
+<!-- ─── SAVINGS COUNTER BAR ─── -->
+<div class="savings-bar" id="savingsBar">
+  <div class="container">
+    <span class="savings-bar-label">⚡ Live savings</span>
+    <div class="savings-metrics">
+      <div class="savings-metric">
+        <span class="val" id="sc-emails">0</span>
+        <span class="lbl">Emails automated</span>
+      </div>
+      <div class="savings-divider"></div>
+      <div class="savings-metric">
+        <span class="val" id="sc-hours">0.0 hrs</span>
+        <span class="lbl">Hours saved</span>
+      </div>
+      <div class="savings-divider"></div>
+      <div class="savings-metric">
+        <span class="val" id="sc-calls">0</span>
+        <span class="lbl">Calls wrapped</span>
+      </div>
+      <div class="savings-divider"></div>
+      <div class="savings-metric">
+        <span class="val" id="sc-claims">0</span>
+        <span class="lbl">FNOL ingested</span>
+      </div>
+      <div class="savings-divider"></div>
+      <div class="savings-metric highlight">
+        <span class="val" id="sc-rand">R 0</span>
+        <span class="lbl">Cost saved</span>
+      </div>
+    </div>
+    <button class="savings-reset-btn" onclick="resetSavings()">Reset</button>
+  </div>
+</div>
+
 <section class="hero">
   <div class="container">
     <div class="hero-grid">
@@ -1197,6 +1366,74 @@ a { color: inherit; }
           <div class="act"><span>Websure overlay · Anika parked for UW</span><span class="tag tag-write">write</span></div>
           <div class="act"><span>Hollard policy in Santam session</span><span class="tag tag-refuse">refused</span></div>
         </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ─── DAY IN THE LIFE TIMELINE ─── -->
+<section class="section" style="padding-top:40px; padding-bottom:40px; border-bottom: 1px solid rgba(255,255,255,0.07);">
+  <div class="container">
+    <div class="text-center mb-48" style="margin-bottom:32px;">
+      <div class="sec-label">A broker's day · before and after the layer</div>
+      <h2 class="sec-title" style="font-size:32px;">From 8 hrs of admin to 90 minutes of supervision.</h2>
+    </div>
+    <div class="day-timeline">
+      <div class="day-steps">
+        <a class="day-step" href="#inbox">
+          <div class="day-time">08:00</div>
+          <div class="day-node">📧</div>
+          <div class="day-label">Email desk</div>
+          <div class="day-sublabel">41 emails</div>
+          <div class="day-saving-chip">4 min 20 sec</div>
+        </a>
+        <a class="day-step" href="#call">
+          <div class="day-time">09:30</div>
+          <div class="day-node">📞</div>
+          <div class="day-label">Call wrap</div>
+          <div class="day-sublabel">Inbound + extract</div>
+          <div class="day-saving-chip">41 sec</div>
+        </a>
+        <a class="day-step" href="#claims">
+          <div class="day-time">11:00</div>
+          <div class="day-node">🚗</div>
+          <div class="day-label">Claims cell</div>
+          <div class="day-sublabel">FNOL + docs</div>
+          <div class="day-saving-chip">1 min 12 sec</div>
+        </a>
+        <a class="day-step" href="#compliance">
+          <div class="day-time">14:00</div>
+          <div class="day-node">📋</div>
+          <div class="day-label">Binder audit</div>
+          <div class="day-sublabel">Per-insurer view</div>
+          <div class="day-saving-chip">Auto-filed</div>
+        </a>
+        <a class="day-step" href="#websure">
+          <div class="day-time">16:30</div>
+          <div class="day-node">⚡</div>
+          <div class="day-label">Websure overlay</div>
+          <div class="day-sublabel">Endorse + policy</div>
+          <div class="day-saving-chip">No core rewrite</div>
+        </a>
+      </div>
+    </div>
+    <div style="display:flex; justify-content:center; gap:32px; margin-top:28px; flex-wrap:wrap;">
+      <div style="text-align:center;">
+        <div style="font-size:11px; color:#64748b; text-transform:uppercase; letter-spacing:1px; margin-bottom:4px;">Manual day</div>
+        <div style="font-size:28px; font-weight:800; color:#ef4444; font-family:'JetBrains Mono',monospace;">8+ hrs</div>
+        <div style="font-size:11px; color:#64748b;">of repetitive admin</div>
+      </div>
+      <div style="display:flex; align-items:center; font-size:28px; color:#64748b;">→</div>
+      <div style="text-align:center;">
+        <div style="font-size:11px; color:#64748b; text-transform:uppercase; letter-spacing:1px; margin-bottom:4px;">With the layer</div>
+        <div style="font-size:28px; font-weight:800; color:#34d399; font-family:'JetBrains Mono',monospace;">&lt; 90 min</div>
+        <div style="font-size:11px; color:#64748b;">of human supervision</div>
+      </div>
+      <div style="display:flex; align-items:center; font-size:28px; color:#64748b;">→</div>
+      <div style="text-align:center;">
+        <div style="font-size:11px; color:#64748b; text-transform:uppercase; letter-spacing:1px; margin-bottom:4px;">Annual saving</div>
+        <div style="font-size:28px; font-weight:800; color:#00e5ff; font-family:'JetBrains Mono',monospace;">R 1.4M+</div>
+        <div style="font-size:11px; color:#64748b;">per 5-person desk</div>
       </div>
     </div>
   </div>
@@ -1273,6 +1510,15 @@ a { color: inherit; }
     <div class="text-center mb-48">
       <div class="sec-label">Broker desk · the volume is email</div>
       <h2 class="sec-title">A shared mailbox that actually resolves.</h2>
+      <div style="display:flex; justify-content:center; margin:10px 0 8px;">
+        <div class="time-badge">
+          <span class="manual">Manual: 5.5 hrs</span>
+          <span class="arrow">→</span>
+          <span class="auto">Automated: 4 min 20 sec</span>
+          <span class="savings-divider" style="height:16px;"></span>
+          <span class="saving">R 19,250 saved</span>
+        </div>
+      </div>
       <p class="sec-desc">Status and cover auto-send. Endorsements — vehicle, address, specified item, debit date — wait for confirm. Unpaid debit notifies the broker; re-presenting the debit stays financial. The right-hand strip is the glass box: intent, book, isolation.</p>
       <div style="margin-top:22px;display:flex;gap:10px;justify-content:center;flex-wrap:wrap;">
         <button class="btn btn-primary" type="button" onclick="runQueue()">Run the queue →</button>
@@ -1309,6 +1555,15 @@ a { color: inherit; }
     <div class="text-center mb-48">
       <div class="sec-label">Broker desk · the other volume is the phone</div>
       <h2 class="sec-title">The call ends. The wrap is already a draft.</h2>
+      <div style="display:flex; justify-content:center; margin:10px 0 8px;">
+        <div class="time-badge">
+          <span class="manual">Manual: 22 min</span>
+          <span class="arrow">→</span>
+          <span class="auto">Automated: 41 sec</span>
+          <span class="savings-divider" style="height:16px;"></span>
+          <span class="saving">R 128 saved per call</span>
+        </div>
+      </div>
       <p class="sec-desc">Nadia does not write an email. The layer transcribes the DID, extracts the endorsement, and parks a confirm-before-write on the same Broker Desk. A 19-year-old driver is underwriting judgement — not auto-bind.</p>
       <div style="margin-top:22px;display:flex;gap:10px;justify-content:center;flex-wrap:wrap;">
         <button class="btn btn-primary" type="button" id="playCallTop" onclick="playWrap()">Play the wrap →</button>
@@ -1381,6 +1636,15 @@ a { color: inherit; }
     <div class="text-center mb-48">
       <div class="sec-label">Claims cell · people stay on settlement</div>
       <h2 class="sec-title">Read the pack. Reconcile the binder. Do not settle.</h2>
+      <div style="display:flex; justify-content:center; margin:10px 0 8px;">
+        <div class="time-badge">
+          <span class="manual">Manual: 35 min</span>
+          <span class="arrow">→</span>
+          <span class="auto">Automated: 1 min 12 sec</span>
+          <span class="savings-divider" style="height:16px;"></span>
+          <span class="saving">R 204 saved per claim</span>
+        </div>
+      </div>
       <p class="sec-desc">Ingest the FNOL pack. The layer extracts photo, licence, and quote, then checks Websure. An expired licence becomes a chase — not a silent write. Settlement stays with the assessor.</p>
       <div style="margin-top:22px;display:flex;gap:10px;justify-content:center;flex-wrap:wrap;">
         <button class="btn btn-primary" type="button" onclick="runFnol()">Ingest FNOL pack →</button>
@@ -1748,6 +2012,76 @@ a { color: inherit; }
           <div class="kpi"><div class="kpi-v" style="color:var(--green)" id="k4">—</div><div class="kpi-l">People in the loop</div></div>
         </div>
         <div class="ok-box">Underwriters and claims assessors stay in the loop. The 2030 People pillar is intact: we remove chasing, not capability.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ─── ROI CALCULATOR ─── -->
+<section class="section" id="roi-calc" style="border-top: 1px solid rgba(255,255,255,0.07);">
+  <div class="container">
+    <div class="text-center mb-48" style="margin-bottom:48px;">
+      <div class="sec-label">Annual ROI · your numbers, your saving</div>
+      <h2 class="sec-title">How much is your admin desk costing you?</h2>
+      <p class="sec-desc">Enter your team's actual figures. The model uses a blended R350/hr servicing cost and 62% automation rate on qualifying transactions.</p>
+    </div>
+    <div class="roi-grid">
+      <div class="roi-inputs">
+        <div class="roi-field">
+          <label>Number of desk staff (FTEs)</label>
+          <input type="number" id="roi-fte" value="5" min="1" max="200" oninput="calcRoi()">
+        </div>
+        <div class="roi-field">
+          <label>Average monthly salary per person (R)</label>
+          <input type="number" id="roi-salary" value="25000" min="5000" step="1000" oninput="calcRoi()">
+        </div>
+        <div class="roi-field">
+          <label>Emails handled per desk per day</label>
+          <input type="number" id="roi-emails" value="41" min="5" max="500" oninput="calcRoi()">
+        </div>
+        <div class="roi-field">
+          <label>Inbound calls wrapped per desk per day</label>
+          <input type="number" id="roi-calls" value="12" min="0" max="200" oninput="calcRoi()">
+        </div>
+        <div class="roi-field">
+          <label>FNOL claims ingested per month</label>
+          <input type="number" id="roi-claims" value="80" min="0" max="2000" oninput="calcRoi()">
+        </div>
+      </div>
+      <div class="roi-result">
+        <div class="roi-headline">Estimated annual saving</div>
+        <div class="roi-number" id="roi-output">R 0</div>
+        <div class="roi-period">per year across your desk</div>
+        <div class="roi-breakdown">
+          <div class="roi-row">
+            <span class="rk">Email admin saving (annual)</span>
+            <span class="rv green" id="roi-r-email">R 0</span>
+          </div>
+          <div class="roi-row">
+            <span class="rk">Call wrap saving (annual)</span>
+            <span class="rv green" id="roi-r-call">R 0</span>
+          </div>
+          <div class="roi-row">
+            <span class="rk">FNOL processing saving (annual)</span>
+            <span class="rv green" id="roi-r-claim">R 0</span>
+          </div>
+          <div class="roi-row">
+            <span class="rk">Hours freed per year</span>
+            <span class="rv" id="roi-r-hours">0 hrs</span>
+          </div>
+          <div class="roi-row">
+            <span class="rk">FTE equivalent recovered</span>
+            <span class="rv" id="roi-r-fte">0 FTEs</span>
+          </div>
+          <div class="roi-row">
+            <span class="rk">Touch-free transaction rate</span>
+            <span class="rv green">62% of qualifying</span>
+          </div>
+        </div>
+        <div class="roi-cta-row">
+          <a href="#session" class="btn btn-primary" style="width:100%; justify-content:center;">Book a working session →</a>
+        </div>
+        <p class="roi-assumption">Blended servicing cost: R350/hr. Email resolution: 8 min/email × 62% automation. Call wrap: 22 min × 62% automation. FNOL: 35 min/claim × 80% automation. Illustrative only — actual saving depends on process scope agreed in discovery.</p>
       </div>
     </div>
   </div>
@@ -2764,6 +3098,143 @@ showBook('santam');
 calc();
 resetInbox();
 showArch('read', el('archRead'));
+
+/* ── SAVINGS COUNTER ── */
+var savings = { emails: 0, hours: 0, calls: 0, claims: 0, rand: 0 };
+var savingsVisible = false;
+function showSavingsBar() {
+  if (!savingsVisible) {
+    savingsVisible = true;
+    el('savingsBar').classList.add('visible');
+    // Shift hero down so savings bar doesn't overlap
+    document.querySelector('.hero').style.paddingTop = '140px';
+  }
+}
+function popVal(id, text) {
+  var el2 = el(id);
+  el2.textContent = text;
+  el2.classList.remove('pop');
+  void el2.offsetWidth;
+  el2.classList.add('pop');
+}
+function updateSavings() {
+  showSavingsBar();
+  popVal('sc-emails', savings.emails);
+  popVal('sc-hours', savings.hours.toFixed(1) + ' hrs');
+  popVal('sc-calls', savings.calls);
+  popVal('sc-claims', savings.claims);
+  var r = savings.rand;
+  var fmt = r >= 1000 ? 'R ' + (r/1000).toFixed(1) + 'k' : 'R ' + r;
+  popVal('sc-rand', fmt);
+}
+function addEmailSaving(count) {
+  // 8 min per email @ R350/hr
+  savings.emails += count;
+  savings.hours += (count * 8) / 60;
+  savings.rand += Math.round(count * 8 * 350 / 60);
+  updateSavings();
+}
+function addCallSaving() {
+  // 22 min per call @ R350/hr, 62% automation
+  savings.calls += 1;
+  savings.hours += (22 * 0.62) / 60;
+  savings.rand += Math.round(22 * 0.62 * 350 / 60);
+  updateSavings();
+}
+function addClaimSaving() {
+  // 35 min per claim @ R350/hr, 80% automation
+  savings.claims += 1;
+  savings.hours += (35 * 0.8) / 60;
+  savings.rand += Math.round(35 * 0.8 * 350 / 60);
+  updateSavings();
+}
+function resetSavings() {
+  savings = { emails: 0, hours: 0, calls: 0, claims: 0, rand: 0 };
+  updateSavings();
+}
+
+// Hook savings into existing workflow completions
+(function() {
+  // Patch runQueue to add email savings when queue completes
+  var _origRunQueue = window.runQueue;
+  window.runQueue = function() {
+    _origRunQueue && _origRunQueue();
+    // 41 emails automated on queue run
+    setTimeout(function() { addEmailSaving(41); }, 3500);
+  };
+
+  // Patch playWrap to add call savings when wrap completes
+  var _origPlayWrap = window.playWrap;
+  window.playWrap = function() {
+    _origPlayWrap && _origPlayWrap();
+    setTimeout(function() { addCallSaving(); }, 5000);
+  };
+
+  // Patch runFnol to add claim savings when ingest completes
+  var _origRunFnol = window.runFnol;
+  window.runFnol = function() {
+    _origRunFnol && _origRunFnol();
+    setTimeout(function() { addClaimSaving(); }, 4000);
+  };
+
+  // Patch openMail to add per-email savings when individual mails are resolved
+  var _origOpenMail = window.openMail;
+  window.openMail = function(id) {
+    _origOpenMail && _origOpenMail(id);
+  };
+
+  // Patch mailAct to add savings on each mail action
+  var _origMailAct = window.mailAct;
+  window.mailAct = function(id, st) {
+    _origMailAct && _origMailAct(id, st);
+    if (st === 'sent' || st === 'queued' || st === 'refused' || st === 'escalated') {
+      addEmailSaving(1);
+    }
+  };
+})();
+
+/* ── ROI CALCULATOR ── */
+function fmtRand(n) {
+  if (n >= 1000000) return 'R ' + (n/1000000).toFixed(2) + 'M';
+  if (n >= 1000)    return 'R ' + Math.round(n/1000) + 'k';
+  return 'R ' + Math.round(n);
+}
+function calcRoi() {
+  var fte    = parseInt(el('roi-fte').value, 10)    || 5;
+  var salary = parseInt(el('roi-salary').value, 10) || 25000;
+  var emails = parseInt(el('roi-emails').value, 10) || 41;
+  var calls  = parseInt(el('roi-calls').value, 10)  || 12;
+  var claims = parseInt(el('roi-claims').value, 10) || 80;
+
+  var workDays   = 252; // per year
+  var ratePerHr  = 350; // blended servicing cost
+  var autoRate   = 0.62;
+  var claimAuto  = 0.80;
+
+  // Email: 8 min per email, autoRate automated
+  var emailHrsYear = (emails * fte * workDays * 8 / 60) * autoRate;
+  var emailSaving  = emailHrsYear * ratePerHr;
+
+  // Call wrap: 22 min per call, autoRate of wrap automated
+  var callHrsYear = (calls * fte * workDays * 22 / 60) * autoRate;
+  var callSaving  = callHrsYear * ratePerHr;
+
+  // FNOL: 35 min per claim, claimAuto automated, claims per month × 12
+  var claimHrsYear = (claims * 12 * 35 / 60) * claimAuto;
+  var claimSaving  = claimHrsYear * ratePerHr;
+
+  var totalSaving = emailSaving + callSaving + claimSaving;
+  var totalHrs    = emailHrsYear + callHrsYear + claimHrsYear;
+  var fteEquiv    = totalHrs / (workDays * 8);
+
+  el('roi-output').textContent   = fmtRand(totalSaving);
+  el('roi-r-email').textContent  = fmtRand(emailSaving);
+  el('roi-r-call').textContent   = fmtRand(callSaving);
+  el('roi-r-claim').textContent  = fmtRand(claimSaving);
+  el('roi-r-hours').textContent  = Math.round(totalHrs).toLocaleString('en-ZA') + ' hrs';
+  el('roi-r-fte').textContent    = fteEquiv.toFixed(1) + ' FTEs';
+}
+calcRoi();
 </script>
 </body>
 </html>
