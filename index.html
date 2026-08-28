@@ -1952,364 +1952,229 @@ a { color: inherit; }
   </div>
 </section>
 
-<section class="section" id="architecture">
-  <div class="container">
-    <div class="text-center mb-48">
-      <div class="sec-label">Alongside Websure · not inside it</div>
-      <h2 class="sec-title">How we connect — without touching the core.</h2>
-      <p class="sec-desc">Internet-facing Websure APIs where they exist. Shared mailbox first. Every tool is classified. Santam tools cannot resolve a Hollard id. Click a layer to see what it is allowed to do.</p>
-    </div>
-    <div class="flow">
-      <div class="flow-col">
-        <h3>01 · Channels</h3>
-        <button type="button" class="flow-chip" onclick="showArch('mail', this)">Shared mailbox<span>Microsoft Graph / IMAP · broker desk, not a personal inbox</span></button>
-        <button type="button" class="flow-chip" onclick="showArch('phone', this)">Desk phone wrap<span>Same agent after the DID hangs up — not a voicebot</span></button>
-        <button type="button" class="flow-chip" onclick="showArch('wa', this)">WhatsApp later<span>Same agent, second channel — after email is trusted</span></button>
-      </div>
-      <div class="flow-col">
-        <h3>02 · The layer</h3>
-        <button type="button" class="flow-chip" onclick="showArch('agent', this)">Agent + traces<span>Intent, insurer book, confidence · every decision is visible</span></button>
-        <button type="button" class="flow-chip" onclick="showArch('iso', this)">Book isolation<span>Santam workspace cannot see Hollard. Enforced in the connector, not the prompt</span></button>
-      </div>
-      <div class="flow-col">
-        <h3>03 · Action class</h3>
-        <button type="button" class="flow-chip on" id="archRead" onclick="showArch('read', this)">read<span>Status, cover in force, missing docs — can auto-send</span></button>
-        <button type="button" class="flow-chip" id="archWrite" onclick="showArch('write', this)">write<span>Notes, chase, endorsement draft — confirm first</span></button>
-        <button type="button" class="flow-chip" id="archFin" onclick="showArch('financial', this)">financial<span>Premium, settlement, debit order — assessor only</span></button>
-      </div>
-      <div class="flow-col">
-        <h3>04 · Systems</h3>
-        <button type="button" class="flow-chip" onclick="showArch('websure', this)">Websure API<span>Policy, claim, endorsement · wrap endpoints as named tools</span></button>
-        <button type="button" class="flow-chip" onclick="showArch('other', this)">Astute · collections · files<span>Industry switch, debit-order fails, bordereaux SFTP. RPA last</span></button>
-      </div>
-    </div>
-    <div class="card arch-detail" id="archDetail"></div>
-  </div>
-</section>
-
-<section class="section" id="scorecard">
-  <div class="container">
-    <div class="text-center mb-48">
-      <div class="sec-label">2030 scorecard · BPO language</div>
-      <h2 class="sec-title">Cost per transaction. Hours returned to brokers.</h2>
-      <p class="sec-desc">Illustrative only — sized in your language, not seat licences. People stay on judgement; chasing is the work we take off the floor.</p>
-    </div>
-    <div class="card score">
-      <div>
-        <div class="claims-grid" style="padding:0; gap:12px;">
-          <div class="field"><label>Broker desk queries / month (email + phone + WhatsApp)</label><input type="number" id="bq" value="2400" oninput="calc()"></div>
-          <div class="field"><label>Minutes per query today</label><input type="number" id="mq" value="18" oninput="calc()"></div>
-          <div class="field"><label>FNOL packs / month</label><input type="number" id="fn" value="900" oninput="calc()"></div>
-          <div class="field"><label>Cost per query today (R)</label><input type="number" id="cq" value="42" oninput="calc()"></div>
-        </div>
-        <p class="note">Defaults are labelled illustrative. Replace with Brolink’s measured cost-per-transaction in discovery — do not present these as their numbers.</p>
-      </div>
-      <div>
-        <div class="stats" style="margin-bottom:12px;">
-          <div class="kpi"><div class="kpi-v teal" id="k1">—</div><div class="kpi-l">Hours back to brokers / mo</div></div>
-          <div class="kpi"><div class="kpi-v" style="color:var(--green)" id="k2">—</div><div class="kpi-l">Cost per query after</div></div>
-          <div class="kpi"><div class="kpi-v teal" id="k3">—</div><div class="kpi-l">Docs cycle cut</div></div>
-          <div class="kpi"><div class="kpi-v" style="color:var(--green)" id="k4">—</div><div class="kpi-l">People in the loop</div></div>
-        </div>
-        <div class="ok-box">Underwriters and claims assessors stay in the loop. The 2030 People pillar is intact: we remove chasing, not capability.</div>
-      </div>
-    </div>
-  </div>
-</section>
-
-<!-- ─── ROI CALCULATOR ─── -->
-<section class="section" id="roi-calc" style="border-top: 1px solid rgba(255,255,255,0.07);">
-  <div class="container">
-    <div class="text-center mb-48" style="margin-bottom:48px;">
-      <div class="sec-label">Annual ROI · your numbers, your saving</div>
-      <h2 class="sec-title">How much is your admin desk costing you?</h2>
-      <p class="sec-desc">Enter your team's actual figures. The model uses a blended R350/hr servicing cost and 62% automation rate on qualifying transactions.</p>
-    </div>
-    <div class="roi-grid">
-      <div class="roi-inputs">
-        <div class="roi-field">
-          <label>Number of desk staff (FTEs)</label>
-          <input type="number" id="roi-fte" value="5" min="1" max="200" oninput="calcRoi()">
-        </div>
-        <div class="roi-field">
-          <label>Average monthly salary per person (R)</label>
-          <input type="number" id="roi-salary" value="25000" min="5000" step="1000" oninput="calcRoi()">
-        </div>
-        <div class="roi-field">
-          <label>Emails handled per desk per day</label>
-          <input type="number" id="roi-emails" value="41" min="5" max="500" oninput="calcRoi()">
-        </div>
-        <div class="roi-field">
-          <label>Inbound calls wrapped per desk per day</label>
-          <input type="number" id="roi-calls" value="12" min="0" max="200" oninput="calcRoi()">
-        </div>
-        <div class="roi-field">
-          <label>FNOL claims ingested per month</label>
-          <input type="number" id="roi-claims" value="80" min="0" max="2000" oninput="calcRoi()">
-        </div>
-      </div>
-      <div class="roi-result">
-        <div class="roi-headline">Estimated annual saving</div>
-        <div class="roi-number" id="roi-output">R 0</div>
-        <div class="roi-period">per year across your desk</div>
-        <div class="roi-breakdown">
-          <div class="roi-row">
-            <span class="rk">Email admin saving (annual)</span>
-            <span class="rv green" id="roi-r-email">R 0</span>
-          </div>
-          <div class="roi-row">
-            <span class="rk">Call wrap saving (annual)</span>
-            <span class="rv green" id="roi-r-call">R 0</span>
-          </div>
-          <div class="roi-row">
-            <span class="rk">FNOL processing saving (annual)</span>
-            <span class="rv green" id="roi-r-claim">R 0</span>
-          </div>
-          <div class="roi-row">
-            <span class="rk">Hours freed per year</span>
-            <span class="rv" id="roi-r-hours">0 hrs</span>
-          </div>
-          <div class="roi-row">
-            <span class="rk">FTE equivalent recovered</span>
-            <span class="rv" id="roi-r-fte">0 FTEs</span>
-          </div>
-          <div class="roi-row">
-            <span class="rk">Touch-free transaction rate</span>
-            <span class="rv green">62% of qualifying</span>
-          </div>
-        </div>
-        <div class="roi-cta-row">
-          <a href="#session" class="btn btn-primary" style="width:100%; justify-content:center;">Book a working session →</a>
-        </div>
-        <p class="roi-assumption">Blended servicing cost: R350/hr. Email resolution: 8 min/email × 62% automation. Call wrap: 22 min × 62% automation. FNOL: 35 min/claim × 80% automation. Illustrative only — actual saving depends on process scope agreed in discovery.</p>
-      </div>
-    </div>
-  </div>
-</section>
-
-
-<!-- ARCHITECTURE DIAGRAM -->
+<!-- ─── ARCHITECTURE DIAGRAM (clean) ─── -->
 <section class="section" id="architecture" style="border-top:1px solid rgba(255,255,255,0.07); padding:100px 0;">
   <div class="container">
+
     <div class="text-center mb-48" style="margin-bottom:64px;">
-      <div class="sec-label">System Architecture · Intelligent Automation Layer</div>
+      <div class="sec-label">System Architecture</div>
       <h2 class="sec-title" style="margin-top:12px;">How the AI Layer Sits on Your Stack</h2>
-      <p class="sec-desc" style="max-width:640px; margin:16px auto 0;">
-        A read-first, confirm-before-write intelligence layer that sits between your
-        existing communication channels and Websure — without touching your core platform or insurer contracts.
+      <p class="sec-desc" style="max-width:560px; margin:16px auto 0;">
+        Read-first. Confirm-before-write. Sits on top of Websure —
+        zero changes to your core platform.
       </p>
     </div>
-    <div style="overflow-x:auto; -webkit-overflow-scrolling:touch;">
-    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1060 680"
-         style="width:100%;max-width:1060px;display:block;margin:0 auto;font-family:'Plus Jakarta Sans',sans-serif;">
+
+    <!-- Clean Flow Diagram -->
+    <div style="overflow-x:auto;">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1040 520"
+         style="width:100%;max-width:1040px;display:block;margin:0 auto;font-family:'Plus Jakarta Sans',sans-serif;">
       <defs>
-        <linearGradient id="gTeal" x1="0%" y1="0%" x2="100%" y2="100%">
-          <stop offset="0%" stop-color="#00e5ff"/><stop offset="100%" stop-color="#20a3b6"/>
+        <linearGradient id="aGrad" x1="0%" y1="0%" x2="100%" y2="0%">
+          <stop offset="0%" stop-color="#00e5ff"/>
+          <stop offset="100%" stop-color="#20a3b6"/>
         </linearGradient>
-        <linearGradient id="gGreen" x1="0%" y1="0%" x2="100%" y2="100%">
-          <stop offset="0%" stop-color="#34d399"/><stop offset="100%" stop-color="#10b981"/>
+        <linearGradient id="aVertGrad" x1="0%" y1="0%" x2="0%" y2="100%">
+          <stop offset="0%" stop-color="#00e5ff"/>
+          <stop offset="100%" stop-color="#20a3b6"/>
         </linearGradient>
-        <linearGradient id="gAmber" x1="0%" y1="0%" x2="100%" y2="100%">
-          <stop offset="0%" stop-color="#fbbf24"/><stop offset="100%" stop-color="#f59e0b"/>
-        </linearGradient>
-        <filter id="glow"><feGaussianBlur stdDeviation="3" result="blur"/>
-          <feMerge><feMergeNode in="blur"/><feMergeNode in="SourceGraphic"/></feMerge>
+        <marker id="mT" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+          <polygon points="0 0, 10 3.5, 0 7" fill="rgba(0,229,255,0.5)"/>
+        </marker>
+        <marker id="mG" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+          <polygon points="0 0, 10 3.5, 0 7" fill="rgba(52,211,153,0.5)"/>
+        </marker>
+        <filter id="fGlow">
+          <feGaussianBlur stdDeviation="6" result="b"/>
+          <feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge>
         </filter>
-        <marker id="arrowT" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto">
-          <path d="M0,0 L0,6 L8,3 z" fill="#00e5ff" opacity="0.8"/>
-        </marker>
-        <marker id="arrowG" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto">
-          <path d="M0,0 L0,6 L8,3 z" fill="#34d399" opacity="0.8"/>
-        </marker>
-        <marker id="arrowA" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto">
-          <path d="M0,0 L0,6 L8,3 z" fill="#fbbf24" opacity="0.8"/>
-        </marker>
       </defs>
-      <rect width="1060" height="680" rx="20" fill="#070d18"/>
-      <g opacity="0.04" stroke="#ffffff" stroke-width="1">
-        <line x1="0" y1="85" x2="1060" y2="85"/><line x1="0" y1="170" x2="1060" y2="170"/>
-        <line x1="0" y1="255" x2="1060" y2="255"/><line x1="0" y1="340" x2="1060" y2="340"/>
-        <line x1="0" y1="425" x2="1060" y2="425"/><line x1="0" y1="510" x2="1060" y2="510"/>
-        <line x1="0" y1="595" x2="1060" y2="595"/>
-        <line x1="530" y1="0" x2="530" y2="680"/>
-      </g>
-      <!-- Column labels -->
-      <text x="130" y="28" text-anchor="middle" fill="#64748b" font-size="10" font-weight="700" letter-spacing="1.5">INPUT CHANNELS</text>
-      <text x="530" y="28" text-anchor="middle" fill="#00e5ff" font-size="10" font-weight="700" letter-spacing="1.5">BROLINK AI LAYER</text>
-      <text x="900" y="28" text-anchor="middle" fill="#64748b" font-size="10" font-weight="700" letter-spacing="1.5">EXISTING SYSTEMS</text>
-      <line x1="280" y1="16" x2="280" y2="648" stroke="rgba(255,255,255,0.06)" stroke-width="1" stroke-dasharray="4,4"/>
-      <line x1="760" y1="16" x2="760" y2="648" stroke="rgba(255,255,255,0.06)" stroke-width="1" stroke-dasharray="4,4"/>
+
+      <!-- bg -->
+      <rect width="1040" height="520" rx="24" fill="#070d18"/>
+
+      <!-- ══════════════════════════════════════
+           ROW 1: INPUT CHANNELS (top)
+      ══════════════════════════════════════ -->
+      <text x="520" y="34" text-anchor="middle" fill="#475569" font-size="11" font-weight="700" letter-spacing="2">INPUT CHANNELS</text>
+
       <!-- Email -->
-      <rect x="20" y="56" width="220" height="76" rx="12" fill="#0b1528" stroke="rgba(0,229,255,0.25)" stroke-width="1.5"/>
-      <rect x="20" y="56" width="5" height="76" rx="3" fill="url(#gTeal)"/>
-      <text x="38" y="80" fill="#f8fafc" font-size="13" font-weight="700">Email Inbox</text>
-      <text x="38" y="98" fill="#64748b" font-size="11">Broker desk mailbox</text>
-      <text x="38" y="114" fill="#64748b" font-size="11">41 msgs/day avg — Outlook / Gmail</text>
+      <rect x="28" y="48" width="200" height="72" rx="16" fill="#0b1528" stroke="rgba(0,229,255,0.3)" stroke-width="1.5"/>
+      <text x="56" y="82" fill="#00e5ff" font-size="22">✉</text>
+      <text x="84" y="78" fill="#f8fafc" font-size="15" font-weight="800">Email Desk</text>
+      <text x="84" y="97" fill="#475569" font-size="12">41 msgs/day · Outlook</text>
+
       <!-- WhatsApp -->
-      <rect x="20" y="152" width="220" height="76" rx="12" fill="#0b1528" stroke="rgba(52,211,153,0.25)" stroke-width="1.5"/>
-      <rect x="20" y="152" width="5" height="76" rx="3" fill="url(#gGreen)"/>
-      <text x="38" y="176" fill="#f8fafc" font-size="13" font-weight="700">WhatsApp Channel</text>
-      <text x="38" y="194" fill="#64748b" font-size="11">Broker WhatsApp Business API</text>
-      <text x="38" y="210" fill="#64748b" font-size="11">Real-time message ingest</text>
-      <!-- Phone -->
-      <rect x="20" y="248" width="220" height="76" rx="12" fill="#0b1528" stroke="rgba(251,191,36,0.25)" stroke-width="1.5"/>
-      <rect x="20" y="248" width="5" height="76" rx="3" fill="url(#gAmber)"/>
-      <text x="38" y="272" fill="#f8fafc" font-size="13" font-weight="700">Inbound Calls</text>
-      <text x="38" y="290" fill="#64748b" font-size="11">Broker desk DID recording</text>
-      <text x="38" y="306" fill="#64748b" font-size="11">STT transcription to intent</text>
+      <rect x="248" y="48" width="200" height="72" rx="16" fill="#0b1528" stroke="rgba(52,211,153,0.3)" stroke-width="1.5"/>
+      <text x="276" y="82" fill="#34d399" font-size="22">💬</text>
+      <text x="304" y="78" fill="#f8fafc" font-size="15" font-weight="800">WhatsApp</text>
+      <text x="304" y="97" fill="#475569" font-size="12">Business API · live</text>
+
+      <!-- Calls -->
+      <rect x="468" y="48" width="200" height="72" rx="16" fill="#0b1528" stroke="rgba(251,191,36,0.3)" stroke-width="1.5"/>
+      <text x="496" y="82" fill="#fbbf24" font-size="22">📞</text>
+      <text x="524" y="78" fill="#f8fafc" font-size="15" font-weight="800">Inbound Calls</text>
+      <text x="524" y="97" fill="#475569" font-size="12">STT · broker desk DID</text>
+
       <!-- FNOL -->
-      <rect x="20" y="344" width="220" height="76" rx="12" fill="#0b1528" stroke="rgba(139,92,246,0.25)" stroke-width="1.5"/>
-      <rect x="20" y="344" width="5" height="76" rx="3" fill="#8b5cf6"/>
-      <text x="38" y="368" fill="#f8fafc" font-size="13" font-weight="700">Claims / FNOL Packs</text>
-      <text x="38" y="386" fill="#64748b" font-size="11">PDF, photo, assessor docs</text>
-      <text x="38" y="402" fill="#64748b" font-size="11">OCR + document extraction</text>
-      <!-- AI outer -->
-      <rect x="295" y="44" width="450" height="580" rx="20" fill="rgba(0,229,255,0.03)" stroke="rgba(0,229,255,0.18)" stroke-width="1.5"/>
-      <rect x="295" y="44" width="450" height="40" rx="12" fill="url(#gTeal)"/>
-      <rect x="295" y="64" width="450" height="20" fill="url(#gTeal)"/>
-      <text x="520" y="70" text-anchor="middle" fill="#070d18" font-size="11" font-weight="800">BROLINK INTELLIGENT AUTOMATION — Read · Reason · Route · Act</text>
-      <!-- 01 Ingestion -->
-      <rect x="310" y="100" width="200" height="110" rx="12" fill="#0b1528" stroke="rgba(0,229,255,0.2)" stroke-width="1"/>
-      <text x="322" y="122" fill="#00e5ff" font-size="10" font-weight="800" letter-spacing="1">01 · INGESTION &amp; NLU</text>
-      <text x="322" y="141" fill="#f8fafc" font-size="12" font-weight="700">Intent Engine</text>
-      <text x="322" y="158" fill="#64748b" font-size="11">Classify: query / endorse / claim</text>
-      <text x="322" y="172" fill="#64748b" font-size="11">Extract: policy no, names, rand</text>
-      <text x="322" y="186" fill="#64748b" font-size="11">Language: EN / AF / ZU</text>
-      <text x="322" y="200" fill="#64748b" font-size="11">Channel: email, WhatsApp, call</text>
-      <!-- 02 Lookup -->
-      <rect x="530" y="100" width="200" height="110" rx="12" fill="#0b1528" stroke="rgba(0,229,255,0.2)" stroke-width="1"/>
-      <text x="542" y="122" fill="#00e5ff" font-size="10" font-weight="800" letter-spacing="1">02 · POLICY LOOKUP</text>
-      <text x="542" y="141" fill="#f8fafc" font-size="12" font-weight="700">Websure Read API</text>
-      <text x="542" y="158" fill="#64748b" font-size="11">Pull policy, cover, binder</text>
-      <text x="542" y="172" fill="#64748b" font-size="11">Check SLA, excess, clauses</text>
-      <text x="542" y="186" fill="#64748b" font-size="11">Flag missing / expired docs</text>
-      <text x="542" y="200" fill="#64748b" font-size="11">Read-only — no mutations</text>
-      <!-- 03 Compliance -->
-      <rect x="310" y="228" width="200" height="110" rx="12" fill="#0b1528" stroke="rgba(251,191,36,0.25)" stroke-width="1"/>
-      <text x="322" y="250" fill="#fbbf24" font-size="10" font-weight="800" letter-spacing="1">03 · COMPLIANCE GUARD</text>
-      <text x="322" y="269" fill="#f8fafc" font-size="12" font-weight="700">Isolation + UW Rules</text>
-      <text x="322" y="286" fill="#64748b" font-size="11">Insurer workspace isolation</text>
-      <text x="322" y="300" fill="#64748b" font-size="11">UW mandate enforcement</text>
-      <text x="322" y="314" fill="#64748b" font-size="11">FSCA / POPIA audit log</text>
-      <text x="322" y="328" fill="#64748b" font-size="11">Hard-block: no settlement</text>
-      <!-- 04 Router -->
-      <rect x="530" y="228" width="200" height="110" rx="12" fill="#0b1528" stroke="rgba(52,211,153,0.25)" stroke-width="1"/>
-      <text x="542" y="250" fill="#34d399" font-size="10" font-weight="800" letter-spacing="1">04 · ACTION ROUTER</text>
-      <text x="542" y="269" fill="#f8fafc" font-size="12" font-weight="700">Confirm-Before-Write</text>
-      <text x="542" y="286" fill="#64748b" font-size="11">Auto-send: safe replies</text>
-      <text x="542" y="300" fill="#64748b" font-size="11">Confirm: write to Websure</text>
-      <text x="542" y="314" fill="#64748b" font-size="11">Escalate: human review</text>
-      <text x="542" y="328" fill="#64748b" font-size="11">Refuse: policy boundary hit</text>
-      <!-- LLM Core -->
-      <rect x="370" y="358" width="300" height="80" rx="12" fill="rgba(0,229,255,0.06)" stroke="rgba(0,229,255,0.35)" stroke-width="1.5" filter="url(#glow)"/>
-      <text x="520" y="385" text-anchor="middle" fill="#00e5ff" font-size="10" font-weight="800" letter-spacing="1.5">LLM REASONING CORE</text>
-      <text x="520" y="403" text-anchor="middle" fill="#94a3b8" font-size="11">Claude / GPT-4o — context: policy + history + binder rules</text>
-      <text x="520" y="420" text-anchor="middle" fill="#64748b" font-size="11">Prompt-guarded — no client data training — stateless per call</text>
-      <!-- Trace -->
-      <rect x="310" y="458" width="420" height="76" rx="12" fill="#070d18" stroke="rgba(255,255,255,0.1)" stroke-width="1"/>
-      <text x="322" y="480" fill="#64748b" font-size="10" font-weight="800" letter-spacing="1">IMMUTABLE AUDIT TRACE — every step logged, timestamped, supervisor-readable</text>
-      <rect x="322" y="490" width="8" height="8" rx="2" fill="#34d399"/>
-      <text x="336" y="499" fill="#64748b" font-size="10">08:14 — email BK-441 — intent=claim_status — Websure read ST-449201 — reply drafted — auto-sent</text>
-      <rect x="322" y="506" width="8" height="8" rx="2" fill="#fbbf24"/>
-      <text x="336" y="515" fill="#64748b" font-size="10">08:21 — email BK-442 — intent=endorsement — draft ready — HELD for confirm — confirmed 08:22</text>
-      <rect x="322" y="522" width="8" height="8" rx="2" fill="#ef4444"/>
-      <text x="336" y="531" fill="#64748b" font-size="10">08:33 — WhatsApp — intent=settlement_auth — REFUSED — hard block: outside UW mandate</text>
-      <!-- AI internal arrows -->
-      <line x1="510" y1="155" x2="530" y2="155" stroke="rgba(0,229,255,0.4)" stroke-width="1.5" stroke-dasharray="4,3" marker-end="url(#arrowT)"/>
-      <line x1="410" y1="210" x2="410" y2="228" stroke="rgba(0,229,255,0.3)" stroke-width="1.5" stroke-dasharray="4,3" marker-end="url(#arrowT)"/>
-      <line x1="630" y1="210" x2="630" y2="228" stroke="rgba(0,229,255,0.3)" stroke-width="1.5" stroke-dasharray="4,3" marker-end="url(#arrowT)"/>
-      <line x1="410" y1="338" x2="450" y2="358" stroke="rgba(251,191,36,0.4)" stroke-width="1.5" stroke-dasharray="4,3" marker-end="url(#arrowA)"/>
-      <line x1="630" y1="338" x2="590" y2="358" stroke="rgba(52,211,153,0.4)" stroke-width="1.5" stroke-dasharray="4,3" marker-end="url(#arrowG)"/>
-      <line x1="520" y1="438" x2="520" y2="458" stroke="rgba(0,229,255,0.3)" stroke-width="1.5" stroke-dasharray="4,3" marker-end="url(#arrowT)"/>
-      <!-- Right: Websure -->
-      <rect x="775" y="56" width="260" height="100" rx="12" fill="#0b1528" stroke="rgba(0,229,255,0.35)" stroke-width="2"/>
-      <rect x="775" y="56" width="260" height="36" rx="12" fill="rgba(0,229,255,0.08)"/>
-      <rect x="775" y="72" width="260" height="20" fill="rgba(0,229,255,0.08)"/>
-      <text x="905" y="80" text-anchor="middle" fill="#00e5ff" font-size="12" font-weight="800">Websure Core Platform</text>
-      <text x="787" y="107" fill="#94a3b8" font-size="11">Policy · Endorsement · Claims · Billing</text>
-      <text x="787" y="123" fill="#64748b" font-size="11">Read via API · Write only on confirm</text>
-      <text x="787" y="139" fill="#64748b" font-size="11">Websure remains system of record</text>
-      <!-- Right: Insurer APIs -->
-      <rect x="775" y="176" width="260" height="100" rx="12" fill="#0b1528" stroke="rgba(255,255,255,0.1)" stroke-width="1"/>
-      <text x="787" y="200" fill="#94a3b8" font-size="10" font-weight="800" letter-spacing="1">INSURER BINDER APIs</text>
-      <text x="787" y="220" fill="#f8fafc" font-size="12" font-weight="700">Santam · Hollard · Old Mutual</text>
-      <text x="787" y="238" fill="#64748b" font-size="11">Isolated per insurer workspace</text>
-      <text x="787" y="254" fill="#64748b" font-size="11">Binder rules enforced at source</text>
-      <text x="787" y="270" fill="#64748b" font-size="11">No cross-insurer data bleed</text>
-      <!-- Right: CRM -->
-      <rect x="775" y="296" width="260" height="86" rx="12" fill="#0b1528" stroke="rgba(255,255,255,0.1)" stroke-width="1"/>
-      <text x="787" y="318" fill="#94a3b8" font-size="10" font-weight="800" letter-spacing="1">BROKER CRM / COMMS</text>
-      <text x="787" y="337" fill="#f8fafc" font-size="12" font-weight="700">Outlook · Teams · Shared Inbox</text>
-      <text x="787" y="355" fill="#64748b" font-size="11">Replies sent from broker address</text>
-      <text x="787" y="371" fill="#64748b" font-size="11">No new client-facing system</text>
-      <!-- Right: Compliance -->
-      <rect x="775" y="402" width="260" height="86" rx="12" fill="#0b1528" stroke="rgba(251,191,36,0.2)" stroke-width="1"/>
-      <text x="787" y="424" fill="#fbbf24" font-size="10" font-weight="800" letter-spacing="1">COMPLIANCE STORE</text>
-      <text x="787" y="443" fill="#f8fafc" font-size="12" font-weight="700">FSCA · POPIA · Binder Audit</text>
-      <text x="787" y="461" fill="#64748b" font-size="11">Immutable trace per transaction</text>
-      <text x="787" y="477" fill="#64748b" font-size="11">Supervisor dashboard — live</text>
-      <!-- Arrows: Inputs to AI -->
-      <line x1="240" y1="94"  x2="295" y2="140" stroke="rgba(0,229,255,0.5)"  stroke-width="1.5" marker-end="url(#arrowT)"/>
-      <line x1="240" y1="190" x2="295" y2="175" stroke="rgba(52,211,153,0.5)" stroke-width="1.5" marker-end="url(#arrowG)"/>
-      <line x1="240" y1="286" x2="295" y2="210" stroke="rgba(251,191,36,0.5)" stroke-width="1.5" marker-end="url(#arrowA)"/>
-      <line x1="240" y1="382" x2="295" y2="268" stroke="rgba(139,92,246,0.5)" stroke-width="1.5" marker-end="url(#arrowT)"/>
-      <!-- Arrows: AI to Systems -->
-      <line x1="745" y1="155" x2="775" y2="106" stroke="rgba(0,229,255,0.5)"  stroke-width="2"   marker-end="url(#arrowT)"/>
-      <line x1="745" y1="200" x2="775" y2="226" stroke="rgba(0,229,255,0.35)" stroke-width="1.5" stroke-dasharray="5,3" marker-end="url(#arrowT)"/>
-      <line x1="745" y1="305" x2="775" y2="339" stroke="rgba(52,211,153,0.4)" stroke-width="1.5" marker-end="url(#arrowG)"/>
-      <line x1="745" y1="490" x2="775" y2="445" stroke="rgba(251,191,36,0.4)" stroke-width="1.5" marker-end="url(#arrowA)"/>
-      <!-- Outcomes bar -->
-      <rect x="20" y="556" width="1020" height="108" rx="14" fill="#0b1528" stroke="rgba(255,255,255,0.07)" stroke-width="1"/>
-      <text x="530" y="578" text-anchor="middle" fill="#64748b" font-size="10" font-weight="800" letter-spacing="1.5">OUTCOMES DELIVERED</text>
-      <rect x="36"  y="589" width="185" height="62" rx="10" fill="rgba(0,229,255,0.06)"  stroke="rgba(0,229,255,0.2)"  stroke-width="1"/>
-      <text x="128" y="610" text-anchor="middle" fill="#00e5ff" font-size="18" font-weight="800">62%</text>
-      <text x="128" y="627" text-anchor="middle" fill="#94a3b8" font-size="11">Emails touch-free resolved</text>
-      <text x="128" y="641" text-anchor="middle" fill="#64748b" font-size="10">4 min vs 5.5 hrs manual</text>
-      <rect x="237" y="589" width="185" height="62" rx="10" fill="rgba(52,211,153,0.06)" stroke="rgba(52,211,153,0.2)" stroke-width="1"/>
-      <text x="329" y="610" text-anchor="middle" fill="#34d399" font-size="18" font-weight="800">41 sec</text>
-      <text x="329" y="627" text-anchor="middle" fill="#94a3b8" font-size="11">Call wrap filed vs 22 min</text>
-      <text x="329" y="641" text-anchor="middle" fill="#64748b" font-size="10">STT to note to Websure</text>
-      <rect x="438" y="589" width="185" height="62" rx="10" fill="rgba(139,92,246,0.06)" stroke="rgba(139,92,246,0.2)" stroke-width="1"/>
-      <text x="530" y="610" text-anchor="middle" fill="#a78bfa" font-size="18" font-weight="800">80%</text>
-      <text x="530" y="627" text-anchor="middle" fill="#94a3b8" font-size="11">FNOL triage automated</text>
-      <text x="530" y="641" text-anchor="middle" fill="#64748b" font-size="10">1 min 12 sec vs 35 min</text>
-      <rect x="639" y="589" width="185" height="62" rx="10" fill="rgba(251,191,36,0.06)" stroke="rgba(251,191,36,0.2)" stroke-width="1"/>
-      <text x="731" y="610" text-anchor="middle" fill="#fbbf24" font-size="18" font-weight="800">100%</text>
-      <text x="731" y="627" text-anchor="middle" fill="#94a3b8" font-size="11">UW mandate enforced</text>
-      <text x="731" y="641" text-anchor="middle" fill="#64748b" font-size="10">hard-block, always logged</text>
-      <rect x="840" y="589" width="185" height="62" rx="10" fill="rgba(0,229,255,0.06)"  stroke="rgba(0,229,255,0.2)"  stroke-width="1"/>
-      <text x="932" y="610" text-anchor="middle" fill="#00e5ff" font-size="18" font-weight="800">R1.4M+</text>
-      <text x="932" y="627" text-anchor="middle" fill="#94a3b8" font-size="11">Annual saving (5 FTE desk)</text>
-      <text x="932" y="641" text-anchor="middle" fill="#64748b" font-size="10">blended R350/hr model</text>
+      <rect x="688" y="48" width="200" height="72" rx="16" fill="#0b1528" stroke="rgba(139,92,246,0.3)" stroke-width="1.5"/>
+      <text x="716" y="82" fill="#a78bfa" font-size="22">📄</text>
+      <text x="744" y="78" fill="#f8fafc" font-size="15" font-weight="800">FNOL / Claims</text>
+      <text x="744" y="97" fill="#475569" font-size="12">PDF · OCR · photos</text>
+
+      <!-- ── Down arrows from inputs ── -->
+      <line x1="128" y1="120" x2="128" y2="152" stroke="rgba(0,229,255,0.35)" stroke-width="2" marker-end="url(#mT)"/>
+      <line x1="348" y1="120" x2="348" y2="152" stroke="rgba(52,211,153,0.35)" stroke-width="2" marker-end="url(#mT)"/>
+      <line x1="568" y1="120" x2="568" y2="152" stroke="rgba(251,191,36,0.35)" stroke-width="2" marker-end="url(#mT)"/>
+      <line x1="788" y1="120" x2="788" y2="152" stroke="rgba(139,92,246,0.35)" stroke-width="2" marker-end="url(#mT)"/>
+
+      <!-- ══════════════════════════════════════
+           ROW 2: AI LAYER (centre, the hero)
+      ══════════════════════════════════════ -->
+
+      <!-- AI outer container -->
+      <rect x="28" y="156" width="860" height="212" rx="20"
+            fill="rgba(0,229,255,0.03)" stroke="url(#aGrad)" stroke-width="2" filter="url(#fGlow)"/>
+
+      <!-- AI header label -->
+      <rect x="28" y="156" width="860" height="44" rx="12" fill="url(#aGrad)"/>
+      <rect x="28" y="178" width="860" height="22" fill="url(#aGrad)"/>
+      <text x="458" y="183" text-anchor="middle" fill="#070d18" font-size="13" font-weight="800" letter-spacing="1">BROLINK INTELLIGENT AUTOMATION LAYER</text>
+
+      <!-- 4 engine boxes inside -->
+
+      <!-- 01 -->
+      <rect x="52" y="216" width="188" height="132" rx="14" fill="rgba(0,229,255,0.06)" stroke="rgba(0,229,255,0.2)" stroke-width="1.5"/>
+      <text x="76" y="244" fill="#00e5ff" font-size="11" font-weight="800" letter-spacing="1">01</text>
+      <text x="76" y="267" fill="#f8fafc" font-size="16" font-weight="800">Classify</text>
+      <text x="76" y="288" fill="#f8fafc" font-size="16" font-weight="800">&amp; Extract</text>
+      <text x="76" y="315" fill="#475569" font-size="12">Intent · policy no.</text>
+      <text x="76" y="331" fill="#475569" font-size="12">channel · language</text>
+
+      <!-- arrow 01→02 -->
+      <line x1="240" y1="282" x2="268" y2="282" stroke="rgba(0,229,255,0.4)" stroke-width="2" marker-end="url(#mT)"/>
+
+      <!-- 02 -->
+      <rect x="272" y="216" width="188" height="132" rx="14" fill="rgba(0,229,255,0.06)" stroke="rgba(0,229,255,0.2)" stroke-width="1.5"/>
+      <text x="296" y="244" fill="#00e5ff" font-size="11" font-weight="800" letter-spacing="1">02</text>
+      <text x="296" y="267" fill="#f8fafc" font-size="16" font-weight="800">Policy</text>
+      <text x="296" y="288" fill="#f8fafc" font-size="16" font-weight="800">Lookup</text>
+      <text x="296" y="315" fill="#475569" font-size="12">Websure read API</text>
+      <text x="296" y="331" fill="#475569" font-size="12">read-only · no writes</text>
+
+      <!-- arrow 02→03 -->
+      <line x1="460" y1="282" x2="488" y2="282" stroke="rgba(0,229,255,0.4)" stroke-width="2" marker-end="url(#mT)"/>
+
+      <!-- 03 -->
+      <rect x="492" y="216" width="188" height="132" rx="14" fill="rgba(251,191,36,0.05)" stroke="rgba(251,191,36,0.25)" stroke-width="1.5"/>
+      <text x="516" y="244" fill="#fbbf24" font-size="11" font-weight="800" letter-spacing="1">03</text>
+      <text x="516" y="267" fill="#f8fafc" font-size="16" font-weight="800">Compliance</text>
+      <text x="516" y="288" fill="#f8fafc" font-size="16" font-weight="800">Guard</text>
+      <text x="516" y="315" fill="#475569" font-size="12">UW rules · isolation</text>
+      <text x="516" y="331" fill="#475569" font-size="12">hard-block on breach</text>
+
+      <!-- arrow 03→04 -->
+      <line x1="680" y1="282" x2="708" y2="282" stroke="rgba(52,211,153,0.4)" stroke-width="2" marker-end="url(#mG)"/>
+
+      <!-- 04 -->
+      <rect x="712" y="216" width="150" height="132" rx="14" fill="rgba(52,211,153,0.06)" stroke="rgba(52,211,153,0.25)" stroke-width="1.5"/>
+      <text x="736" y="244" fill="#34d399" font-size="11" font-weight="800" letter-spacing="1">04</text>
+      <text x="736" y="267" fill="#f8fafc" font-size="16" font-weight="800">Route</text>
+      <text x="736" y="288" fill="#f8fafc" font-size="16" font-weight="800">&amp; Act</text>
+      <text x="736" y="315" fill="#475569" font-size="12">auto · confirm</text>
+      <text x="736" y="331" fill="#475569" font-size="12">escalate · refuse</text>
+
+      <!-- LLM label at bottom of AI box -->
+      <text x="458" y="358" text-anchor="middle" fill="#2d4a6a" font-size="11" font-weight="700" letter-spacing="1">LLM REASONING CORE · Claude / GPT-4o · stateless · prompt-guarded · no client data training</text>
+
+      <!-- ── Right arrow out of AI box ── -->
+      <line x1="888" y1="262" x2="916" y2="262" stroke="rgba(0,229,255,0.5)" stroke-width="2.5" marker-end="url(#mT)"/>
+
+      <!-- ══════════════════════════════════════
+           RIGHT COLUMN: EXISTING SYSTEMS
+      ══════════════════════════════════════ -->
+      <text x="980" y="170" text-anchor="middle" fill="#475569" font-size="10" font-weight="700" letter-spacing="2">SYSTEMS</text>
+
+      <!-- Websure -->
+      <rect x="918" y="178" width="94" height="60" rx="12" fill="#0b1528" stroke="rgba(0,229,255,0.4)" stroke-width="2"/>
+      <text x="965" y="206" text-anchor="middle" fill="#00e5ff" font-size="13" font-weight="800">Websure™</text>
+      <text x="965" y="223" text-anchor="middle" fill="#475569" font-size="10">System of record</text>
+
+      <!-- Insurers -->
+      <rect x="918" y="252" width="94" height="60" rx="12" fill="#0b1528" stroke="rgba(255,255,255,0.1)" stroke-width="1.5"/>
+      <text x="965" y="278" text-anchor="middle" fill="#94a3b8" font-size="12" font-weight="800">Insurers</text>
+      <text x="965" y="295" text-anchor="middle" fill="#475569" font-size="10">Isolated workspaces</text>
+
+      <!-- CRM -->
+      <rect x="918" y="326" width="94" height="60" rx="12" fill="#0b1528" stroke="rgba(52,211,153,0.2)" stroke-width="1.5"/>
+      <text x="965" y="352" text-anchor="middle" fill="#34d399" font-size="12" font-weight="800">Broker CRM</text>
+      <text x="965" y="369" text-anchor="middle" fill="#475569" font-size="10">Replies from desk</text>
+
+      <!-- ── Down arrows from AI to outcomes ── -->
+      <line x1="128" y1="368" x2="128" y2="396" stroke="rgba(0,229,255,0.3)" stroke-width="2" marker-end="url(#mT)"/>
+      <line x1="348" y1="368" x2="348" y2="396" stroke="rgba(0,229,255,0.3)" stroke-width="2" marker-end="url(#mT)"/>
+      <line x1="568" y1="368" x2="568" y2="396" stroke="rgba(0,229,255,0.3)" stroke-width="2" marker-end="url(#mT)"/>
+      <line x1="788" y1="368" x2="788" y2="396" stroke="rgba(0,229,255,0.3)" stroke-width="2" marker-end="url(#mT)"/>
+
+      <!-- ══════════════════════════════════════
+           ROW 3: OUTCOME METRICS
+      ══════════════════════════════════════ -->
+      <text x="458" y="412" text-anchor="middle" fill="#475569" font-size="11" font-weight="700" letter-spacing="2">OUTCOMES</text>
+
+      <rect x="28" y="422" width="190" height="74" rx="14" fill="rgba(0,229,255,0.05)" stroke="rgba(0,229,255,0.15)" stroke-width="1"/>
+      <text x="123" y="456" text-anchor="middle" fill="#00e5ff" font-size="28" font-weight="800">62%</text>
+      <text x="123" y="478" text-anchor="middle" fill="#475569" font-size="12">emails resolved — no touch</text>
+
+      <rect x="238" y="422" width="190" height="74" rx="14" fill="rgba(52,211,153,0.05)" stroke="rgba(52,211,153,0.15)" stroke-width="1"/>
+      <text x="333" y="456" text-anchor="middle" fill="#34d399" font-size="28" font-weight="800">41 sec</text>
+      <text x="333" y="478" text-anchor="middle" fill="#475569" font-size="12">call wrap vs 22 min</text>
+
+      <rect x="448" y="422" width="190" height="74" rx="14" fill="rgba(139,92,246,0.05)" stroke="rgba(139,92,246,0.15)" stroke-width="1"/>
+      <text x="543" y="456" text-anchor="middle" fill="#a78bfa" font-size="28" font-weight="800">80%</text>
+      <text x="543" y="478" text-anchor="middle" fill="#475569" font-size="12">FNOL triage automated</text>
+
+      <rect x="658" y="422" width="200" height="74" rx="14" fill="rgba(0,229,255,0.05)" stroke="rgba(0,229,255,0.15)" stroke-width="1"/>
+      <text x="758" y="456" text-anchor="middle" fill="#00e5ff" font-size="28" font-weight="800">R1.4M+</text>
+      <text x="758" y="478" text-anchor="middle" fill="#475569" font-size="12">annual saving · 5 FTE desk</text>
+
     </svg>
     </div>
-    <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:20px;margin-top:40px;">
-      <div style="padding:20px 24px;border-radius:16px;background:rgba(11,21,40,0.8);border:1px solid rgba(255,255,255,0.08);">
-        <div style="font-size:10px;font-weight:800;color:#00e5ff;text-transform:uppercase;letter-spacing:1px;margin-bottom:8px;">Non-Invasive</div>
-        <div style="font-size:14px;font-weight:700;color:#f8fafc;margin-bottom:6px;">Zero changes to Websure</div>
-        <div style="font-size:12px;color:#64748b;line-height:1.6;">We consume your existing API. No platform migration, no new logins for the desk.</div>
+
+    <!-- Four principle chips below diagram -->
+    <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:16px;margin-top:32px;">
+      <div style="padding:18px 20px;border-radius:14px;background:rgba(11,21,40,0.8);border:1px solid rgba(255,255,255,0.07);display:flex;align-items:center;gap:12px;">
+        <span style="font-size:22px;">🔒</span>
+        <div>
+          <div style="font-size:13px;font-weight:800;color:#f8fafc;">Zero Websure changes</div>
+          <div style="font-size:11px;color:#475569;margin-top:2px;">We consume the existing API</div>
+        </div>
       </div>
-      <div style="padding:20px 24px;border-radius:16px;background:rgba(11,21,40,0.8);border:1px solid rgba(255,255,255,0.08);">
-        <div style="font-size:10px;font-weight:800;color:#34d399;text-transform:uppercase;letter-spacing:1px;margin-bottom:8px;">Human Override Always On</div>
-        <div style="font-size:14px;font-weight:700;color:#f8fafc;margin-bottom:6px;">People stay on judgement</div>
-        <div style="font-size:12px;color:#64748b;line-height:1.6;">Every write path requires confirmation. Settlement, UW decisions, and young-driver binding are hard-blocked.</div>
+      <div style="padding:18px 20px;border-radius:14px;background:rgba(11,21,40,0.8);border:1px solid rgba(255,255,255,0.07);display:flex;align-items:center;gap:12px;">
+        <span style="font-size:22px;">👤</span>
+        <div>
+          <div style="font-size:13px;font-weight:800;color:#f8fafc;">Human always decides</div>
+          <div style="font-size:11px;color:#475569;margin-top:2px;">Confirm before every write</div>
+        </div>
       </div>
-      <div style="padding:20px 24px;border-radius:16px;background:rgba(11,21,40,0.8);border:1px solid rgba(255,255,255,0.08);">
-        <div style="font-size:10px;font-weight:800;color:#fbbf24;text-transform:uppercase;letter-spacing:1px;margin-bottom:8px;">Compliance First</div>
-        <div style="font-size:14px;font-weight:700;color:#f8fafc;margin-bottom:6px;">Full FSCA audit trail</div>
-        <div style="font-size:12px;color:#64748b;line-height:1.6;">Every action is timestamped and stored. Binder agreements are enforced per insurer, per transaction.</div>
+      <div style="padding:18px 20px;border-radius:14px;background:rgba(11,21,40,0.8);border:1px solid rgba(255,255,255,0.07);display:flex;align-items:center;gap:12px;">
+        <span style="font-size:22px;">📋</span>
+        <div>
+          <div style="font-size:13px;font-weight:800;color:#f8fafc;">Full FSCA audit trail</div>
+          <div style="font-size:11px;color:#475569;margin-top:2px;">Every action timestamped</div>
+        </div>
       </div>
-      <div style="padding:20px 24px;border-radius:16px;background:rgba(11,21,40,0.8);border:1px solid rgba(255,255,255,0.08);">
-        <div style="font-size:10px;font-weight:800;color:#a78bfa;text-transform:uppercase;letter-spacing:1px;margin-bottom:8px;">Insurer Isolated</div>
-        <div style="font-size:14px;font-weight:700;color:#f8fafc;margin-bottom:6px;">Santam never sees Hollard</div>
-        <div style="font-size:12px;color:#64748b;line-height:1.6;">Strict workspace isolation enforced at both the prompt and API layers — architectural, not just policy.</div>
+      <div style="padding:18px 20px;border-radius:14px;background:rgba(11,21,40,0.8);border:1px solid rgba(255,255,255,0.07);display:flex;align-items:center;gap:12px;">
+        <span style="font-size:22px;">🏦</span>
+        <div>
+          <div style="font-size:13px;font-weight:800;color:#f8fafc;">Santam ≠ Hollard</div>
+          <div style="font-size:11px;color:#475569;margin-top:2px;">Hard insurer isolation</div>
+        </div>
       </div>
     </div>
+
   </div>
 </section>
 
-
-<!-- ─── AI AGENT ROADMAP ─── -->
 <section class="section" id="roadmap" style="border-top:1px solid rgba(255,255,255,0.07); padding:100px 0;">
   <div class="container">
 
